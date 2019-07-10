@@ -59,14 +59,13 @@ drone_pos = 'PC le plus proche'  # where does the drone starts from
 # unavail_delta_ = 6  # delta time of drone unavailability after being launched
 
 if drone_pos == 'PC le plus proche':
-    avail_ini_ = np.load('/Users/albane_95/Documents/Projet BSPP/code/data/list_pc.npy', allow_pickle=True)
+    avail_ini_ = np.load('data/list_pc.npy', allow_pickle=True)
 elif drone_pos == 'CS le plus proche':
-    avail_ini_ = np.load('/Users/albane_95/Documents/Projet BSPP/code/data/list_cs.npy', allow_pickle=True)
+    avail_ini_ = np.load('data/list_cs.npy', allow_pickle=True)
 else:
     print('Specified drone location does not exist')
 
-df = pd.read_csv('/Users/albane_95/Documents/Projet BSPP/code/data/dataACRtime_GPSCSPCpostime_v7.csv',
-                 encoding='latin-1', index_col=0)
+df = pd.read_csv('data/dataACRtime_GPSCSPCpostime_v7.csv', encoding='latin-1', index_col=0)
 #df.index = df['NumInter.1']
 df[col_time_em_call] = pd.to_datetime(df[col_time_em_call])
 
