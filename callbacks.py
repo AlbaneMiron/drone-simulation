@@ -1,6 +1,4 @@
 from dash.dependencies import Input, Output
-import dash_core_components as dcc
-import dash_html_components as html
 
 from app import app
 
@@ -11,21 +9,7 @@ import numpy as np
 import copy
 import math
 import plotly.graph_objs as go
-from scipy.stats import norm
 from sklearn.neighbors import KernelDensity
-
-# @app.callback(
-#     Output('app-1-display-value', 'children'),
-#     [Input('app-1-dropdown', 'value')])
-# def display_value(value):
-#     return 'You have selected "{}"'.format(value)
-#
-# @app.callback(
-#     Output('app-2-display-value', 'children'),
-#     [Input('app-2-dropdown', 'value')])
-# def display_value(value):
-#     return 'You have selected "{}"'.format(value)
-
 
 
 col_time_em_call = 'DT_då_crochå_'  # datetime of the beginning of the emergency call
@@ -42,7 +26,7 @@ col_lon_inter = 'new_lon'#'Longitude_WGS84.1'
 col_drone_delay = 'col_res'
 #
 # # parameters
-drone_pos = 'PC le plus proche'  # where does the drone starts from
+# drone_pos = 'PC le plus proche'  # where does the drone starts from
 # input_wind_ = True  # whether the wind should be taken into consideration
 # input_speed_ = 80  # in km/h, maximum horizontal drone speed
 # input_acc_ = 9  # in s, number of seconds of horizontal acceleration to reach full speed
@@ -58,32 +42,12 @@ drone_pos = 'PC le plus proche'  # where does the drone starts from
 # detec_VP_ = 0.15  # odd ratio for detecting a OHCA in the streets compared to in a public place or at home
 # unavail_delta_ = 6  # delta time of drone unavailability after being launched
 
-if drone_pos == 'PC le plus proche':
-    avail_ini_ = np.load('data/list_pc.npy', allow_pickle=True)
-elif drone_pos == 'CS le plus proche':
-    avail_ini_ = np.load('data/list_cs.npy', allow_pickle=True)
-else:
-    print('Specified drone location does not exist')
+
+avail_ini_pc = np.load('data/list_pc.npy', allow_pickle=True)
+avail_ini_cs = np.load('data/list_cs.npy', allow_pickle=True)
 
 df = pd.read_csv('data/dataACRtime_GPSCSPCpostime_v7.csv', encoding='latin-1', index_col=0)
-#df.index = df['NumInter.1']
 df[col_time_em_call] = pd.to_datetime(df[col_time_em_call])
-
-
-# def update_dispo(time_dec, dispo_cs, dispo_pc, indispo_cs, indispo_pc):
-#     drop_pc = []
-#     drop_cs = []
-#     for i in range(0, indispo_pc.shape[0]):
-#         if indispo_pc[i][2] < time_dec:
-#             dispo_pc.append((indispo_pc[i][0], indispo_pc[i][1]))
-#             drop_pc.append(i)
-#     for i in range(0, indispo_cs.shape[0]):
-#         if indispo_cs[i][2] < time_dec:
-#             dispo_cs.append((indispo_cs[i][0], indispo_cs[i][1]))
-#             drop_cs.append(i)
-#     res_indispo_pc = np.delete(indispo_pc, drop_pc, axis=0)
-#     res_indispo_cs = np.delete(indispo_cs, drop_cs, axis=0)
-#     return dispo_cs, dispo_pc, res_indispo_cs, res_indispo_pc
 
 
 def update_avail(time_dec, avail, unavail):
@@ -121,7 +85,6 @@ def drone_unavail(df, duree, avail_ini, loc):
 
     for i, r in df.iterrows():
         time_dec = r[col_time_em_call]
-        #dispo_cs, dispo_pc, indispo_cs, indispo_pc = update_dispo(time_dec, dispo_cs, dispo_pc, indispo_cs, indispo_pc)
         avail, unavail = update_avail(time_dec, avail, unavail)
         latA = r[col_lat_inter]
         lonA = r[col_lon_inter]
@@ -213,9 +176,11 @@ def drone_time(drone_input, input_wind, input_speed, input_acc, vert_acc, alt, d
     if drone_input == 'PC le plus proche':
         drone_departure = 'PCPP'
         drone_departure_bis = 'PC'
+        avail_ini_ = avail_ini_pc
     else:
         drone_departure = 'CSPP'
         drone_departure_bis = 'CS'
+        avail_ini_ = avail_ini_cs
 
     new_col ='col_res'
     df_ = df
@@ -232,77 +197,6 @@ def drone_time(drone_input, input_wind, input_speed, input_acc, vert_acc, alt, d
     speed_col = 'vitesse effective vent_' + drone_departure
 
     df_res = copy.deepcopy(df_)
-
-    # for i, r in df_.iterrows():
-    #     if vent:
-    #         eff_speed = speed + r[speed_col]
-    #     else:
-    #         eff_speed = speed
-    #     acc_dist = 2 * eff_speed * acc_time / 3600  # distance parcourue pendant l'acceleration et le ralentissement
-    #     acc = eff_speed / (acc_time * 3600)
-    #
-    #     # coordD = (r[latD], r[lonD])
-    #     # coordA = (r[latA], r[lonA])
-    #     # try:
-    #     #     dist = geopy.distance.vincenty(coordD, coordA).km
-    #     # except ValueError:
-    #     #     dist = np.nan
-    #
-    #     dist = r[col_dist]
-    #
-    #     lin_dist = dist - acc_dist
-    #     if lin_dist >= 0:
-    #         lin_time = (dist / eff_speed) * 3600
-    #         res_time = lin_time + dep_delay + arr_delay + 2 * acc_time
-    #     else:
-    #         res_time = dep_delay + arr_delay + 2 * math.sqrt(dist / acc)
-    #
-    #     df_res.loc[i, new_col] = np.round(res_time)
-    #
-    # # jour aeronautique
-    # if jour_ae:
-    #     df_res['col_res'] = df_res['col_res'] * df_res['jour_aeronautique']
-    #
-    # # # taux de détection des ACR au téléphone
-    # # detec_vec = [1] * int(detec_rate * len(df_res)) + [0] * (len(df_res) - int(detec_rate * len(df_res)))
-    # # detec_vec = np.random.permutation(detec_vec)
-    # # df_res['col_res'] = df_res['col_res'] * detec_vec
-    #
-    # # taux de détection des ACR au téléphone voie publique # TODO
-    # df_resB = df_res.loc[df_res['Localisation'] == 0.0]
-    # list_VP = list(df_resB.index)
-    # detec_vec2 = [1] * int(detec_rate * detec_VP * len(df_resB)) + [0] * (
-    #             len(df_resB) - int(detec_rate * detec_VP * len(df_resB)))
-    # detec_vec2 = np.random.permutation(detec_vec2)
-    # df_res3 = pd.DataFrame(list_VP)
-    # df_res3.columns = ['Inter']
-    # df_res3['Detec'] = detec_vec2
-    # list_VP = list(df_res3.loc[df_res3['Detec'] == 0, 'Inter'])
-    # df_res.loc[list_VP, 'col_res'] = 0
-    #
-    # # taux de détection des ACR au téléphone lieu public lieu privé # TODO
-    # df_resA = df_res.loc[df_res['Localisation'] != 0.0]
-    # list_lieu = list(df_resA.index)
-    # detec_vec2 = [1] * int(detec_rate * len(df_resA)) + [0] * (len(df_resA) - int(detec_rate * len(df_resA)))
-    # detec_vec2 = np.random.permutation(detec_vec2)
-    # df_res3 = pd.DataFrame(list_lieu)
-    # df_res3.columns = ['Inter']
-    # df_res3['Detec'] = detec_vec2
-    # list_lieu = list(df_res3.loc[df_res3['Detec'] == 0, 'Inter'])
-    # # print(df_resA.loc[list_lieu, 'col_res'])
-    # df_res.loc[list_lieu, 'col_res'] = 0
-    #
-    # # taux de témoin seul en lieu privé
-    # df_res2 = df_res.loc[df_res['Localisation'] == 2.0]
-    # list_priv = list(df_res2.index)
-    # detec_vec2 = [1] * int(witness_rate * len(df_res2)) + [0] * (len(df_res2) - int(witness_rate * len(df_res2)))
-    # detec_vec2 = np.random.permutation(detec_vec2)
-    # df_res3 = pd.DataFrame(list_priv)
-    # df_res3.columns = ['Inter']
-    # df_res3['Detec'] = detec_vec2
-    # list_priv = list(df_res3.loc[df_res3['Detec'] == 1, 'Inter'])
-    # #print(df_res2.loc[list_priv, 'col_res'])
-    # df_res.loc[list_priv, 'col_res'] = 0
 
     # Apport drone: si négatif, temps gagné grâce au drone. Sinon, temps gagné grâce au VSAV.
 
@@ -360,10 +254,6 @@ def drone_time(drone_input, input_wind, input_speed, input_acc, vert_acc, alt, d
     df_res.loc[df_res[new_col] == 0, 'apport_drone'] = df_res.loc[df_res[new_col] == 0, 'DeltaPresentation']
     dfi = df_res.dropna(axis=0, how='all', thresh=None, subset=['apport_drone'], inplace=False)
 
-    # # filtre présentation VSAV incohérente
-    # dfi = dfi.loc[dfi['DeltaPresentation'] >= 0]
-    # dfi = dfi.loc[dfi['DeltaPresentation'] <= 15 * 60]
-
     # TODO: to remove in the final version
     dfi = dfi.head(500)
 
@@ -374,8 +264,6 @@ def drone_time(drone_input, input_wind, input_speed, input_acc, vert_acc, alt, d
     df_density = copy.deepcopy(dfi)
     df_density = df_density.loc[df_density['col_res'] > 0]
 
-    # dfii.loc[dfii['apport_drone'] > 0] = 0
-    # dfii.loc[dfii['col_res'] == 0, 'apport_drone'] = 0
     df_drone = dfii.loc[dfii['apport_drone'] < 0]
     ind_VSAV = [n for n in list(dfi.index) if n not in list(df_drone.index)]
     df_VSAV = dfi.loc[ind_VSAV]
@@ -478,7 +366,6 @@ def drone_time(drone_input, input_wind, input_speed, input_acc, vert_acc, alt, d
         )}
 
 
-
 @app.callback(
     [Output('indicator-graphicb', 'figure'),
      Output('statsb', 'children'),
@@ -524,9 +411,11 @@ def drone_time(drone_input, input_wind, input_speed, input_acc, vert_acc, alt, d
     if drone_input == 'PC le plus proche':
         drone_departure = 'PCPP'
         drone_departure_bis = 'PC'
+        avail_ini_ = avail_ini_pc
     else:
         drone_departure = 'CSPP'
         drone_departure_bis = 'CS'
+        avail_ini_ = avail_ini_cs
 
     new_col ='col_res'
     df_ = df
@@ -542,7 +431,7 @@ def drone_time(drone_input, input_wind, input_speed, input_acc, vert_acc, alt, d
     df_res = copy.deepcopy(df_)
 
     df_res[col_drone_delay] = np.nan
-    if input_jour:
+    if input_jour: # TODO
         df_res[col_drone_delay] = df_res[col_drone_delay] * df_res[col_indic_day]
 
     # taux de détection des ACR au téléphone voie publique et lieu public  # TODO: ajouter lieu public - lieu public disparait
@@ -588,76 +477,6 @@ def drone_time(drone_input, input_wind, input_speed, input_acc, vert_acc, alt, d
 
         df_res.loc[i, col_drone_delay] = np.round(res_time)
 
-    # for i, r in df_.iterrows():
-    #     if vent:
-    #         eff_speed = speed + r[speed_col]
-    #     else:
-    #         eff_speed = speed
-    #     acc_dist = 2 * eff_speed * acc_time / 3600  # distance parcourue pendant l'acceleration et le ralentissement
-    #     acc = eff_speed / (acc_time * 3600)
-    #
-    #     # coordD = (r[latD], r[lonD])
-    #     # coordA = (r[latA], r[lonA])
-    #     # try:
-    #     #     dist = geopy.distance.vincenty(coordD, coordA).km
-    #     # except ValueError:
-    #     #     dist = np.nan
-    #
-    #     dist = r[col_dist]
-    #     lin_dist = dist - acc_dist
-    #     if lin_dist >= 0:
-    #         lin_time = (dist / eff_speed) * 3600
-    #         res_time = lin_time + dep_delay + arr_delay + 2 * acc_time
-    #     else:
-    #         res_time = dep_delay + arr_delay + 2 * math.sqrt(dist / acc)
-    #
-    #     df_res.loc[i, new_col] = np.round(res_time)
-    #
-    # # jour aeronautique
-    # if jour_ae:
-    #     df_res['col_res'] = df_res['col_res'] * df_res['jour_aeronautique']
-    #
-    # # # taux de détection des ACR au téléphone
-    # # detec_vec = [1] * int(detec_rate * len(df_res)) + [0] * (
-    # #         len(df_res) - int(detec_rate * len(df_res)))
-    # # detec_vec = np.random.permutation(detec_vec)
-    # # df_res['col_res'] = df_res['col_res'] * detec_vec
-    #
-    # # taux de détection des ACR au téléphone voie publique # TODO
-    # df_resB = df_res.loc[df_res['Localisation'] == 0.0]
-    # list_VP = list(df_resB.index)
-    # detec_vec2 = [1] * int(detec_rate * detec_VP * len(df_resB)) + [0] * (
-    #         len(df_resB) - int(detec_rate * detec_VP * len(df_resB)))
-    # detec_vec2 = np.random.permutation(detec_vec2)
-    # df_res3 = pd.DataFrame(list_VP)
-    # df_res3.columns = ['Inter']
-    # df_res3['Detec'] = detec_vec2
-    # list_VP = list(df_res3.loc[df_res3['Detec'] == 0, 'Inter'])
-    # # print(df_resB.loc[list_VP, 'col_res'])
-    # df_res.loc[list_VP, 'col_res'] = 0
-    #
-    # # taux de détection des ACR au téléphone lieu public lieu privé # TODO
-    # df_resA = df_res.loc[df_res['Localisation'] != 0.0]
-    # list_lieu = list(df_resA.index)
-    # detec_vec2 = [1] * int(detec_rate * len(df_resA)) + [0] * (len(df_resA) - int(detec_rate * len(df_resA)))
-    # detec_vec2 = np.random.permutation(detec_vec2)
-    # df_res3 = pd.DataFrame(list_lieu)
-    # df_res3.columns = ['Inter']
-    # df_res3['Detec'] = detec_vec2
-    # list_lieu = list(df_res3.loc[df_res3['Detec'] == 0, 'Inter'])
-    # # print(df_resA.loc[list_lieu, 'col_res'])
-    # df_res.loc[list_lieu, 'col_res'] = 0
-    #
-    # # taux de témoin seul en lieu privé
-    # df_res2 = df_res.loc[df_res['Localisation'] == 2.0]
-    # list_priv = list(df_res2.index)
-    # detec_vec2 = [1] * int(witness_rate * len(df_res2)) + [0] * (len(df_res2) - int(witness_rate * len(df_res2)))
-    # detec_vec2 = np.random.permutation(detec_vec2)
-    # df_res3 = pd.DataFrame(list_priv)
-    # df_res3.columns = ['Inter']
-    # df_res3['Detec'] = detec_vec2
-    # list_priv = list(df_res3.loc[df_res3['Detec'] == 1, 'Inter'])
-    # df_res.loc[list_priv, 'col_res'] = 0
 
     # Apport drone: si négatif, temps gagné grâce au drone. Sinon, temps gagné grâce au VSAV.
     df_res['apport_drone'] = df_res[new_col] - df_res['DeltaPresentation']  # TODO: 'DeltaPresentation' dataframe specific
