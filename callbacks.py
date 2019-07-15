@@ -28,8 +28,8 @@ col_drone_delay = 'col_res'
 avail_ini_pc = np.load('data/list_pc.npy', allow_pickle=True)
 avail_ini_cs = np.load('data/list_cs.npy', allow_pickle=True)
 
-df = pd.read_csv('data/dataACRtime_GPSCSPCpostime_v7.csv', encoding='latin-1', index_col=0)
-df[col_time_em_call] = pd.to_datetime(df[col_time_em_call])
+df_initial = pd.read_csv('data/dataACRtime_GPSCSPCpostime_v7.csv', encoding='latin-1', index_col=0)
+df_initial[col_time_em_call] = pd.to_datetime(df_initial[col_time_em_call])
 
 
 def update_avail(time_dec, avail, unavail):
@@ -118,7 +118,8 @@ def drone_unavail(df, duree, avail_ini, loc):
      Input('wit_detec', 'value'),
      Input('detec_VP', 'value'),
      Input('unavail_delta', 'value')])
-def drone_time(drone_input, input_wind, input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay, input_jour, detec_rate, no_witness_rate, detec_VP, unavail_delta):
+def drone_time(drone_input, input_wind, input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
+               input_jour_, detec_rate, no_witness_rate, detec_VP, unavail_delta):
 
     """
     Computes all drone presentation durations of a dataframe and puts them in a new column named
@@ -134,6 +135,20 @@ def drone_time(drone_input, input_wind, input_speed, input_acc, vert_acc, alt, d
     :param acc_time: time drone acceleration (float, default=5.0s)
     :return: dataframe
     """
+    # drone_input = 'PC le plus proche'
+    # input_wind = 'Non'
+    # input_speed = '80'
+    # input_acc = '9'
+    # vert_acc = '9'
+    # alt = '100'
+    # dep_delay = '15'
+    # arr_delay = '15'
+    # detec_delay = '104'
+    # input_jour_ = 'Non'
+    # detec_rate = '0'
+    # no_witness_rate = '0.56'
+    # detec_VP = '0.15'
+    # unavail_delta = '6'
 
     dep_delay = np.float(dep_delay) + np.float(detec_delay) + (np.float(alt) / np.float(vert_acc))
     arr_delay = np.float(arr_delay) + (np.float(alt) / np.float(vert_acc))
@@ -143,8 +158,7 @@ def drone_time(drone_input, input_wind, input_speed, input_acc, vert_acc, alt, d
     detec_VP = np.float(detec_VP)
     unavail_delta = np.float(unavail_delta)
 
-    # TODO : pb de noms de variables !
-    if input_jour == 'Oui':
+    if input_jour_ == 'Oui':
         input_jour = True
     else:
         input_jour = False
@@ -164,19 +178,14 @@ def drone_time(drone_input, input_wind, input_speed, input_acc, vert_acc, alt, d
         drone_departure_bis = 'CS'
         avail_ini_ = avail_ini_cs
 
-    new_col ='col_res'
-    df_ = df
+    new_col = 'col_res'
+    df_ = copy.deepcopy(df_initial)
 
     df_0 = df_.loc[df_[col_BLS_time] >= 0]
     df_ = df_0.loc[df_0[col_BLS_time] <= 25 * 60]
 
-    # latA = 'Latitude_WGS84.1'
-    # lonA = 'Longitude_WGS84.1'
-    # latD = 'Latitude_' + drone_departure
-    # lonD = 'Longitude_' + drone_departure
-
     col_dist = 'Distance_' + drone_departure_bis
-    speed_col = 'vitesse effective vent_' + drone_departure
+    # speed_col = 'vitesse effective vent_' + drone_departure
 
     df_res = copy.deepcopy(df_)
 
@@ -185,21 +194,22 @@ def drone_time(drone_input, input_wind, input_speed, input_acc, vert_acc, alt, d
     # écrire les exclusions ici, pas après
     df_res[col_drone_delay] = np.nan
     if input_jour:
-        df_res[col_drone_delay] = df_res[col_drone_delay] * df_res[col_indic_day]
+        index_nuit = df_res[df_res[col_indic_day] == 0].index
+        df_res.loc[index_nuit, col_drone_delay] = 0
 
-    # taux de détection des ACR au téléphone voie publique et lieu public  # TODO: ajouter lieu public - lieu public disparait
+    # taux de détection des ACR au téléphone voie publique et lieu public
     df_resB = df_res.loc[df_res[col_indic_home] == 0]
     list_VP = list(df_resB.index)
-    k_select = len(df_resB) - int(detec_rate * detec_VP * len(df_resB))
-    list_select = np.random.choice(list_VP, k_select)
-    df_res.loc[list_select, col_drone_delay] = 0
+    k_selectB = len(df_resB) - int(detec_rate * detec_VP * len(df_resB))
+    list_selectB = np.random.choice(list_VP, k_selectB, replace=False)
+    df_res.loc[list_selectB, col_drone_delay] = 0
 
     # taux de détection des ACR au téléphone lieu privé
     df_resA = df_res.loc[df_res[col_indic_home] == 1]
     list_lieu = list(df_resA.index)
-    k_select = len(df_resA) - int(detec_rate * len(df_resA))
-    list_select = np.random.choice(list_lieu, k_select)
-    df_res.loc[list_select, col_drone_delay] = 0
+    k_selectA = len(df_resA) - int(detec_rate * len(df_resA))
+    list_selectA = np.random.choice(list_lieu, k_selectA, replace=False)
+    df_res.loc[list_selectA, col_drone_delay] = 0
 
     # taux de témoin seul en lieu privé
     df_res2 = df_res.loc[df_res[col_indic_home] == 1]
@@ -210,10 +220,11 @@ def drone_time(drone_input, input_wind, input_speed, input_acc, vert_acc, alt, d
 
     df_ic = df_res.loc[df_res[col_drone_delay] != 0]
     df_ic = drone_unavail(df_ic, unavail_delta, avail_ini_, drone_departure_bis)
+    print(df_ic[col_drone_delay])
 
     for i, r in df_ic.iterrows():
         if input_wind:
-            eff_speed = input_speed # + r[speed_col] # TODO: remove
+            eff_speed = input_speed  # + r[speed_col] # TODO: remove
         else:
             eff_speed = input_speed
         acc_dist = 2 * eff_speed * input_acc / 3600  # distance covered during acceleration and brake
@@ -230,14 +241,10 @@ def drone_time(drone_input, input_wind, input_speed, input_acc, vert_acc, alt, d
 
         df_res.loc[i, col_drone_delay] = np.round(res_time)
 
+    df_res['apport_drone'] = df_res[new_col] - df_res[col_BLS_time]
 
-    df_res['apport_drone'] = df_res[new_col] - df_res['DeltaPresentation']  # TODO: 'DeltaPresentation' dataframe specific
-
-    df_res.loc[df_res[new_col] == 0, 'apport_drone'] = df_res.loc[df_res[new_col] == 0, 'DeltaPresentation']
+    df_res.loc[df_res[new_col] == 0, 'apport_drone'] = df_res.loc[df_res[new_col] == 0, col_BLS_time]
     dfi = df_res.dropna(axis=0, how='all', thresh=None, subset=['apport_drone'], inplace=False)
-
-    # TODO: to remove in the final version
-    dfi = dfi.head(500)
 
     n_tot = len(dfi)
     dfii = copy.deepcopy(dfi)
@@ -247,13 +254,11 @@ def drone_time(drone_input, input_wind, input_speed, input_acc, vert_acc, alt, d
     df_density = df_density.loc[df_density['col_res'] > 0]
 
     df_drone = dfii.loc[dfii['apport_drone'] < 0]
-    ind_VSAV = [n for n in list(dfi.index) if n not in list(df_drone.index)]
-    df_VSAV = dfi.loc[ind_VSAV]
 
     n_drone = len(df_drone)
-    per_drone = n_drone/n_tot
+    per_drone = n_drone / n_tot
 
-    x1 = [i for i in range(0, int(max(dfi['DeltaPresentation'])))]
+    x1 = [i for i in range(0, int(max(dfi[col_BLS_time])))]
     y1 = x1
 
     trace1 = go.Scatter(
@@ -266,86 +271,87 @@ def drone_time(drone_input, input_wind, input_speed, input_acc, vert_acc, alt, d
     )
 
     trace2 = go.Scatter(
-            x=dfi['DeltaPresentation'],
-            y=dfi['col_res'],
-            text=u'Temps présentation VSAV vs temps drone',
-            name=u"Intervention",
-            mode='markers',
-            marker={
-                'size': 15,
-                'opacity': 0.5,
-                'line': {'width': 0.5, 'color': 'white'}
-            }
-        )
+        x=dfi[col_BLS_time],
+        y=dfi['col_res'],
+        text=u'Temps présentation VSAV vs temps drone',
+        name=u"Intervention",
+        mode='markers',
+        marker={
+            'size': 15,
+            'opacity': 0.5,
+            'line': {'width': 0.5, 'color': 'white'}
+        }
+    )
 
-    X = df_density['DeltaPresentation'][:, np.newaxis]
+    X = df_density[col_BLS_time][:, np.newaxis]
     kde = KernelDensity(kernel='gaussian', bandwidth=2).fit(X)
-    X_plot = np.linspace(0, 20*60, 20*4)[:, np.newaxis]
+    X_plot = np.linspace(0, 20 * 60, 20 * 4)[:, np.newaxis]
     log_dens = kde.score_samples(X_plot)
     trace3 = go.Scatter(x=X_plot[:, 0], y=np.exp(log_dens),
                         mode='lines',
-                        #line='blue',
+                        # line='blue',
                         name="VSAV")
 
     X2 = df_density['col_res'][:, np.newaxis]
     kde2 = KernelDensity(kernel='gaussian', bandwidth=2).fit(X2)
-    X_plot2 = np.linspace(0, 20*60, 20*4)[:, np.newaxis]
+    X_plot2 = np.linspace(0, 20 * 60, 20 * 4)[:, np.newaxis]
     log_dens = kde2.score_samples(X_plot2)
     trace4 = go.Scatter(x=X_plot[:, 0], y=np.exp(log_dens),
                         mode='lines',
-                        #line='red',
+                        # line='red',
                         name="Drone")
 
-    dfi['col_bar'] = ['rgba(222,45,38,0.8)']*len(dfi)
+    dfi['col_bar'] = ['rgba(222,45,38,0.8)'] * len(dfi)
     dfi.loc[dfi['col_res'] == 0, 'col_bar'] = 'rgba(204,204,204,1)'
     dfi['apport_drone'] = - dfi['apport_drone']
     ynew = dfi.sort_values('apport_drone')
     list_col = list(ynew['col_bar'])
 
     trace5 = go.Bar(x=[i for i in range(0, len(dfi))],
-        y=ynew['apport_drone'], name=u'Temps gagné avec le drone',
-        marker=dict(color=list_col),
-    )
+                    y=ynew['apport_drone'], name=u'Temps gagné avec le drone',
+                    marker=dict(color=list_col),
+                    )
 
     return {
-        'data': [trace2, trace1],
-        'layout': go.Layout(
-            xaxis={
-                'title': 'Temps VSAV',
-                'type': 'linear'
-            },
-            yaxis={
-                'title': 'Temps drone ' + str(input_speed) + 'km/h, vent: ' + str(input_wind) + ' ' + str(drone_input),
-                'type': 'linear'
-            },
-            margin={'l': 40, 'b': 40, 't': 10, 'r': 0},
-            hovermode='closest'
-        )
-    }, per_drone, {'data': [trace3, trace4],
-        'layout': go.Layout(
-            xaxis={
-                'title': u'Temps de présentation quand le drone est envoyé',
-                'type': 'linear'
-            },
-            yaxis={
-                'title': u"Nombre d'interventions",
-                'type': 'linear'
-            },
-            margin={'l': 40, 'b': 40, 't': 10, 'r': 0},
-            hovermode='closest'
-        )}, {'data': [trace5],
-        'layout': go.Layout(
-            xaxis={
-                'title': u'Interventions',#, quand le drone se présente avant le VSAV',
-                'type': 'linear'
-            },
-            yaxis={
-                'title': u"Différence de temps",
-                'type': 'linear'
-            },
-            margin={'l': 40, 'b': 40, 't': 10, 'r': 0},
-            hovermode='closest'
-        )}
+               'data': [trace2, trace1],
+               'layout': go.Layout(
+                   xaxis={
+                       'title': 'Temps VSAV',
+                       'type': 'linear'
+                   },
+                   yaxis={
+                       'title': 'Temps drone ' + str(input_speed) + 'km/h, vent: ' + str(input_wind) + ' ' + str(
+                           drone_input),
+                       'type': 'linear'
+                   },
+                   margin={'l': 40, 'b': 40, 't': 10, 'r': 0},
+                   hovermode='closest'
+               )
+           }, per_drone, {'data': [trace3, trace4],
+                          'layout': go.Layout(
+                              xaxis={
+                                  'title': u'Temps de présentation quand le drone est envoyé',
+                                  'type': 'linear'
+                              },
+                              yaxis={
+                                  'title': u"Nombre d'interventions",
+                                  'type': 'linear'
+                              },
+                              margin={'l': 40, 'b': 40, 't': 10, 'r': 0},
+                              hovermode='closest'
+                          )}, {'data': [trace5],
+                               'layout': go.Layout(
+                                   xaxis={
+                                       'title': u'Interventions',  # , quand le drone se présente avant le VSAV',
+                                       'type': 'linear'
+                                   },
+                                   yaxis={
+                                       'title': u"Différence de temps",
+                                       'type': 'linear'
+                                   },
+                                   margin={'l': 40, 'b': 40, 't': 10, 'r': 0},
+                                   hovermode='closest'
+                               )}
 
 
 @app.callback(
@@ -368,8 +374,7 @@ def drone_time(drone_input, input_wind, input_speed, input_acc, vert_acc, alt, d
      Input('detec_VP2', 'value'),
      Input('unavail_delta2', 'value')])
 def drone_time(drone_input, input_wind, input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
-               input_jour, detec_rate, no_witness_rate, detec_VP, unavail_delta):
-
+               input_jour_, detec_rate, no_witness_rate, detec_VP, unavail_delta):
     dep_delay = np.float(dep_delay) + np.float(detec_delay) + (np.float(alt) / np.float(vert_acc))
     arr_delay = np.float(arr_delay) + (np.float(alt) / np.float(vert_acc))
     input_acc = np.float(input_acc)
@@ -378,8 +383,7 @@ def drone_time(drone_input, input_wind, input_speed, input_acc, vert_acc, alt, d
     detec_VP = np.float(detec_VP)
     unavail_delta = np.float(unavail_delta)
 
-    # TODO : pb de noms de variables !
-    if input_jour == 'Oui':
+    if input_jour_ == 'Oui':
         input_jour = True
     else:
         input_jour = False
@@ -399,36 +403,38 @@ def drone_time(drone_input, input_wind, input_speed, input_acc, vert_acc, alt, d
         drone_departure_bis = 'CS'
         avail_ini_ = avail_ini_cs
 
-    new_col ='col_res'
-    df_ = df
+    new_col = 'col_res'
+    df_ = copy.deepcopy(df_initial)
 
-    # latA = 'Latitude_WGS84.1'
-    # lonA = 'Longitude_WGS84.1'
-    # latD = 'Latitude_' + drone_departure
-    # lonD = 'Longitude_' + drone_departure
+    df_0 = df_.loc[df_[col_BLS_time] >= 0]
+    df_ = df_0.loc[df_0[col_BLS_time] <= 25 * 60]
 
     col_dist = 'Distance_' + drone_departure_bis
-    speed_col = 'vitesse effective vent_' + drone_departure
+    # speed_col = 'vitesse effective vent_' + drone_departure
 
     df_res = copy.deepcopy(df_)
 
-    df_res[col_drone_delay] = np.nan
-    if input_jour: # TODO
-        df_res[col_drone_delay] = df_res[col_drone_delay] * df_res[col_indic_day]
+    # Apport drone: si négatif, temps gagné grâce au drone. Sinon, temps gagné grâce au VSAV.
 
-    # taux de détection des ACR au téléphone voie publique et lieu public  # TODO: ajouter lieu public - lieu public disparait
+    # écrire les exclusions ici, pas après
+    df_res[col_drone_delay] = np.nan
+    if input_jour:
+        index_nuit = df_res[df_res[col_indic_day] == 0].index
+        df_res.loc[index_nuit, col_drone_delay] = 0
+
+    # taux de détection des ACR au téléphone voie publique et lieu public
     df_resB = df_res.loc[df_res[col_indic_home] == 0]
     list_VP = list(df_resB.index)
-    k_select = len(df_resB) - int(detec_rate * detec_VP * len(df_resB))
-    list_select = np.random.choice(list_VP, k_select)
-    df_res.loc[list_select, col_drone_delay] = 0
+    k_selectB = len(df_resB) - int(detec_rate * detec_VP * len(df_resB))
+    list_selectB = np.random.choice(list_VP, k_selectB, replace=False)
+    df_res.loc[list_selectB, col_drone_delay] = 0
 
     # taux de détection des ACR au téléphone lieu privé
     df_resA = df_res.loc[df_res[col_indic_home] == 1]
     list_lieu = list(df_resA.index)
-    k_select = len(df_resA) - int(detec_rate * len(df_resA))
-    list_select = np.random.choice(list_lieu, k_select)
-    df_res.loc[list_select, col_drone_delay] = 0
+    k_selectA = len(df_resA) - int(detec_rate * len(df_resA))
+    list_selectA = np.random.choice(list_lieu, k_selectA, replace=False)
+    df_res.loc[list_selectA, col_drone_delay] = 0
 
     # taux de témoin seul en lieu privé
     df_res2 = df_res.loc[df_res[col_indic_home] == 1]
@@ -439,10 +445,11 @@ def drone_time(drone_input, input_wind, input_speed, input_acc, vert_acc, alt, d
 
     df_ic = df_res.loc[df_res[col_drone_delay] != 0]
     df_ic = drone_unavail(df_ic, unavail_delta, avail_ini_, drone_departure_bis)
+    print(df_ic[col_drone_delay])
 
     for i, r in df_ic.iterrows():
         if input_wind:
-            eff_speed = input_speed # + r[speed_col] # TODO: remove
+            eff_speed = input_speed  # + r[speed_col] # TODO: remove
         else:
             eff_speed = input_speed
         acc_dist = 2 * eff_speed * input_acc / 3600  # distance covered during acceleration and brake
@@ -459,20 +466,10 @@ def drone_time(drone_input, input_wind, input_speed, input_acc, vert_acc, alt, d
 
         df_res.loc[i, col_drone_delay] = np.round(res_time)
 
+    df_res['apport_drone'] = df_res[new_col] - df_res[col_BLS_time]
 
-    # Apport drone: si négatif, temps gagné grâce au drone. Sinon, temps gagné grâce au VSAV.
-    df_res['apport_drone'] = df_res[new_col] - df_res['DeltaPresentation']  # TODO: 'DeltaPresentation' dataframe specific
-
-    df_res.loc[df_res[new_col] == 0, 'apport_drone'] = df_res.loc[df_res[new_col] == 0, 'DeltaPresentation']
+    df_res.loc[df_res[new_col] == 0, 'apport_drone'] = df_res.loc[df_res[new_col] == 0, col_BLS_time]
     dfi = df_res.dropna(axis=0, how='all', thresh=None, subset=['apport_drone'], inplace=False)
-    
-
-    # filtre présentation VSAV incohérente
-    dfi = dfi.loc[dfi['DeltaPresentation'] >= 0]
-    dfi = dfi.loc[dfi['DeltaPresentation'] <= 15 * 60]
-
-    # TODO: to remove in the final version
-    dfi = dfi.head(500)
 
     n_tot = len(dfi)
     dfii = copy.deepcopy(dfi)
@@ -481,16 +478,12 @@ def drone_time(drone_input, input_wind, input_speed, input_acc, vert_acc, alt, d
     df_density = copy.deepcopy(dfi)
     df_density = df_density.loc[df_density['col_res'] > 0]
 
-    # dfii.loc[dfii['apport_drone'] > 0] = 0
-    # dfii.loc[dfii['col_res'] == 0, 'apport_drone'] = 0
     df_drone = dfii.loc[dfii['apport_drone'] < 0]
-    ind_VSAV = [n for n in list(dfi.index) if n not in list(df_drone.index)]
-    df_VSAV = dfi.loc[ind_VSAV]
 
     n_drone = len(df_drone)
-    per_drone = n_drone/n_tot
+    per_drone = n_drone / n_tot
 
-    x1 = [i for i in range(0, int(max(dfi['DeltaPresentation'])))]
+    x1 = [i for i in range(0, int(max(dfi[col_BLS_time])))]
     y1 = x1
 
     trace1 = go.Scatter(
@@ -503,83 +496,84 @@ def drone_time(drone_input, input_wind, input_speed, input_acc, vert_acc, alt, d
     )
 
     trace2 = go.Scatter(
-            x=dfi['DeltaPresentation'],
-            y=dfi['col_res'],
-            text=u'Temps présentation VSAV vs temps drone',
-            name=u"Intervention",
-            mode='markers',
-            marker={
-                'size': 15,
-                'opacity': 0.5,
-                'line': {'width': 0.5, 'color': 'white'}
-            }
-        )
+        x=dfi[col_BLS_time],
+        y=dfi['col_res'],
+        text=u'Temps présentation VSAV vs temps drone',
+        name=u"Intervention",
+        mode='markers',
+        marker={
+            'size': 15,
+            'opacity': 0.5,
+            'line': {'width': 0.5, 'color': 'white'}
+        }
+    )
 
-    X = df_density['DeltaPresentation'][:, np.newaxis]
+    X = df_density[col_BLS_time][:, np.newaxis]
     kde = KernelDensity(kernel='gaussian', bandwidth=2).fit(X)
-    X_plot = np.linspace(0, 20*60, 20*4)[:, np.newaxis]
+    X_plot = np.linspace(0, 20 * 60, 20 * 4)[:, np.newaxis]
     log_dens = kde.score_samples(X_plot)
     trace3 = go.Scatter(x=X_plot[:, 0], y=np.exp(log_dens),
                         mode='lines',
-                        #line='blue',
+                        # line='blue',
                         name="VSAV")
 
     X2 = df_density['col_res'][:, np.newaxis]
     kde2 = KernelDensity(kernel='gaussian', bandwidth=2).fit(X2)
-    X_plot2 = np.linspace(0, 20*60, 20*4)[:, np.newaxis]
+    X_plot2 = np.linspace(0, 20 * 60, 20 * 4)[:, np.newaxis]
     log_dens = kde2.score_samples(X_plot2)
     trace4 = go.Scatter(x=X_plot[:, 0], y=np.exp(log_dens),
                         mode='lines',
-                        #line='red',
+                        # line='red',
                         name="Drone")
 
-    dfi['col_bar'] = ['rgba(222,45,38,0.8)']*len(dfi)
+    dfi['col_bar'] = ['rgba(222,45,38,0.8)'] * len(dfi)
     dfi.loc[dfi['col_res'] == 0, 'col_bar'] = 'rgba(204,204,204,1)'
     dfi['apport_drone'] = - dfi['apport_drone']
     ynew = dfi.sort_values('apport_drone')
     list_col = list(ynew['col_bar'])
 
     trace5 = go.Bar(x=[i for i in range(0, len(dfi))],
-        y=ynew['apport_drone'], name=u'Temps gagné avec le drone',
-        marker=dict(color=list_col),
-    )
+                    y=ynew['apport_drone'], name=u'Temps gagné avec le drone',
+                    marker=dict(color=list_col),
+                    )
 
     return {
-        'data': [trace2, trace1],
-        'layout': go.Layout(
-            xaxis={
-                'title': 'Temps VSAV',
-                'type': 'linear'
-            },
-            yaxis={
-                'title': 'Temps drone ' + str(input_speed) + 'km/h, vent: ' + str(input_wind) + ' ' + str(drone_input),
-                'type': 'linear'
-            },
-            margin={'l': 40, 'b': 40, 't': 10, 'r': 0},
-            hovermode='closest'
-        )
-    }, per_drone, {'data': [trace3, trace4],
-        'layout': go.Layout(
-            xaxis={
-                'title': u'Temps de présentation quand le drone est envoyé',
-                'type': 'linear'
-            },
-            yaxis={
-                'title': u"Nombre d'interventions",
-                'type': 'linear'
-            },
-            margin={'l': 40, 'b': 40, 't': 10, 'r': 0},
-            hovermode='closest'
-        )}, {'data': [trace5],
-        'layout': go.Layout(
-            xaxis={
-                'title': u'Interventions',#, quand le drone se présente avant le VSAV',
-                'type': 'linear'
-            },
-            yaxis={
-                'title': u"Différence de temps",
-                'type': 'linear'
-            },
-            margin={'l': 40, 'b': 40, 't': 10, 'r': 0},
-            hovermode='closest'
-        )}
+               'data': [trace2, trace1],
+               'layout': go.Layout(
+                   xaxis={
+                       'title': 'Temps VSAV',
+                       'type': 'linear'
+                   },
+                   yaxis={
+                       'title': 'Temps drone ' + str(input_speed) + 'km/h, vent: ' + str(input_wind) + ' ' + str(
+                           drone_input),
+                       'type': 'linear'
+                   },
+                   margin={'l': 40, 'b': 40, 't': 10, 'r': 0},
+                   hovermode='closest'
+               )
+           }, per_drone, {'data': [trace3, trace4],
+                          'layout': go.Layout(
+                              xaxis={
+                                  'title': u'Temps de présentation quand le drone est envoyé',
+                                  'type': 'linear'
+                              },
+                              yaxis={
+                                  'title': u"Nombre d'interventions",
+                                  'type': 'linear'
+                              },
+                              margin={'l': 40, 'b': 40, 't': 10, 'r': 0},
+                              hovermode='closest'
+                          )}, {'data': [trace5],
+                               'layout': go.Layout(
+                                   xaxis={
+                                       'title': u'Interventions',  # , quand le drone se présente avant le VSAV',
+                                       'type': 'linear'
+                                   },
+                                   yaxis={
+                                       'title': u"Différence de temps",
+                                       'type': 'linear'
+                                   },
+                                   margin={'l': 40, 'b': 40, 't': 10, 'r': 0},
+                                   hovermode='closest'
+                               )}
