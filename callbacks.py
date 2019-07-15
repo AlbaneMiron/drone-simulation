@@ -215,7 +215,7 @@ def drone_time(drone_input, input_wind, input_speed, input_acc, vert_acc, alt, d
     df_res2 = df_res.loc[df_res[col_indic_home] == 1]
     list_priv = list(df_res2.index)
     k_select = int(no_witness_rate * len(df_res2))
-    list_select = np.random.choice(list_priv, k_select)
+    list_select = np.random.choice(list_priv, k_select, replace=False)
     df_res.loc[list_select, col_drone_delay] = 0
 
     df_ic = df_res.loc[df_res[col_drone_delay] != 0]
@@ -440,7 +440,7 @@ def drone_time(drone_input, input_wind, input_speed, input_acc, vert_acc, alt, d
     df_res2 = df_res.loc[df_res[col_indic_home] == 1]
     list_priv = list(df_res2.index)
     k_select = int(no_witness_rate * len(df_res2))
-    list_select = np.random.choice(list_priv, k_select)
+    list_select = np.random.choice(list_priv, k_select, replace=False)
     df_res.loc[list_select, col_drone_delay] = 0
 
     df_ic = df_res.loc[df_res[col_drone_delay] != 0]
