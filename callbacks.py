@@ -24,24 +24,6 @@ col_lat_inter = 'new_lat'#'Latitude_WGS84.1'
 col_lon_inter = 'new_lon'#'Longitude_WGS84.1'
 
 col_drone_delay = 'col_res'
-#
-# # parameters
-# drone_pos = 'PC le plus proche'  # where does the drone starts from
-# input_wind_ = True  # whether the wind should be taken into consideration
-# input_speed_ = 80  # in km/h, maximum horizontal drone speed
-# input_acc_ = 9  # in s, number of seconds of horizontal acceleration to reach full speed
-# vert_acc_ = 9  # in m/s^2, vertical acceleration
-# alt_ = 100  # in m, cruise altitude of the drone
-# dep_delay_ = 15  # in s, delay between OHCA detection and drone departure
-# arr_delay_ = 15  # in s, delay between drone arrival and AED usage
-# detec_delay_ = 104  # in s, delay between detection of unconsciousness (departure of the BLS team) and OHCA
-# # detection (decision to launch a drone)
-# input_jour_ = True  # whether the drone only flies during the day or not
-# detec_rate_ = 0.70  # between 0 and 1, share of OHCA detected by the dispatch center
-# no_witness_rate_ = 0.58  # share of bystander alone for OHCA at home
-# detec_VP_ = 0.15  # odd ratio for detecting a OHCA in the streets compared to in a public place or at home
-# unavail_delta_ = 6  # delta time of drone unavailability after being launched
-
 
 avail_ini_pc = np.load('data/list_pc.npy', allow_pickle=True)
 avail_ini_cs = np.load('data/list_cs.npy', allow_pickle=True)
