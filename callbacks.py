@@ -105,7 +105,7 @@ def drone_unavail(df, duree, avail_ini, loc):
      Output('indicator-graphic2', 'figure'),
      Output('indicator-graphic3', 'figure')],
     [Input('input_drone', 'value'),
-     Input('wind', 'value'),
+     #Input('wind', 'value'),
      Input('speed', 'value'),
      Input('acc', 'value'),
      Input('vert-acc', 'value'),
@@ -118,7 +118,9 @@ def drone_unavail(df, duree, avail_ini, loc):
      Input('wit_detec', 'value'),
      Input('detec_VP', 'value'),
      Input('unavail_delta', 'value')])
-def drone_time(drone_input, input_wind, input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
+def drone_time(drone_input,
+               #input_wind,
+               input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
                input_jour_, detec_rate, no_witness_rate, detec_VP, unavail_delta):
 
     """
@@ -145,7 +147,7 @@ def drone_time(drone_input, input_wind, input_speed, input_acc, vert_acc, alt, d
     # arr_delay = '15'
     # detec_delay = '104'
     # input_jour_ = 'Non'
-    # detec_rate = '0'
+    # detec_rate = '1'
     # no_witness_rate = '0.56'
     # detec_VP = '0.15'
     # unavail_delta = '6'
@@ -158,23 +160,24 @@ def drone_time(drone_input, input_wind, input_speed, input_acc, vert_acc, alt, d
     detec_VP = np.float(detec_VP)
     unavail_delta = np.float(unavail_delta)
 
-    if input_jour_ == 'Oui':
-        input_jour = True
-    else:
-        input_jour = False
+    input_jour = input_jour_ == 'Oui'
+    # if input_jour_ == 'Oui':
+    #     input_jour = True
+    # else:
+    #     input_jour = False
 
     input_speed = np.float(input_speed)
-    if input_wind == 'Oui':
-        input_wind = True
-    else:
-        input_wind = False
+
+    input_wind = 'Oui'
+    # if input_wind == 'Oui':
+    #     input_wind = True
+    # else:
+    #     input_wind = False
 
     if drone_input == 'PC le plus proche':
-        drone_departure = 'PCPP'
         drone_departure_bis = 'PC'
         avail_ini_ = avail_ini_pc
     else:
-        drone_departure = 'CSPP'
         drone_departure_bis = 'CS'
         avail_ini_ = avail_ini_cs
 
@@ -256,7 +259,7 @@ def drone_time(drone_input, input_wind, input_speed, input_acc, vert_acc, alt, d
     df_drone = dfii.loc[dfii['apport_drone'] < 0]
 
     n_drone = len(df_drone)
-    per_drone = n_drone / n_tot
+    per_drone = np.around(n_drone/n_tot, 2)
 
     x1 = [i for i in range(0, int(max(dfi[col_BLS_time])))]
     y1 = x1
@@ -360,7 +363,7 @@ def drone_time(drone_input, input_wind, input_speed, input_acc, vert_acc, alt, d
      Output('indicator-graphic2b', 'figure'),
      Output('indicator-graphic3b', 'figure')],
     [Input('input_drone2', 'value'),
-     Input('wind2', 'value'),
+     #Input('wind2', 'value'),
      Input('speed2', 'value'),
      Input('acc2', 'value'),
      Input('vert-acc2', 'value'),
@@ -373,8 +376,11 @@ def drone_time(drone_input, input_wind, input_speed, input_acc, vert_acc, alt, d
      Input('wit_detec2', 'value'),
      Input('detec_VP2', 'value'),
      Input('unavail_delta2', 'value')])
-def drone_time(drone_input, input_wind, input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
+def drone_time(drone_input,
+               #input_wind,
+               input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
                input_jour_, detec_rate, no_witness_rate, detec_VP, unavail_delta):
+
     dep_delay = np.float(dep_delay) + np.float(detec_delay) + (np.float(alt) / np.float(vert_acc))
     arr_delay = np.float(arr_delay) + (np.float(alt) / np.float(vert_acc))
     input_acc = np.float(input_acc)
@@ -383,23 +389,23 @@ def drone_time(drone_input, input_wind, input_speed, input_acc, vert_acc, alt, d
     detec_VP = np.float(detec_VP)
     unavail_delta = np.float(unavail_delta)
 
-    if input_jour_ == 'Oui':
-        input_jour = True
-    else:
-        input_jour = False
+    input_jour = input_jour_ == 'Oui'
+    # if input_jour_ == 'Oui':
+    #     input_jour = True
+    # else:
+    #     input_jour = False
 
     input_speed = np.float(input_speed)
-    if input_wind == 'Oui':
-        input_wind = True
-    else:
-        input_wind = False
+    input_wind = 'Oui'
+    # if input_wind == 'Oui':
+    #     input_wind = True
+    # else:
+    #     input_wind = False
 
     if drone_input == 'PC le plus proche':
-        drone_departure = 'PCPP'
         drone_departure_bis = 'PC'
         avail_ini_ = avail_ini_pc
     else:
-        drone_departure = 'CSPP'
         drone_departure_bis = 'CS'
         avail_ini_ = avail_ini_cs
 
@@ -481,7 +487,7 @@ def drone_time(drone_input, input_wind, input_speed, input_acc, vert_acc, alt, d
     df_drone = dfii.loc[dfii['apport_drone'] < 0]
 
     n_drone = len(df_drone)
-    per_drone = n_drone / n_tot
+    per_drone = np.around(n_drone/n_tot, 2)
 
     x1 = [i for i in range(0, int(max(dfi[col_BLS_time])))]
     y1 = x1
