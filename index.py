@@ -1,13 +1,12 @@
 import os
 
+from dash.dependencies import Input, Output
 import dash_core_components as dcc
 import dash_html_components as html
-from dash.dependencies import Input, Output
 
 from app import app
+import callbacks  # pylint: disable=unused-import
 from layouts import layout1, layout2
-import callbacks
-#from apps import app_params#, app_graphs
 
 
 app.layout = html.Div([
@@ -16,15 +15,15 @@ app.layout = html.Div([
 ])
 
 
-@app.callback(Output('page-content', 'children'),
-              [Input('url', 'pathname')])
+@app.callback(
+    Output('page-content', 'children'),
+    [Input('url', 'pathname')])
 def display_page(pathname):
     if pathname == '/apps/app1':
-         return layout1, layout2
+        return layout1, layout2
     # elif pathname == '/apps/app2':
     #      return layout2
-    else:
-        return '404'
+    return '404'
 
 # barre à 1min de gain drone + ratio
 
