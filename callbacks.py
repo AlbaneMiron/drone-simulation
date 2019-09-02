@@ -36,8 +36,8 @@ col_lon_inter = 'new_lon'
 
 col_drone_delay = 'col_res'
 
-avail_ini_pc = np.load('data/list_pc.npy', allow_pickle=True)
-avail_ini_cs = np.load('data/list_cs.npy', allow_pickle=True)
+avail_ini_pc = np.genfromtxt('data/coords_pc.csv', delimiter=',', dtype=str)
+avail_ini_cs = np.genfromtxt('data/coords_cs.csv', delimiter=',', dtype=str)
 
 df_initial = pd.read_csv('data/dataACRtime_GPSCSPCpostime_v7.csv', encoding='latin-1', index_col=0)
 df_initial[col_time_em_call] = pd.to_datetime(df_initial[col_time_em_call])
