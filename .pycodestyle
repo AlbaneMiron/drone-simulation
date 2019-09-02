@@ -1,0 +1,7 @@
+[pycodestyle]
+# Warnings ignored because we are already checking those rules in pylint.
+# http://pycodestyle.pycqa.org/en/latest/intro.html#error-codes
+# W504 = line break after binary operator
+# E501 = line too long
+# W505 = doc line too long
+ignore = E501,W504,W505

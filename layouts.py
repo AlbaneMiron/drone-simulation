@@ -1,20 +1,20 @@
 import dash_core_components as dcc
 import dash_html_components as html
 
-positions = ['PC le plus proche', 'CS le plus proche']
+_POSITIONS = ['PC le plus proche', 'CS le plus proche']
 
-layout1 = html.Div([
+
+layout1 = html.Div([  # pylint: disable=invalid-name
     html.Div([
 
-
         html.Div([
-        html.H3('Simulation 1'),
+            html.H3('Simulation 1'),
             html.H6('Drone parameters'),
 
             html.Label('Position initiale du drone'),
             dcc.Dropdown(
                 id='input_drone',
-                options=[{'label': i, 'value': i} for i in positions],
+                options=[{'label': i, 'value': i} for i in _POSITIONS],
                 value='PC le plus proche'
             ),
 
@@ -80,12 +80,12 @@ layout1 = html.Div([
 
 
         html.Div([
-        html.H3('Simulation 2'),
-        html.H6('Drone parameters'),
+            html.H3('Simulation 2'),
+            html.H6('Drone parameters'),
             html.Label('Position initiale du drone'),
             dcc.Dropdown(
                 id='input_drone2',
-                options=[{'label': i, 'value': i} for i in positions],
+                options=[{'label': i, 'value': i} for i in _POSITIONS],
                 value='CS le plus proche'
             ),
 
@@ -146,48 +146,45 @@ layout1 = html.Div([
             html.Label(u"Taux de témoins seuls ACR lieu privé (entre 0 et 1) :"),
             dcc.Input(id='wit_detec2', value='0.58', type='text'),
 
-
-
         ], style={'width': '23%', 'display': 'inline-block'}),
 
     ]),
- ])
+])
 
-layout2 = html.Div([
-
-    html.Div([
-        html.Table([
-            html.Tr([html.Td(['Taux de drones plus rapides, sur toutes les interventions : ']), html.Td(id='stats')]),
-            ],
-                style={'width': '48%', 'display': 'inline-block'}),
-        html.Table([
-            html.Tr([html.Td(['Taux de drones plus rapides, sur toutes les interventions : ']), html.Td(id='statsb')]),
-            ],
-                style={'width': '48%', 'display': 'inline-block'}),
-        ]),
-
+layout2 = html.Div([  # pylint: disable=invalid-name
 
     html.Div([
-        html.Div([
-                dcc.Graph(id='indicator-graphic2'),
-            ],
-                style={'width': '48%', 'display': 'inline-block'}),
-        html.Div([
-                dcc.Graph(id='indicator-graphic2b'),
-            ],
-                style={'width': '48%', 'display': 'inline-block'}),
-        ]),
+        html.Table(
+            [html.Tr([
+                html.Td(['Taux de drones plus rapides, sur toutes les interventions : ']),
+                html.Td(id='stats'),
+            ])],
+            style={'width': '48%', 'display': 'inline-block'}),
+        html.Table(
+            [html.Tr([
+                html.Td(['Taux de drones plus rapides, sur toutes les interventions : ']),
+                html.Td(id='statsb'),
+            ])],
+            style={'width': '48%', 'display': 'inline-block'}),
+    ]),
 
 
     html.Div([
-        html.Div([
-                dcc.Graph(id='indicator-graphic3'),
-            ],
-                style={'width': '48%', 'display': 'inline-block'}),
-        html.Div([
-                dcc.Graph(id='indicator-graphic3b'),
-            ],
-                style={'width': '48%', 'display': 'inline-block'}),
-        ]),
+        html.Div(
+            [dcc.Graph(id='indicator-graphic2')],
+            style={'width': '48%', 'display': 'inline-block'}),
+        html.Div(
+            [dcc.Graph(id='indicator-graphic2b')],
+            style={'width': '48%', 'display': 'inline-block'}),
+    ]),
 
-    ])
+
+    html.Div([
+        html.Div(
+            [dcc.Graph(id='indicator-graphic3')],
+            style={'width': '48%', 'display': 'inline-block'}),
+        html.Div(
+            [dcc.Graph(id='indicator-graphic3b')],
+            style={'width': '48%', 'display': 'inline-block'}),
+    ]),
+])

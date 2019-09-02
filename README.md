@@ -29,3 +29,11 @@ If you don't want to pollute your main OS, you can also build and run inside a d
 ```sh
 docker-compose up -d
 ```
+
+## Check styles
+
+Run the linters in your editor (pycodestye and pylint), or directly in a Docker container.
+
+```sh
+docker-compose build
+```
