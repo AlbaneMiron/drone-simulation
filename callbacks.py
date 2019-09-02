@@ -18,10 +18,11 @@ col_drone_distance = 'Distance_'  # in km, horizontal distance flown by the dron
 col_wind_speed = 'vitesse effective vent_'  # in m/s, wind speed in the direction
 col_indic_day = 'jour_aeronautique'  # indicator: 1 if the intervention is during the day, 0 during the night
 col_indic_streets = 'Voie publique'  # indicator : 1 if the intervention is in the streets, 0 otherwise
-col_indic_pubplace = 'Lieu public' # indicator : 1 if the intervention is in a public place (excluding streets), 0 otherwise
+col_indic_pubplace = 'Lieu public' # indicator : 1 if the intervention is in a public place
+# (excluding streets), 0 otherwise
 col_indic_home = 'Domicile'  # indicator : 1 if the intervention is at home, 0 otherwise
-col_lat_inter = 'new_lat'#'Latitude_WGS84.1'
-col_lon_inter = 'new_lon'#'Longitude_WGS84.1'
+col_lat_inter = 'new_lat' # Latitude WGS84
+col_lon_inter = 'new_lon'# Longitude WGS84
 
 col_drone_delay = 'col_res'
 
@@ -35,10 +36,10 @@ df_initial[col_time_em_call] = pd.to_datetime(df_initial[col_time_em_call])
 def update_avail(time_dec, avail, unavail):
     """
     Update of the available fleet of drones after each launch.
-    :param time_dec: Datetime when the intervention started.
-    :param avail: List of available drones (name, GPS location)
-    :param unavail: List of unavailable drones (name, GPS location and datetime until when they are unavailable)
-    :return: Updated list of available and unavailable drones.
+    :param time_dec: (dt.datetime) Datetime when the intervention started.
+    :param avail: (np.array) List of available drones (name, GPS location)
+    :param unavail: (np.array) List of unavailable drones (name, GPS location and datetime until when they are unavailable)
+    :return: (np.array, np.array) Updated list of available and unavailable drones.
     """
     drop_drone = []
     for i in range(0, unavail.shape[0]):
@@ -92,7 +93,6 @@ def drone_unavail(df, duree, avail_ini, loc):
             list_dist.append(min_dist)
         except ValueError:
             list_dist.append(np.nan)
-            print('drone location empty')
 
     df['Distance_' + loc] = list_dist
 
@@ -103,19 +103,27 @@ def _compute_drone_time(
         drone_input,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
         input_jour_, detec_rate, no_witness_rate, detec_VP, unavail_delta):
+
     """
-    Computes all drone presentation durations of a dataframe and puts them in a new column named
-    new_col.
-    :param df_: dataframe
-    :param latD: column with departure latitude (str)
-    :param lonD: column with departure longitude (str)
-    :param latA: column with arrival latitude (str)
-    :param lonA: column with arrival longitude (str)
-    :param dep_delay: departure delay (float, default=0)
-    :param arr_delay: arrival delay (float, default=0)
-    :param speed: drone speed (float, default=10)
-    :param acc_time: time drone acceleration (float, default=5.0s)
-    :return: dataframe
+    Computes drone simulated flights.
+
+    :param drone_input: (str) drones initial locations
+    :param input_speed: (str) drone horizontal speed in km/h
+    :param input_acc: (str) drone horizontal acceleration in m/s^2
+    :param vert_acc: (str) drone vertical speed in m/s
+    :param alt: (str) flight altitude in meters
+    :param dep_delay: (str) departure delay in seconds
+    :param arr_delay: (str) arrival delay in seconds
+    :param detec_delay: (str) delay between detection of unconsciousness and OHCA detection
+    by 18/112 operators in seconds
+    :param input_jour: (str) whether drone flights are unauthorized at night (yes/no)
+    :param detec_rate: (str) rate of OHCA detection by 18/112 operators ([0,1])
+    :param no_witness_rate: (str) rate of OHCA at home, which only have one witness alone ([0,1])
+    :param detec_VP: (str) odd ratio of OHCA in the streets vs OHCA at home or in a public place detection
+    by 18/112 operators ([0,1])
+    :param unavail_delta: (str) delay during which a drone is unavailable after being sent to an OHCA in hours
+
+    :return: graphs for Dash visualisation
     """
     # drone_input = 'PC le plus proche'
     # input_wind = 'Non'
@@ -141,18 +149,10 @@ def _compute_drone_time(
     unavail_delta = np.float(unavail_delta)
 
     input_jour = input_jour_ == 'Oui'
-    # if input_jour_ == 'Oui':
-    #     input_jour = True
-    # else:
-    #     input_jour = False
 
     input_speed = np.float(input_speed)
 
     input_wind = 'Oui'
-    # if input_wind == 'Oui':
-    #     input_wind = True
-    # else:
-    #     input_wind = False
 
     if drone_input == 'PC le plus proche':
         drone_departure_bis = 'PC'
@@ -203,11 +203,10 @@ def _compute_drone_time(
 
     df_ic = df_res.loc[df_res[col_drone_delay] != 0]
     df_ic = drone_unavail(df_ic, unavail_delta, avail_ini_, drone_departure_bis)
-    print(df_ic[col_drone_delay])
 
     for i, r in df_ic.iterrows():
         if input_wind:
-            eff_speed = input_speed  # + r[speed_col] # TODO: remove
+            eff_speed = input_speed
         else:
             eff_speed = input_speed
         acc_dist = 2 * eff_speed * input_acc / 3600  # distance covered during acceleration and brake
@@ -342,7 +341,6 @@ def _compute_drone_time(
      Output('indicator-graphic2', 'figure'),
      Output('indicator-graphic3', 'figure')],
     [Input('input_drone', 'value'),
-     #Input('wind', 'value'),
      Input('speed', 'value'),
      Input('acc', 'value'),
      Input('vert-acc', 'value'),
@@ -356,7 +354,6 @@ def _compute_drone_time(
      Input('detec_VP', 'value'),
      Input('unavail_delta', 'value')])
 def drone_time(drone_input,
-               #input_wind,
                input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
                input_jour_, detec_rate, no_witness_rate, detec_VP, unavail_delta):
     return _compute_drone_time(
@@ -371,7 +368,6 @@ def drone_time(drone_input,
      Output('indicator-graphic2b', 'figure'),
      Output('indicator-graphic3b', 'figure')],
     [Input('input_drone2', 'value'),
-     #Input('wind2', 'value'),
      Input('speed2', 'value'),
      Input('acc2', 'value'),
      Input('vert-acc2', 'value'),
@@ -385,7 +381,6 @@ def drone_time(drone_input,
      Input('detec_VP2', 'value'),
      Input('unavail_delta2', 'value')])
 def drone_time(drone_input,
-               #input_wind,
                input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
                input_jour_, detec_rate, no_witness_rate, detec_VP, unavail_delta):
     return _compute_drone_time(
