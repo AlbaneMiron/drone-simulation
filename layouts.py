@@ -1,7 +1,9 @@
 import dash_core_components as dcc
 import dash_html_components as html
 
-_POSITIONS = ['PC le plus proche', 'CS le plus proche']
+import drones
+
+_POSITIONS = list(drones.STARTING_POINTS.keys())
 
 
 def create_simulation_layout(name, suffix='', input_drone=_POSITIONS[0], style=None):
@@ -91,7 +93,7 @@ def create_simulation_layout(name, suffix='', input_drone=_POSITIONS[0], style=N
 
 layout = html.Div([  # pylint: disable=invalid-name
 
-    create_simulation_layout('A', style={
+    create_simulation_layout('A', input_drone='PC le plus proche', style={
         'border-right': 'solid 1px #ddd',
         'margin-right': '15px',
         'padding-right': '15px',
