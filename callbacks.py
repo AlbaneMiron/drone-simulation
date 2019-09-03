@@ -255,31 +255,6 @@ def _compute_drone_time(
     n_drone = len(df_drone)
     per_drone = np.around(n_drone / n_tot, 2)
 
-    x1 = [i for i in range(0, int(max(dfi[col_BLS_time])))]
-    y1 = x1
-
-    trace1 = go.Scatter(
-        x=x1,
-        y=y1,
-        line=dict(color='rgb(0,100,80)'),
-        mode='lines',
-        text='A gauche, VSAV plus rapide. A droite drone plus rapide',
-        name=u"Ligne d'égalité des temps de présentation",
-    )
-
-    trace2 = go.Scatter(
-        x=dfi[col_BLS_time],
-        y=dfi['col_res'],
-        text=u'Temps présentation VSAV vs temps drone',
-        name=u"Intervention",
-        mode='markers',
-        marker={
-            'size': 15,
-            'opacity': 0.5,
-            'line': {'width': 0.5, 'color': 'white'}
-        }
-    )
-
     X = df_density[col_BLS_time][:, np.newaxis]
     kde = KernelDensity(kernel='gaussian', bandwidth=2).fit(X)
     X_plot = np.linspace(0, 20 * 60, 20 * 4)[:, np.newaxis]
@@ -314,22 +289,6 @@ def _compute_drone_time(
         marker=dict(color=list_col),
     )
 
-    indicator_graphic = {
-        'data': [trace2, trace1],
-        'layout': go.Layout(
-            xaxis={
-                'title': 'Temps VSAV',
-                'type': 'linear',
-            },
-            yaxis={
-                'title': f'Temps drone {input_speed}km/h, vent: {input_wind} {drone_input}',
-                'type': 'linear',
-            },
-            margin={'l': 40, 'b': 40, 't': 10, 'r': 0},
-            hovermode='closest',
-        ),
-    }
-
     stats = per_drone
 
     indicator_graphic_2 = {
@@ -363,12 +322,11 @@ def _compute_drone_time(
             hovermode='closest',
         )}
 
-    return indicator_graphic, stats, indicator_graphic_2, indicator_graphic_3
+    return stats, indicator_graphic_2, indicator_graphic_3
 
 
 @app.callback(
-    [Output('indicator-graphic', 'figure'),
-     Output('stats', 'children'),
+    [Output('stats', 'children'),
      Output('indicator-graphic2', 'figure'),
      Output('indicator-graphic3', 'figure')],
     [Input('input_drone', 'value'),
@@ -396,8 +354,7 @@ def drone_time(
 
 
 @app.callback(
-    [Output('indicator-graphicb', 'figure'),
-     Output('statsb', 'children'),
+    [Output('statsb', 'children'),
      Output('indicator-graphic2b', 'figure'),
      Output('indicator-graphic3b', 'figure')],
     [Input('input_drone2', 'value'),
