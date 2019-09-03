@@ -19,4 +19,9 @@ COPY *.py .pycodestyle ./
 RUN pycodestyle --config=.pycodestyle *.py
 RUN pylint *.py --disable=C0111,W0511,C0103,R
 
+FROM base AS prod
+
+COPY *.py ./
+COPY data ./data
+
 FROM base
