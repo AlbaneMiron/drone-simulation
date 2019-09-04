@@ -37,3 +37,15 @@ Run the linters in your editor (pycodestye and pylint), or directly in a Docker 
 ```sh
 docker-compose build
 ```
+
+## Publish on Google Cloud
+
+You first need to get your account authorized for the project, then install `gcloud`, then run:
+
+```sh
+docker build --target prod -t eu.gcr.io/drone-simulation/server .
+docker push eu.gcr.io/drone-simulation/server
+gcloud beta run deploy --image eu.gcr.io/drone-simulation/server --platform managed --project drone-simulation
+```
+
+See the result [here](https://drone-simulation-pss2a6dmiq-ew.a.run.app/apps/app1).
