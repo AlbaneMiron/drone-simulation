@@ -3,46 +3,73 @@ import dash_html_components as html
 
 _POSITIONS = ['PC le plus proche', 'CS le plus proche']
 
+dict_drone = {
+    'drone_param' : ['Paramètres du drone', 'Drone parameters'],
+    'drone_pos' : ['Position initiale du drone', 'Drone launch location'],
+    'drone_spe' : ['Vitesse maximale (km/h)', 'Maximum horizontal cruise speed (km/h)'],
+    'drone_acc' : ["Durée d'accelération horizontale (s)", 'Horizontal acceleration duration (s)'],
+    'drone_vert' : ['Vitesse verticale (m/s)', 'Vertical speed (m/s)'],
+    'drone_alt' : ['Altitude de croisière (m)', 'Cruise altitude (m)'],
+    'drone_unav' : ["Durée de l'indisponibilité du drone après le lancer (h)",
+                    'Drone unavailability duration after launch (h)'],
+    'drone_day' : ['Vol uniquement durant jour aéronautique', 'Flight only during day time']
+}
 
-def create_simulation_layout(name, suffix='', input_drone=_POSITIONS[0], style=None):
+dict_oper = {
+    'oper_param' : ['Paramètres opérationnels', 'Operational parameters'],
+    'oper_ddelay' : ['Retard au départ (s)', 'Departure delay (s)'],
+    'oper_adelay' : ["Retard à l'arrivée (s)", 'Arrival delay (s)'],
+    'oper_detecd' : ["Décalage de détection inconscience/ACR (s)",
+                     'Delay between unconsciousness detection and OHCA detection by 18/112 operators (s)'],
+    'oper_detecr' : ["Taux de détection ACR à la prise d'appel ([0,1])",
+                     "Rate of OHCA detection by 18/112 operators ([0,1])" ],
+    'oper_detecs' : ["Odd ratio de la détection ACR voie publique à la prise d'appel",
+                     "Odd ratio of OHCA in the streets vs OHCA at home or in a public place detection by 18/112 operators"],
+    'oper_witn' : ["Taux de témoins seuls ACR lieu privé ([0,1])",
+                   "Rate of OHCA at home with only have one witness alone ([0,1])"]
+}
+
+dict_res = {'res' : ['Résultats', 'Results'],
+            'rate' : ['Taux de drones plus rapides, sur toutes les interventions : ',
+                      'Rate of faster drones among all interventions : ' ]}
+
+
+
+def create_simulation_layout(name,  suffix='', language = 'FR', input_drone=_POSITIONS[0], style=None,
+                             dict_drone_ = dict_drone, dict_oper_= dict_oper, dict_res_ = dict_res):
+
+    i = int(language == 'EN')
+
     return html.Div([
         html.H3(f'Simulation {name}'),
 
         html.Div([
             html.Div([
-                html.H6('Drone parameters'),
+                html.H6(dict_drone_['drone_param'][i]),
 
-                html.Label('Position initiale du drone'),
+                html.Label(dict_drone_['drone_pos'][i]),
                 dcc.Dropdown(
                     id=f'input_drone{suffix}',
                     options=[{'label': i, 'value': i} for i in _POSITIONS],
                     value=input_drone,
                 ),
 
-                html.Label('Vitesse maximale du drone (en km/h)'),
+                html.Label(dict_drone_['drone_spe'][i]),
                 dcc.Input(id=f'speed{suffix}', value='80', type='text'),
 
-                html.Label(u"Nombre de secondes d'accelération du drone :"),
+                html.Label(dict_drone_['drone_acc'][i]),
                 dcc.Input(id=f'acc{suffix}', value='5', type='text'),
 
-                html.Label(u"Vitesse verticale (en m/s) :"),
+                html.Label(dict_drone_['drone_vert'][i]),
                 dcc.Input(id=f'vert-acc{suffix}', value='9', type='text'),
 
-                html.Label(u"Altitude de croisière (en m) :"),
+                html.Label(dict_drone_['drone_alt'][i]),
                 dcc.Input(id=f'alt{suffix}', value='100', type='text'),
 
-                html.Label(u"Nombre d'heures d'indispo après lancer :"),
+                html.Label(dict_drone_['drone_unav'][i]),
                 dcc.Input(id=f'unavail_delta{suffix}', value='6', type='text'),
 
-                # html.Label('Prise en compte du vent'),
-                # dcc.RadioItems(
-                #     id='wind',
-                #     options=[{'label': i, 'value': i} for i in ['Oui', 'Non']],
-                #     value='Oui',
-                #     labelStyle={'display': 'inline-block'}
-                # ),
-
-                html.Label('Vol uniquement durant jour aéronautique'),
+                html.Label(dict_drone_['drone_day'][i]),
                 dcc.RadioItems(
                     id=f'day{suffix}',
                     options=[{'label': i, 'value': i} for i in ['Oui', 'Non']],
@@ -53,34 +80,34 @@ def create_simulation_layout(name, suffix='', input_drone=_POSITIONS[0], style=N
             ], style={'flex': 1}),
 
             html.Div([
-                html.H6('Operational parameters'),
+                html.H6(dict_oper_['oper_param'][i]),
 
-                html.Label(u"Retard au départ (en s) :"),
+                html.Label(dict_oper_['oper_ddelay'][i]),
                 dcc.Input(id=f'dep_delay{suffix}', value='15', type='text'),
 
-                html.Label(u"Retard à l'arrivée (en s) :"),
+                html.Label(dict_oper_['oper_adelay'][i]),
                 dcc.Input(id=f'arr_delay{suffix}', value='15', type='text'),
 
-                html.Label(u"Décalage de détection inconscience/ACR (en s) :"),
+                html.Label(dict_oper_['oper_detectd'][i]),
                 dcc.Input(id=f'detec_delay{suffix}', value='104', type='text'),
 
-                html.Label(u"Taux de détection ACR à la prise d'appel (entre 0 et 1) :"),
+                html.Label(dict_oper_['oper_detecr'][i]),
                 dcc.Input(id=f'detec{suffix}', value='0.8', type='text'),
 
-                html.Label(u"Odd ratio de la détection ACR voie publique à la prise d'appel :"),
+                html.Label(dict_oper_['oper_detecs'][i]),
                 dcc.Input(id=f'detec_VP{suffix}', value='0.15', type='text'),
 
-                html.Label(u"Taux de témoins seuls ACR lieu privé (entre 0 et 1) :"),
+                html.Label(dict_oper_['oper_witn'][i]),
                 dcc.Input(id=f'wit_detec{suffix}', value='0.58', type='text'),
 
             ], style={'flex': 1}),
 
         ], style={'display': 'flex'}),
 
-        html.H6('Results'),
+        html.H6(dict_res_['res'][i]),
 
         html.Div([
-            'Taux de drones plus rapides, sur toutes les interventions : ',
+            dict_res_['rate'][i],
             html.Span(id=f'stats{suffix}'),
         ]),
         dcc.Graph(id=f'indicator-graphic2{suffix}'),
@@ -89,13 +116,25 @@ def create_simulation_layout(name, suffix='', input_drone=_POSITIONS[0], style=N
     ], style={'flex': 1} if style is None else dict(style, flex=1))
 
 
-layout = html.Div([  # pylint: disable=invalid-name
+layout_FR = html.Div([  # pylint: disable=invalid-name
 
-    create_simulation_layout('A', style={
+    create_simulation_layout('A',  style={
         'border-right': 'solid 1px #ddd',
         'margin-right': '15px',
         'padding-right': '15px',
     }),
     create_simulation_layout('B', suffix='_b', input_drone='CS le plus proche'),
+
+], style={'display': 'flex'})
+
+
+layout_EN = html.Div([  # pylint: disable=invalid-name
+
+    create_simulation_layout('A', language='EN', style={
+        'border-right': 'solid 1px #ddd',
+        'margin-right': '15px',
+        'padding-right': '15px',
+    }),
+    create_simulation_layout('B', suffix='_b', language='EN', input_drone='CS le plus proche'),
 
 ], style={'display': 'flex'})
