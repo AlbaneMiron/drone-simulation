@@ -354,8 +354,7 @@ def drone_time(
 
 
 @app.callback(
-    [Output('indicator-graphic_b', 'figure'),
-     Output('stats_b', 'children'),
+    [Output('stats_b', 'children'),
      Output('indicator-graphic2_b', 'figure'),
      Output('indicator-graphic3_b', 'figure')],
     [Input('input_drone_b', 'value'),

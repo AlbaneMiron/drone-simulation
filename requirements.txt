@@ -1,4 +1,6 @@
 dash
 geopy
 pandas
-sklearn
+scikit-learn
+numpy
+plotly

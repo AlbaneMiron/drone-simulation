@@ -88,7 +88,7 @@ def create_simulation_layout(name,  suffix='', language = 'FR', input_drone=_POS
                 html.Label(dict_oper_['oper_adelay'][i]),
                 dcc.Input(id=f'arr_delay{suffix}', value='15', type='text'),
 
-                html.Label(dict_oper_['oper_detectd'][i]),
+                html.Label(dict_oper_['oper_detecd'][i]),
                 dcc.Input(id=f'detec_delay{suffix}', value='104', type='text'),
 
                 html.Label(dict_oper_['oper_detecr'][i]),
