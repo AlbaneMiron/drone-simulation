@@ -1,7 +1,8 @@
 import dash_core_components as dcc
 import dash_html_components as html
 
-_POSITIONS = ['PC le plus proche', 'CS le plus proche']
+_POSITIONS = [['Postes de commandement', 'Centres de secours'], ['Main fire stations', 'Every fire station']]
+_BOOL = [['Oui', 'Non'], ['Yes', 'No']]
 
 dict_drone = {
     'drone_param' : ['Paramètres du drone', 'Drone parameters'],
@@ -35,8 +36,8 @@ dict_res = {'res' : ['Résultats', 'Results'],
 
 
 
-def create_simulation_layout(name,  suffix='', language = 'FR', input_drone=_POSITIONS[0], style=None,
-                             dict_drone_ = dict_drone, dict_oper_= dict_oper, dict_res_ = dict_res):
+def create_simulation_layout(name,  suffix='', language = 'FR', input_drone=_POSITIONS[0][1], style=None,
+                             dict_drone_=dict_drone, dict_oper_=dict_oper, dict_res_=dict_res):
 
     i = int(language == 'EN')
 
@@ -50,7 +51,7 @@ def create_simulation_layout(name,  suffix='', language = 'FR', input_drone=_POS
                 html.Label(dict_drone_['drone_pos'][i]),
                 dcc.Dropdown(
                     id=f'input_drone{suffix}',
-                    options=[{'label': i, 'value': i} for i in _POSITIONS],
+                    options=[{'label': i, 'value': i} for i in _POSITIONS[i]],
                     value=input_drone,
                 ),
 
@@ -72,8 +73,8 @@ def create_simulation_layout(name,  suffix='', language = 'FR', input_drone=_POS
                 html.Label(dict_drone_['drone_day'][i]),
                 dcc.RadioItems(
                     id=f'day{suffix}',
-                    options=[{'label': i, 'value': i} for i in ['Oui', 'Non']],
-                    value='Non',
+                    options=[{'label': i, 'value': i} for i in _BOOL[i]],
+                    value=_BOOL[i][1],
                     labelStyle={'display': 'inline-block'}
                 ),
 
@@ -123,18 +124,18 @@ layout_FR = html.Div([  # pylint: disable=invalid-name
         'margin-right': '15px',
         'padding-right': '15px',
     }),
-    create_simulation_layout('B', suffix='_b', input_drone='CS le plus proche'),
+    create_simulation_layout('B', suffix='_b', input_drone='Postes de commandement'),
 
 ], style={'display': 'flex'})
 
 
 layout_EN = html.Div([  # pylint: disable=invalid-name
 
-    create_simulation_layout('A', language='EN', style={
+    create_simulation_layout('A', language='EN' , input_drone='Main fire stations', style={
         'border-right': 'solid 1px #ddd',
         'margin-right': '15px',
         'padding-right': '15px',
     }),
-    create_simulation_layout('B', suffix='_b', language='EN', input_drone='CS le plus proche'),
+    create_simulation_layout('B', suffix='_b', language='EN', input_drone='Every fire station'),
 
 ], style={'display': 'flex'})

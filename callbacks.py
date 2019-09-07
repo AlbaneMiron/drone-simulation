@@ -161,13 +161,13 @@ def _compute_drone_time(
     detec_VP = np.float(detec_VP)
     unavail_delta = np.float(unavail_delta)
 
-    input_jour = input_jour_ == 'Oui'
+    input_jour = input_jour_ == 'Oui' or input_jour_ == 'Yes'
 
     input_speed = np.float(input_speed)
 
     input_wind = 'Oui'
 
-    if drone_input == 'PC le plus proche':
+    if drone_input == 'Postes de commandement' or drone_input == 'Main fire stations':
         drone_departure_bis = 'PC'
         avail_ini_ = avail_ini_pc
     else:
@@ -187,7 +187,6 @@ def _compute_drone_time(
 
     # Apport drone: si négatif, temps gagné grâce au drone. Sinon, temps gagné grâce au VSAV.
 
-    # écrire les exclusions ici, pas après
     df_res[col_drone_delay] = np.nan
     if input_jour:
         index_nuit = df_res[df_res[col_indic_day] == 0].index
