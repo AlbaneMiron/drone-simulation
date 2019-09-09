@@ -1,6 +1,10 @@
 import dash_core_components as dcc
 import dash_html_components as html
 
+import drones
+
+_POSITIONS = list(drones.STARTING_POINTS.keys())
+
 _POSITIONS = [['Postes de commandement', 'Centres de secours'], ['Main fire stations', 'Every fire station']]
 _BOOL = [['Oui', 'Non'], ['Yes', 'No']]
 
@@ -130,8 +134,7 @@ layout_FR = html.Div([  # pylint: disable=invalid-name
 
 
 layout_EN = html.Div([  # pylint: disable=invalid-name
-
-    create_simulation_layout('A', language='EN' , input_drone='Main fire stations', style={
+     create_simulation_layout('A', language='EN' , input_drone='Main fire stations', style={
         'border-right': 'solid 1px #ddd',
         'margin-right': '15px',
         'padding-right': '15px',

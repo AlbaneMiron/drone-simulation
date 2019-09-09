@@ -10,7 +10,7 @@ import plotly.graph_objs as go
 from sklearn.neighbors import KernelDensity
 
 from app import app
-
+import drones
 
 
 # datetime of the beginning of the emergency call
@@ -41,17 +41,19 @@ avail_ini_cs = np.genfromtxt('data/coords_cs.csv', delimiter=',', dtype=str)
 
 df_initial = pd.read_csv('data/dataACRtime_GPSCSPCpostime_v7.csv', encoding='latin-1', index_col=0)
 df_initial[col_time_em_call] = pd.to_datetime(df_initial[col_time_em_call])
+df_initial = df_initial.loc[df_initial[col_BLS_time] >= 0]
+df_initial = df_initial.loc[df_initial[col_BLS_time] <= 25 * 60]
 
 
 def update_avail(time_dec, avail, unavail):
     """
     Update of the available fleet of drones after each launch.
-    
+
     :param time_dec: (dt.datetime) Datetime when the intervention started.
     :param avail: (np.array) List of available drones (name, GPS location)
-    :param unavail: (np.array) List of unavailable drones (name, GPS location and datetime until when they are
-        unavailable)
-        
+    :param unavail: (np.array) List of unavailable drones (name, GPS location and datetime
+        until when they are unavailable)
+
     :return: (np.array, np.array) Updated list of available and unavailable drones.
     """
     drop_drone = []
@@ -64,13 +66,12 @@ def update_avail(time_dec, avail, unavail):
     return avail, res_unavail
 
 
-def drone_unavail(df, duree, avail_ini, loc):
+def drone_unavail(df, duree, avail_ini):
     """
     For all intervention selects the closest available drone to send.
     :param df:
     :param duree:
     :param avail_ini:
-    :param loc:
     :return:
     """
 
@@ -107,9 +108,7 @@ def drone_unavail(df, duree, avail_ini, loc):
         except ValueError:
             list_dist.append(np.nan)
 
-    df['Distance_' + loc] = list_dist
-
-    return df
+    return list_dist
 
 
 def _compute_drone_time(
@@ -128,13 +127,14 @@ def _compute_drone_time(
     :param dep_delay: (str) departure delay in seconds
     :param arr_delay: (str) arrival delay in seconds
     :param detec_delay: (str) delay between detection of unconsciousness and OHCA detection
-    by 18/112 operators in seconds
+        by 18/112 operators in seconds
     :param input_jour: (str) whether drone flights are unauthorized at night (yes/no)
     :param detec_rate: (str) rate of OHCA detection by 18/112 operators ([0,1])
     :param no_witness_rate: (str) rate of OHCA at home, which only have one witness alone ([0,1])
-    :param detec_VP: (str) odd ratio of OHCA in the streets vs OHCA at home or in a public place detection
-    by 18/112 operators ([0,1])
-    :param unavail_delta: (str) delay during which a drone is unavailable after being sent to an OHCA in hours
+    :param detec_VP: (str) odd ratio of OHCA in the streets vs OHCA at home or in a public place
+        detection by 18/112 operators ([0,1])
+    :param unavail_delta: (str) delay during which a drone is unavailable after being sent to an
+        OHCA in hours
 
     :return: graphs for Dash visualisation
     """
@@ -167,21 +167,10 @@ def _compute_drone_time(
 
     input_wind = 'Oui'
 
-    if drone_input == 'Postes de commandement' or drone_input == 'Main fire stations':
-        drone_departure_bis = 'PC'
-        avail_ini_ = avail_ini_pc
-    else:
-        drone_departure_bis = 'CS'
-        avail_ini_ = avail_ini_cs
+    avail_ini_ = drones.STARTING_POINTS[drone_input]
 
     new_col = 'col_res'
     df_ = copy.deepcopy(df_initial)
-
-    df_0 = df_.loc[df_[col_BLS_time] >= 0]
-    df_ = df_0.loc[df_0[col_BLS_time] <= 25 * 60]
-
-    col_dist = 'Distance_' + drone_departure_bis
-    # speed_col = 'vitesse effective vent_' + drone_departure
 
     df_res = copy.deepcopy(df_)
 
@@ -214,7 +203,8 @@ def _compute_drone_time(
     df_res.loc[list_select, col_drone_delay] = 0
 
     df_ic = df_res.loc[df_res[col_drone_delay] != 0]
-    df_ic = drone_unavail(df_ic, unavail_delta, avail_ini_, drone_departure_bis)
+    distance_field = 'Distance'
+    df_ic[distance_field] = drone_unavail(df_ic, unavail_delta, avail_ini_)
 
     for i, r in df_ic.iterrows():
         if input_wind:
@@ -225,7 +215,7 @@ def _compute_drone_time(
         acc_dist = 2 * eff_speed * input_acc / 3600
         acc = eff_speed / (input_acc * 3600)
 
-        dist = r[col_dist]
+        dist = r[distance_field]
 
         lin_dist = dist - acc_dist
         if lin_dist >= 0:
@@ -345,7 +335,7 @@ def drone_time(
         drone_input,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
         input_jour_, detec_rate, no_witness_rate, detec_VP, unavail_delta):
-  
+
     return _compute_drone_time(
         drone_input,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
