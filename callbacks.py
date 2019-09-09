@@ -41,6 +41,8 @@ avail_ini_cs = np.genfromtxt('data/coords_cs.csv', delimiter=',', dtype=str)
 
 df_initial = pd.read_csv('data/dataACRtime_GPSCSPCpostime_v7.csv', encoding='latin-1', index_col=0)
 df_initial[col_time_em_call] = pd.to_datetime(df_initial[col_time_em_call])
+df_initial = df_initial.loc[df_initial[col_BLS_time] >= 0]
+df_initial = df_initial.loc[df_initial[col_BLS_time] <= 25 * 60]
 
 
 def update_avail(time_dec, avail, unavail):
@@ -159,7 +161,7 @@ def _compute_drone_time(
     detec_VP = np.float(detec_VP)
     unavail_delta = np.float(unavail_delta)
 
-    input_jour = input_jour_ == 'Oui'
+    input_jour = input_jour_ == 'Oui' or input_jour_ == 'Yes'
 
     input_speed = np.float(input_speed)
 
@@ -170,16 +172,10 @@ def _compute_drone_time(
     new_col = 'col_res'
     df_ = copy.deepcopy(df_initial)
 
-    df_0 = df_.loc[df_[col_BLS_time] >= 0]
-    df_ = df_0.loc[df_0[col_BLS_time] <= 25 * 60]
-
-    # speed_col = 'vitesse effective vent_' + drone_departure
-
     df_res = copy.deepcopy(df_)
 
     # Apport drone: si négatif, temps gagné grâce au drone. Sinon, temps gagné grâce au VSAV.
 
-    # écrire les exclusions ici, pas après
     df_res[col_drone_delay] = np.nan
     if input_jour:
         index_nuit = df_res[df_res[col_indic_day] == 0].index
@@ -248,31 +244,6 @@ def _compute_drone_time(
     n_drone = len(df_drone)
     per_drone = np.around(n_drone / n_tot, 2)
 
-    x1 = [i for i in range(0, int(max(dfi[col_BLS_time])))]
-    y1 = x1
-
-    trace1 = go.Scatter(
-        x=x1,
-        y=y1,
-        line=dict(color='rgb(0,100,80)'),
-        mode='lines',
-        text='A gauche, VSAV plus rapide. A droite drone plus rapide',
-        name=u"Ligne d'égalité des temps de présentation",
-    )
-
-    trace2 = go.Scatter(
-        x=dfi[col_BLS_time],
-        y=dfi['col_res'],
-        text=u'Temps présentation VSAV vs temps drone',
-        name=u"Intervention",
-        mode='markers',
-        marker={
-            'size': 15,
-            'opacity': 0.5,
-            'line': {'width': 0.5, 'color': 'white'}
-        }
-    )
-
     X = df_density[col_BLS_time][:, np.newaxis]
     kde = KernelDensity(kernel='gaussian', bandwidth=2).fit(X)
     X_plot = np.linspace(0, 20 * 60, 20 * 4)[:, np.newaxis]
@@ -307,22 +278,6 @@ def _compute_drone_time(
         marker=dict(color=list_col),
     )
 
-    indicator_graphic = {
-        'data': [trace2, trace1],
-        'layout': go.Layout(
-            xaxis={
-                'title': 'Temps VSAV',
-                'type': 'linear',
-            },
-            yaxis={
-                'title': f'Temps drone {input_speed}km/h, vent: {input_wind} {drone_input}',
-                'type': 'linear',
-            },
-            margin={'l': 40, 'b': 40, 't': 10, 'r': 0},
-            hovermode='closest',
-        ),
-    }
-
     stats = per_drone
 
     indicator_graphic_2 = {
@@ -356,12 +311,11 @@ def _compute_drone_time(
             hovermode='closest',
         )}
 
-    return indicator_graphic, stats, indicator_graphic_2, indicator_graphic_3
+    return stats, indicator_graphic_2, indicator_graphic_3
 
 
 @app.callback(
-    [Output('indicator-graphic', 'figure'),
-     Output('stats', 'children'),
+    [Output('stats', 'children'),
      Output('indicator-graphic2', 'figure'),
      Output('indicator-graphic3', 'figure')],
     [Input('input_drone', 'value'),
@@ -389,8 +343,7 @@ def drone_time(
 
 
 @app.callback(
-    [Output('indicator-graphic_b', 'figure'),
-     Output('stats_b', 'children'),
+    [Output('stats_b', 'children'),
      Output('indicator-graphic2_b', 'figure'),
      Output('indicator-graphic3_b', 'figure')],
     [Input('input_drone_b', 'value'),
