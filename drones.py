@@ -4,6 +4,8 @@ import numpy as np
 
 
 STARTING_POINTS = {
-    'PC le plus proche': np.genfromtxt('data/coords_pc.csv', delimiter=',', dtype=str),
-    'CS le plus proche': np.genfromtxt('data/coords_cs.csv', delimiter=',', dtype=str),
+    'Postes de commandement': np.genfromtxt('data/coords_pc.csv', delimiter=',', dtype=str),
+    'Centres de secours': np.genfromtxt('data/coords_cs.csv', delimiter=',', dtype=str),
+    'Main fire stations': np.genfromtxt('data/coords_pc.csv', delimiter=',', dtype=str),
+    'Every fire station': np.genfromtxt('data/coords_cs.csv', delimiter=',', dtype=str),
 }

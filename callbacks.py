@@ -17,8 +17,6 @@ import drones
 col_time_em_call = 'DT_då_crochå_'
 # in seconds, BLS team delay
 col_BLS_time = 'DeltaPresentation'
-# in km, horizontal distance flown by the drone
-col_drone_distance = 'Distance_'
 # in m/s, wind speed in the direction
 col_wind_speed = 'vitesse effective vent_'
 # indicator: 1 if the intervention is during the day, 0 during the night
@@ -111,6 +109,12 @@ def drone_unavail(df, duree, avail_ini):
     return list_dist
 
 
+def select_interv(df_, df_sub,  col_, rate_):
+    n = int(len(df_sub) * rate_)
+    df_.loc[np.random.choice(df_sub.index, n, replace=False), col_] = 0
+    return df_
+
+
 def _compute_drone_time(
         drone_input,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
@@ -162,55 +166,39 @@ def _compute_drone_time(
     unavail_delta = np.float(unavail_delta)
 
     input_jour = input_jour_ == 'Oui' or input_jour_ == 'Yes'
-
     input_speed = np.float(input_speed)
-
-    input_wind = 'Oui'
 
     avail_ini_ = drones.STARTING_POINTS[drone_input]
 
-    new_col = 'col_res'
+    res_col_a = 'col_res'
+    res_col_b = 'apport_drone'
     df_ = copy.deepcopy(df_initial)
 
     df_res = copy.deepcopy(df_)
 
     # Apport drone: si négatif, temps gagné grâce au drone. Sinon, temps gagné grâce au VSAV.
-
     df_res[col_drone_delay] = np.nan
     if input_jour:
         index_nuit = df_res[df_res[col_indic_day] == 0].index
         df_res.loc[index_nuit, col_drone_delay] = 0
 
     # taux de détection des ACR au téléphone voie publique et lieu public
-    df_resB = df_res.loc[df_res[col_indic_home] == 0]
-    list_VP = list(df_resB.index)
-    k_selectB = len(df_resB) - int(detec_rate * detec_VP * len(df_resB))
-    list_selectB = np.random.choice(list_VP, k_selectB, replace=False)
-    df_res.loc[list_selectB, col_drone_delay] = 0
+    df_resb = df_res.loc[df_res[col_indic_home] == 0]
+    df_res = select_interv(df_res, df_resb, col_drone_delay, (1-detec_rate * detec_VP))
 
     # taux de détection des ACR au téléphone lieu privé
-    df_resA = df_res.loc[df_res[col_indic_home] == 1]
-    list_lieu = list(df_resA.index)
-    k_selectA = len(df_resA) - int(detec_rate * len(df_resA))
-    list_selectA = np.random.choice(list_lieu, k_selectA, replace=False)
-    df_res.loc[list_selectA, col_drone_delay] = 0
+    df_resa = df_res.loc[df_res[col_indic_home] == 1]
+    df_res = select_interv(df_res, df_resa, col_drone_delay, (1-detec_rate))
 
     # taux de témoin seul en lieu privé
-    df_res2 = df_res.loc[df_res[col_indic_home] == 1]
-    list_priv = list(df_res2.index)
-    k_select = int(no_witness_rate * len(df_res2))
-    list_select = np.random.choice(list_priv, k_select, replace=False)
-    df_res.loc[list_select, col_drone_delay] = 0
+    df_res = select_interv(df_res, df_resa, col_drone_delay, no_witness_rate)
 
     df_ic = df_res.loc[df_res[col_drone_delay] != 0]
     distance_field = 'Distance'
     df_ic[distance_field] = drone_unavail(df_ic, unavail_delta, avail_ini_)
 
     for i, r in df_ic.iterrows():
-        if input_wind:
-            eff_speed = input_speed
-        else:
-            eff_speed = input_speed
+        eff_speed = input_speed
         # distance covered during acceleration and brake
         acc_dist = 2 * eff_speed * input_acc / 3600
         acc = eff_speed / (input_acc * 3600)
@@ -226,20 +214,20 @@ def _compute_drone_time(
 
         df_res.loc[i, col_drone_delay] = np.round(res_time)
 
-    df_res['apport_drone'] = df_res[new_col] - df_res[col_BLS_time]
+    df_res[res_col_b] = df_res[res_col_a] - df_res[col_BLS_time]
 
-    df_res.loc[df_res[new_col] == 0, 'apport_drone'] = \
-        df_res.loc[df_res[new_col] == 0, col_BLS_time]
-    dfi = df_res.dropna(axis=0, how='all', thresh=None, subset=['apport_drone'], inplace=False)
+    df_res.loc[df_res[res_col_a] == 0, res_col_b] = \
+        df_res.loc[df_res[res_col_a] == 0, col_BLS_time]
+    dfi = df_res.dropna(axis=0, how='all', thresh=None, subset=[res_col_b], inplace=False)
 
     n_tot = len(dfi)
     dfii = copy.deepcopy(dfi)
 
-    # 1st graph: only when a drone is sent: 'col_res' > 0
+    # 1st graph: only when a drone is sent: res_col_a > 0
     df_density = copy.deepcopy(dfi)
-    df_density = df_density.loc[df_density['col_res'] > 0]
+    df_density = df_density.loc[df_density[res_col_a] > 0]
 
-    df_drone = dfii.loc[dfii['apport_drone'] < 0]
+    df_drone = dfii.loc[dfii[res_col_b] < 0]
 
     n_drone = len(df_drone)
     per_drone = np.around(n_drone / n_tot, 2)
@@ -255,7 +243,7 @@ def _compute_drone_time(
         name="VSAV",
     )
 
-    X2 = df_density['col_res'][:, np.newaxis]
+    X2 = df_density[res_col_a][:, np.newaxis]
     kde2 = KernelDensity(kernel='gaussian', bandwidth=2).fit(X2)
     X_plot2 = np.linspace(0, 20 * 60, 20 * 4)[:, np.newaxis]
     log_dens = kde2.score_samples(X_plot2)
@@ -266,15 +254,18 @@ def _compute_drone_time(
         name="Drone",
     )
 
+    # trace3 = go.Figure(data=[go.Histogram(x=df_density[col_BLS_time])])
+    # trace4 = go.Figure(data=[go.Histogram(x=df_density[res_col_a])])
+
     dfi['col_bar'] = ['rgba(222,45,38,0.8)'] * len(dfi)
-    dfi.loc[dfi['col_res'] == 0, 'col_bar'] = 'rgba(204,204,204,1)'
-    dfi['apport_drone'] = - dfi['apport_drone']
-    ynew = dfi.sort_values('apport_drone')
+    dfi.loc[dfi[res_col_a] == 0, 'col_bar'] = 'rgba(204,204,204,1)'
+    dfi[res_col_b] = - dfi[res_col_b]
+    ynew = dfi.sort_values(res_col_b)
     list_col = list(ynew['col_bar'])
 
     trace5 = go.Bar(
         x=[i for i in range(0, len(dfi))],
-        y=ynew['apport_drone'], name=u'Temps gagné avec le drone',
+        y=ynew[res_col_b], name=u'Temps gagné avec le drone',
         marker=dict(color=list_col),
     )
 

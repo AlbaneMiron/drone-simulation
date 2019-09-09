@@ -9,38 +9,37 @@ _POSITIONS = [['Postes de commandement', 'Centres de secours'], ['Main fire stat
 _BOOL = [['Oui', 'Non'], ['Yes', 'No']]
 
 dict_drone = {
-    'drone_param' : ['Paramètres du drone', 'Drone parameters'],
-    'drone_pos' : ['Position initiale du drone', 'Drone launch location'],
-    'drone_spe' : ['Vitesse maximale (km/h)', 'Maximum horizontal cruise speed (km/h)'],
-    'drone_acc' : ["Durée d'accelération horizontale (s)", 'Horizontal acceleration duration (s)'],
-    'drone_vert' : ['Vitesse verticale (m/s)', 'Vertical speed (m/s)'],
-    'drone_alt' : ['Altitude de croisière (m)', 'Cruise altitude (m)'],
-    'drone_unav' : ["Durée de l'indisponibilité du drone après le lancer (h)",
-                    'Drone unavailability duration after launch (h)'],
+    'drone_param': ['Paramètres du drone', 'Drone parameters'],
+    'drone_pos': ['Position initiale du drone', 'Drone launch location'],
+    'drone_spe': ['Vitesse maximale (km/h)', 'Maximum horizontal cruise speed (km/h)'],
+    'drone_acc': ["Durée d'accelération horizontale (s)", 'Horizontal acceleration duration (s)'],
+    'drone_vert': ['Vitesse verticale (m/s)', 'Vertical speed (m/s)'],
+    'drone_alt': ['Altitude de croisière (m)', 'Cruise altitude (m)'],
+    'drone_unav': ["Durée de l'indisponibilité du drone après le lancer (h)",
+                   'Drone unavailability duration after launch (h)'],
     'drone_day' : ['Vol uniquement durant jour aéronautique', 'Flight only during day time']
 }
 
 dict_oper = {
-    'oper_param' : ['Paramètres opérationnels', 'Operational parameters'],
-    'oper_ddelay' : ['Retard au départ (s)', 'Departure delay (s)'],
-    'oper_adelay' : ["Retard à l'arrivée (s)", 'Arrival delay (s)'],
-    'oper_detecd' : ["Décalage de détection inconscience/ACR (s)",
-                     'Delay between unconsciousness detection and OHCA detection by 18/112 operators (s)'],
-    'oper_detecr' : ["Taux de détection ACR à la prise d'appel ([0,1])",
-                     "Rate of OHCA detection by 18/112 operators ([0,1])" ],
-    'oper_detecs' : ["Odd ratio de la détection ACR voie publique à la prise d'appel",
-                     "Odd ratio of OHCA in the streets vs OHCA at home or in a public place detection by 18/112 operators"],
-    'oper_witn' : ["Taux de témoins seuls ACR lieu privé ([0,1])",
-                   "Rate of OHCA at home with only have one witness alone ([0,1])"]
+    'oper_param': ['Paramètres opérationnels', 'Operational parameters'],
+    'oper_ddelay': ['Retard au départ (s)', 'Departure delay (s)'],
+    'oper_adelay': ["Retard à l'arrivée (s)", 'Arrival delay (s)'],
+    'oper_detecd': ["Décalage de détection inconscience/ACR (s)",
+                    'Delay between unconsciousness detection and OHCA detection by 18/112 operators (s)'],
+    'oper_detecr': ["Taux de détection ACR à la prise d'appel ([0,1])",
+                    "Rate of OHCA detection by 18/112 operators ([0,1])" ],
+    'oper_detecs': ["Odd ratio de la détection ACR voie publique à la prise d'appel",
+                    "Odd ratio of OHCA in the streets vs OHCA at home or in a public place detection by 18/112 operators"],
+    'oper_witn': ["Taux de témoins seuls ACR lieu privé ([0,1])",
+                  "Rate of OHCA at home with only have one witness alone ([0,1])"]
 }
 
-dict_res = {'res' : ['Résultats', 'Results'],
-            'rate' : ['Taux de drones plus rapides, sur toutes les interventions : ',
-                      'Rate of faster drones among all interventions : ' ]}
+dict_res = {'res': ['Résultats', 'Results'],
+            'rate': ['Taux de drones plus rapides, sur toutes les interventions : ',
+                     'Rate of faster drones among all interventions : ']}
 
 
-
-def create_simulation_layout(name,  suffix='', language = 'FR', input_drone=_POSITIONS[0][1], style=None,
+def create_simulation_layout(name,  suffix='', language='FR', input_drone=_POSITIONS[0][1], style=None,
                              dict_drone_=dict_drone, dict_oper_=dict_oper, dict_res_=dict_res):
 
     i = int(language == 'EN')
@@ -134,7 +133,7 @@ layout_FR = html.Div([  # pylint: disable=invalid-name
 
 
 layout_EN = html.Div([  # pylint: disable=invalid-name
-     create_simulation_layout('A', language='EN' , input_drone='Main fire stations', style={
+    create_simulation_layout('A', language='EN', input_drone='Main fire stations', style={
         'border-right': 'solid 1px #ddd',
         'margin-right': '15px',
         'padding-right': '15px',
