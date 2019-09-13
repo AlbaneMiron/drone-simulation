@@ -109,10 +109,17 @@ def drone_unavail(df, duree, avail_ini):
     return list_dist
 
 
-def select_interv(df_, df_sub,  col_, rate_):
-    n = int(len(df_sub) * rate_)
-    df_.loc[np.random.choice(df_sub.index, n, replace=False), col_] = 0
-    return df_
+def select_interv(all_interventions, condition, column, rate):
+    """Select randomly some interventions.
+
+    :param all_interventions: a DataFrame containing interventions. This will be modified.
+    :param condition: a boolean array, the same size of df to restrict the rows that can be
+        affected: True for those that can be selected, False if not.
+    :param column: (str) The name of the column of df to null if not selected.
+    :param rate (float) The rate (between 0 and 1) of rows that should be kept.
+    """
+    selected = np.random.rand(len(all_interventions)) > rate
+    all_interventions.loc[condition & selected, column] = 0
 
 
 def _compute_drone_time(
@@ -182,16 +189,16 @@ def _compute_drone_time(
         index_nuit = df_res[df_res[col_indic_day] == 0].index
         df_res.loc[index_nuit, col_drone_delay] = 0
 
+    in_a_public_place = df_res[col_indic_home] == 0
+
     # taux de détection des ACR au téléphone voie publique et lieu public
-    df_resb = df_res.loc[df_res[col_indic_home] == 0]
-    df_res = select_interv(df_res, df_resb, col_drone_delay, (1-detec_rate * detec_VP))
+    select_interv(df_res, in_a_public_place, col_drone_delay, detec_rate * detec_VP)
 
     # taux de détection des ACR au téléphone lieu privé
-    df_resa = df_res.loc[df_res[col_indic_home] == 1]
-    df_res = select_interv(df_res, df_resa, col_drone_delay, (1-detec_rate))
+    select_interv(df_res, ~in_a_public_place, col_drone_delay, detec_rate)
 
     # taux de témoin seul en lieu privé
-    df_res = select_interv(df_res, df_resa, col_drone_delay, no_witness_rate)
+    select_interv(df_res, ~in_a_public_place, col_drone_delay, 1 - no_witness_rate)
 
     df_ic = df_res.loc[df_res[col_drone_delay] != 0]
     distance_field = 'Distance'
