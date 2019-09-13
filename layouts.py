@@ -110,12 +110,14 @@ def create_simulation_layout(name,  suffix='', language='FR', input_drone=_POSIT
 
         html.H6(dict_res_['res'][i]),
 
-        html.Div([
-            dict_res_['rate'][i],
-            html.Span(id=f'stats{suffix}'),
-        ]),
-        dcc.Graph(id=f'indicator-graphic2{suffix}'),
-        dcc.Graph(id=f'indicator-graphic3{suffix}'),
+        dcc.Loading(children=[
+            html.Div([
+                dict_res_['rate'][i],
+                html.Span(id=f'stats{suffix}'),
+            ]),
+            dcc.Graph(id=f'indicator-graphic2{suffix}'),
+            dcc.Graph(id=f'indicator-graphic3{suffix}'),
+        ])
 
     ], style={'flex': 1} if style is None else dict(style, flex=1))
 
