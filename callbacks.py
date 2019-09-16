@@ -12,7 +12,6 @@ from sklearn.neighbors import KernelDensity
 from app import app
 import drones
 
-
 # datetime of the beginning of the emergency call
 col_time_em_call = 'DT_då_crochå_'
 # in seconds, BLS team delay
@@ -49,8 +48,8 @@ def update_avail(time_dec, avail, unavail):
 
     :param time_dec: (dt.datetime) Datetime when the intervention started.
     :param avail: (np.array) List of available drones (name, GPS location)
-    :param unavail: (np.array) List of unavailable drones (name, GPS location and datetime
-        until when they are unavailable)
+    :param unavail: (np.array) List of unavailable drones (name, GPS location and datetime until
+        when they are unavailable)
 
     :return: (np.array, np.array) Updated list of available and unavailable drones.
     """
@@ -109,7 +108,7 @@ def drone_unavail(df, duree, avail_ini):
     return list_dist
 
 
-def select_interv(df_, df_sub,  col_, rate_):
+def select_interv(df_, df_sub, col_, rate_):
     n = int(len(df_sub) * rate_)
     df_.loc[np.random.choice(df_sub.index, n, replace=False), col_] = 0
     return df_
@@ -184,11 +183,11 @@ def _compute_drone_time(
 
     # taux de détection des ACR au téléphone voie publique et lieu public
     df_resb = df_res.loc[df_res[col_indic_home] == 0]
-    df_res = select_interv(df_res, df_resb, col_drone_delay, (1-detec_rate * detec_VP))
+    df_res = select_interv(df_res, df_resb, col_drone_delay, (1 - detec_rate * detec_VP))
 
     # taux de détection des ACR au téléphone lieu privé
     df_resa = df_res.loc[df_res[col_indic_home] == 1]
-    df_res = select_interv(df_res, df_resa, col_drone_delay, (1-detec_rate))
+    df_res = select_interv(df_res, df_resa, col_drone_delay, (1 - detec_rate))
 
     # taux de témoin seul en lieu privé
     df_res = select_interv(df_res, df_resa, col_drone_delay, no_witness_rate)

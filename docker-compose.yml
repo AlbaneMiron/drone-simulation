@@ -1,4 +1,4 @@
-version: "3"
+version: "3.4"
 services:
   server:
     build: .
@@ -8,3 +8,9 @@ services:
       - .:/work/
     environment:
       DEBUG: 1
+  test:
+    build:
+      context: .
+      target: test
+    volumes:
+      - .:/work/
