@@ -12,7 +12,6 @@ from sklearn.neighbors import KernelDensity
 from app import app
 import drones
 
-
 # datetime of the beginning of the emergency call
 col_time_em_call = 'DT_då_crochå_'
 # in seconds, BLS team delay
@@ -49,8 +48,8 @@ def update_avail(time_dec, avail, unavail):
 
     :param time_dec: (dt.datetime) Datetime when the intervention started.
     :param avail: (np.array) List of available drones (name, GPS location)
-    :param unavail: (np.array) List of unavailable drones (name, GPS location and datetime
-        until when they are unavailable)
+    :param unavail: (np.array) List of unavailable drones (name, GPS location and datetime until
+        when they are unavailable)
 
     :return: (np.array, np.array) Updated list of available and unavailable drones.
     """
@@ -192,6 +191,7 @@ def _compute_drone_time(
     in_a_public_place = df_res[col_indic_home] == 0
 
     # taux de détection des ACR au téléphone voie publique et lieu public
+
     select_interv(df_res, in_a_public_place, col_drone_delay, detec_rate * detec_VP)
 
     # taux de détection des ACR au téléphone lieu privé
