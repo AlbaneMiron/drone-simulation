@@ -229,17 +229,16 @@ def _compute_drone_time(
     dfi = df_res.dropna(axis=0, how='all', thresh=None, subset=[res_col_b], inplace=False)
 
     n_tot = len(dfi)
-    dfii = copy.deepcopy(dfi)
+    n_no_drone = len(dfi.loc[dfi[res_col_a] == 0])
+    n_drone = len(dfi.loc[dfi[res_col_b] < 0])
+    share_drone = np.around(n_drone / n_tot, 2)
+    share_no_drone = np.around(n_no_drone / n_tot, 2)
+    share_bls_team = 1 - share_drone - share_no_drone
 
     # 1st graph: only when a drone is sent: res_col_a > 0
     df_density = copy.deepcopy(dfi)
     df_density = df_density.loc[df_density[res_col_a] > 0]
-
-    df_drone = dfii.loc[dfii[res_col_b] < 0]
-
-    n_drone = len(df_drone)
-    per_drone = np.around(n_drone / n_tot, 2)
-
+    
     X = df_density[col_BLS_time][:, np.newaxis]
     kde = KernelDensity(kernel='gaussian', bandwidth=2).fit(X)
     X_plot = np.linspace(0, 20 * 60, 20 * 4)[:, np.newaxis]
@@ -277,7 +276,7 @@ def _compute_drone_time(
         marker=dict(color=list_col),
     )
 
-    stats = per_drone
+    stats = share_drone
 
     indicator_graphic_2 = {
         'data': [trace3, trace4],
