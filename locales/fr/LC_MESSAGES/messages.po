@@ -102,6 +102,23 @@ msgstr "Résultats"
 msgid "Rate of faster drones among all interventions: "
 msgstr "Taux de drones plus rapides, sur toutes les interventions : "
 
+#: callbacks.py:276
+msgid "Time saved with a drone"
+msgstr "Temps gagné avec le drone"
+
+#: callbacks.py:286
+msgid "Time to arrival when a drone is sent"
+msgstr "Temps de présentation quand le drone est envoyé"
+
+#: callbacks.py:290
+msgid "Number of interventions"
+msgstr "Nombre d'interventions"
+
+#: callbacks.py:306
+msgid "Time difference"
+msgstr "Différence de temps"
+
+
 #~ msgid "A gauche, VSAV plus rapide. A droite drone plus rapide"
 #~ msgstr ""
 
