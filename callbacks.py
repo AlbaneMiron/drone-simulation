@@ -11,6 +11,7 @@ from sklearn.neighbors import KernelDensity
 
 from app import app
 import drones
+import gettext
 
 # datetime of the beginning of the emergency call
 col_time_em_call = 'DT_då_crochå_'
@@ -272,7 +273,7 @@ def _compute_drone_time(
 
     trace5 = go.Bar(
         x=[i for i in range(0, len(dfi))],
-        y=ynew[res_col_b], name=u'Temps gagné avec le drone',
+        y=ynew[res_col_b], name=_('Time saved with a drone'),
         marker=dict(color=list_col),
     )
 
@@ -282,11 +283,11 @@ def _compute_drone_time(
         'data': [trace3, trace4],
         'layout': go.Layout(
             xaxis={
-                'title': u'Temps de présentation quand le drone est envoyé',
+                'title': _('Time to arrival when a drone is sent'),
                 'type': 'linear',
             },
             yaxis={
-                'title': u"Nombre d'interventions",
+                'title': _('Number of interventions'),
                 'type': 'linear',
             },
             margin={'l': 40, 'b': 40, 't': 10, 'r': 0},
@@ -302,7 +303,7 @@ def _compute_drone_time(
                 'type': 'linear',
             },
             yaxis={
-                'title': u"Différence de temps",
+                'title': _("Time difference"),
                 'type': 'linear',
             },
             margin={'l': 40, 'b': 40, 't': 10, 'r': 0},
