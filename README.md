@@ -20,14 +20,14 @@ To run the app, just start the Dash server:
 python index.py
 ```
 
-And then you can access it at the address http://127.0.0.1:8050/apps/app1.
+And then you can access it at the address http://127.0.0.1:8050/en/.
 
 ## Docker
 
 If you don't want to pollute your main OS, you can also build and run inside a docker container:
 
 ```sh
-docker-compose up -d
+docker-compose up -d server
 ```
 
 ## Check styles
@@ -35,8 +35,19 @@ docker-compose up -d
 Run the linters in your editor (pycodestye and pylint), or directly in a Docker container.
 
 ```sh
-docker-compose build
+docker-compose build test
 ```
+
+## Update Translations
+
+To generate the messages to translate, run:
+
+```sh
+docker-compose run --rm test pybabel extract . -o messages.pot
+docker-compose run --rm test pybabel update -i messages.pot -d locales -l fr
+```
+
+Then update the file `locales/fr/LC_MESSAGES/messages.po` by translating new strings.
 
 ## Publish on Google Cloud
 
@@ -48,4 +59,4 @@ docker push eu.gcr.io/drone-simulation/server
 gcloud beta run deploy --image eu.gcr.io/drone-simulation/server --platform managed --project drone-simulation
 ```
 
-See the result [here](https://drone-simulation-pss2a6dmiq-ew.a.run.app/apps/app1).
+See the result [here](https://drone-simulation-pss2a6dmiq-ew.a.run.app/en/).

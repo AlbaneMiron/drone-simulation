@@ -3,10 +3,10 @@ import os
 from dash.dependencies import Input, Output
 import dash_core_components as dcc
 import dash_html_components as html
-import callbacks
 
 from app import app
-from layouts import layout_FR, layout_EN
+import callbacks  # pylint: disable=unused-import
+import layouts
 
 
 app.layout = html.Div([
@@ -19,10 +19,10 @@ app.layout = html.Div([
     Output('page-content', 'children'),
     [Input('url', 'pathname')])
 def display_page(pathname):
-    if pathname == '/apps/app1':
-        return layout_FR
-    elif pathname == '/apps/app2':
-        return layout_EN
+    if pathname == '/fr/':
+        return layouts.create('fr')
+    if pathname == '/en/':
+        return layouts.create('en')
     return '404'
 
 # barre à 1min de gain drone + ratio

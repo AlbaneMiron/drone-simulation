@@ -1,1 +1,3 @@
 /__pycache__/
+/messages.pot
+/locales/*/LC_MESSAGES/messages.mo
