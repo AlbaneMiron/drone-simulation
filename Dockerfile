@@ -26,6 +26,7 @@ RUN pybabel compile -d locales -l fr
 FROM base AS prod
 
 COPY *.py ./
+COPY assets ./assets
 COPY data ./data
 COPY --from=test /work/locales /work/locales
 
