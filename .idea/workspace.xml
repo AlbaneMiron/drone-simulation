@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="8a5d5635-a35f-4d28-81c8-dea19f3377c9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/callbacks.py" beforeDir="false" afterPath="$PROJECT_DIR$/callbacks.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/locales/fr/LC_MESSAGES/messages.po" beforeDir="false" afterPath="$PROJECT_DIR$/locales/fr/LC_MESSAGES/messages.po" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -35,8 +34,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/callbacks.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="257">
-              <caret line="307" column="33" lean-forward="true" selection-start-line="307" selection-start-column="33" selection-end-line="307" selection-end-column="33" />
+            <state relative-caret-position="221">
+              <caret line="123" selection-start-line="123" selection-end-line="123" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
@@ -282,12 +281,12 @@
       <workItem from="1563728088450" duration="10000" />
       <workItem from="1567098134017" duration="4451000" />
       <workItem from="1567844310006" duration="13169000" />
-      <workItem from="1568219417379" duration="4206000" />
+      <workItem from="1568219417379" duration="4306000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="57894000" />
+    <option name="totallyTimeSpent" value="57994000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -410,8 +409,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/callbacks.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="257">
-          <caret line="307" column="33" lean-forward="true" selection-start-line="307" selection-start-column="33" selection-end-line="307" selection-end-column="33" />
+        <state relative-caret-position="221">
+          <caret line="123" selection-start-line="123" selection-end-line="123" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
           </folding>

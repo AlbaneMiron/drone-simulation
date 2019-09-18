@@ -122,7 +122,6 @@ def select_interv(all_interventions, condition, column, rate):
     all_interventions.loc[condition & selected, column] = 0
 
 
-
 def _compute_drone_time(
         drone_input,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
@@ -251,7 +250,7 @@ def _compute_drone_time(
     per_bls = n_bls / n_tot
     per_nodrone = n_nodrone / n_tot
 
-    #dfii = copy.deepcopy(dfi)
+    # dfii = copy.deepcopy(dfi)
 
     # 1st graph: only when a drone is sent: res_col_a > 0
     df_density = copy.deepcopy(dfi)
