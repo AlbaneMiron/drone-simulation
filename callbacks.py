@@ -303,7 +303,7 @@ def _compute_drone_time(
                 'type': 'linear',
             },
             yaxis={
-                'title':  _('Number of interventions'),
+                'title': _('Number of interventions'),
                 'type': 'linear',
             },
             margin={'l': 40, 'b': 40, 't': 10, 'r': 0},
