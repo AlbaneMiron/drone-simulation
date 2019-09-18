@@ -1,5 +1,6 @@
 import copy
 import datetime as dt
+import gettext
 import math
 
 from dash.dependencies import Input, Output
@@ -124,7 +125,7 @@ def select_interv(all_interventions, condition, column, rate):
 def _compute_drone_time(
         drone_input,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
-        input_jour_, detec_rate, no_witness_rate, detec_VP, unavail_delta):
+        input_jour_, detec_rate, no_witness_rate, detec_VP, unavail_delta, lang):
 
     """
     Computes drone simulated flights.
@@ -145,6 +146,7 @@ def _compute_drone_time(
         detection by 18/112 operators ([0,1])
     :param unavail_delta: (str) delay during which a drone is unavailable after being sent to an
         OHCA in hours
+    :param lang: (str) the language code used by the interface.
 
     :return: graphs for Dash visualisation
     """
@@ -162,6 +164,11 @@ def _compute_drone_time(
     # no_witness_rate = '0.56'
     # detec_VP = '0.15'
     # unavail_delta = '6'
+    # lang = 'fr'
+
+    if lang:
+        t11n = gettext.translation('messages', localedir='locales', languages=[lang], fallback=True)
+        t11n.install()
 
     dep_delay = np.float(dep_delay) + np.float(detec_delay) + (np.float(alt) / np.float(vert_acc))
     arr_delay = np.float(arr_delay) + (np.float(alt) / np.float(vert_acc))
@@ -328,16 +335,17 @@ def _compute_drone_time(
      Input('detec', 'value'),
      Input('wit_detec', 'value'),
      Input('detec_VP', 'value'),
-     Input('unavail_delta', 'value')])
+     Input('unavail_delta', 'value'),
+     Input('lang', 'value')])
 def drone_time(
         drone_input,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
-        input_jour_, detec_rate, no_witness_rate, detec_VP, unavail_delta):
+        input_jour_, detec_rate, no_witness_rate, detec_VP, unavail_delta, lang):
 
     return _compute_drone_time(
         drone_input,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
-        input_jour_, detec_rate, no_witness_rate, detec_VP, unavail_delta)
+        input_jour_, detec_rate, no_witness_rate, detec_VP, unavail_delta, lang)
 
 
 @app.callback(
@@ -356,13 +364,14 @@ def drone_time(
      Input('detec_b', 'value'),
      Input('wit_detec_b', 'value'),
      Input('detec_VP_b', 'value'),
-     Input('unavail_delta_b', 'value')])
+     Input('unavail_delta_b', 'value'),
+     Input('lang', 'value')])
 def drone_time_b(
         drone_input,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
-        input_jour_, detec_rate, no_witness_rate, detec_VP, unavail_delta):
+        input_jour_, detec_rate, no_witness_rate, detec_VP, unavail_delta, lang):
 
     return _compute_drone_time(
         drone_input,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
-        input_jour_, detec_rate, no_witness_rate, detec_VP, unavail_delta)
+        input_jour_, detec_rate, no_witness_rate, detec_VP, unavail_delta, lang)
