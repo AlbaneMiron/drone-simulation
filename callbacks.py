@@ -246,9 +246,9 @@ def _compute_drone_time(
     n_drone = len(dfi.loc[dfi[res_col_b] > 0])
     n_bls = len(dfi.loc[dfi[res_col_b] > 0]) - n_nodrone
 
-    per_drone = n_drone / n_tot
+    # per_drone = n_drone / n_tot
     per_bls = n_bls / n_tot
-    per_nodrone = n_nodrone / n_tot
+    # per_nodrone = n_nodrone / n_tot
 
     # dfii = copy.deepcopy(dfi)
 
