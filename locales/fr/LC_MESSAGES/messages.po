@@ -80,7 +80,7 @@ msgstr "Décalage de détection inconscience/ACR (en s) :"
 
 #: layouts.py:69
 msgid "Rate of OHCA detection by call center operators (between 0 and 1):"
-msgstr ""
+msgstr "Taux de détection des ACR à la prise d'appel (entre 0 et 1) :"
 
 #: layouts.py:73
 msgid ""
@@ -98,7 +98,7 @@ msgstr "Taux de témoins seuls ACR lieu privé (entre 0 et 1) :"
 msgid "Results"
 msgstr "Résultats"
 
-#: layouts.py:89
+#: layouts.py:90
 msgid "Rate of faster drones among all interventions: "
 msgstr "Taux de drones plus rapides, sur toutes les interventions : "
 
@@ -108,3 +108,14 @@ msgstr "Taux de drones plus rapides, sur toutes les interventions : "
 #~ msgid "Temps présentation VSAV vs temps drone"
 #~ msgstr ""
 
+#: callbacks.py:286
+msgid "Time to arrival when a drone is sent"
+msgstr "Temps de présentation quand le drone est envoyé"
+
+#: callbacks.py:290
+msgid "Number of interventions"
+msgstr "Nombre d'interventions"
+
+#: callbacks.py:306
+msgid "Time difference"
+msgstr "Différence de temps"
