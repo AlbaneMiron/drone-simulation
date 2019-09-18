@@ -1,0 +1,15 @@
+version: 2
+jobs:
+  build:
+    docker:
+      # Launch in a container that can run docker and docker-compose easily.
+      - image: bayesimpact/circleci
+    steps:
+      - checkout
+      - setup_remote_docker:
+          # Allows to use previous cached version of the built Docker services.
+          reusable: true
+      - run:
+          name: Check for lints.
+          command: |
+            docker-compose build test
