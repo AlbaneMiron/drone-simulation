@@ -11,19 +11,30 @@ import layouts
 
 app.layout = html.Div([
     dcc.Location(id='url', refresh=False),
+    html.Div(id='lang', style=dict(display='none')),
     html.Div(id='page-content')
 ])
 
 
 @app.callback(
-    Output('page-content', 'children'),
+    Output('lang', 'children'),
     [Input('url', 'pathname')])
-def display_page(pathname):
+def pick_lang(pathname):
     if pathname == '/fr/':
-        return layouts.create('fr')
+        return 'fr'
     if pathname == '/en/':
-        return layouts.create('en')
-    return '404'
+        return 'en'
+    return None
+
+
+@app.callback(
+    Output('page-content', 'children'),
+    [Input('lang', 'children')])
+def display_page(lang):
+    if not lang:
+        return '404'
+    return layouts.create(lang)
+
 
 # barre à 1min de gain drone + ratio
 
