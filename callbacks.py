@@ -89,7 +89,7 @@ def drone_unavail(df, duree, avail_ini):
         for drone in avail:
             coord_drone = (drone[1], drone[2])
             try:
-                dist = geopy.distance.vincenty(coord_drone, coord_a).km
+                dist = geopy.distance.geodesic(coord_drone, coord_a).km
             except ValueError:
                 dist = np.nan
             dist_tot.append(dist)
@@ -111,8 +111,9 @@ def drone_unavail(df, duree, avail_ini):
 
 def select_interv(df_, df_sub,  col_, rate_):
     n = int(len(df_sub) * rate_)
-    df_.loc[np.random.choice(df_sub.index, n, replace=False), col_] = 0
-    return df_
+    index_s = np.random.choice(df_sub.index, n, replace=False)
+    df_.loc[index_s, col_] = 0
+    return df_, index_s
 
 
 def _compute_drone_time(
@@ -142,7 +143,7 @@ def _compute_drone_time(
 
     :return: graphs for Dash visualisation
     """
-    # drone_input = 'PC le plus proche'
+    # drone_input = 'Postes de commandement'
     # input_wind = 'Non'
     # input_speed = '80'
     # input_acc = '9'
@@ -172,26 +173,34 @@ def _compute_drone_time(
 
     res_col_a = 'col_res'
     res_col_b = 'apport_drone'
-    df_ = copy.deepcopy(df_initial)
-
-    df_res = copy.deepcopy(df_)
+    df_res = copy.deepcopy(df_initial)
 
     # Apport drone: si négatif, temps gagné grâce au drone. Sinon, temps gagné grâce au VSAV.
+
+    no_drone = dict()
+    no_drone['night'] = []
+
     df_res[col_drone_delay] = np.nan
     if input_jour:
         index_nuit = df_res[df_res[col_indic_day] == 0].index
         df_res.loc[index_nuit, col_drone_delay] = 0
+        no_drone['night'] = index_nuit
 
     # taux de détection des ACR au téléphone voie publique et lieu public
     df_resb = df_res.loc[df_res[col_indic_home] == 0]
-    df_res = select_interv(df_res, df_resb, col_drone_delay, (1-detec_rate * detec_VP))
-
+    res_detec_vp = select_interv(df_res, df_resb, col_drone_delay, (1-detec_rate * detec_VP))
+    df_res = res_detec_vp[0]
     # taux de détection des ACR au téléphone lieu privé
     df_resa = df_res.loc[df_res[col_indic_home] == 1]
-    df_res = select_interv(df_res, df_resa, col_drone_delay, (1-detec_rate))
+    res_detec_priv = select_interv(df_res, df_resa, col_drone_delay, (1-detec_rate))
+    df_res = res_detec_priv[0]
+    # update no drone reasons
+    no_drone['no detection'] = np.append(res_detec_vp[1],res_detec_priv[1])
 
     # taux de témoin seul en lieu privé
-    df_res = select_interv(df_res, df_resa, col_drone_delay, no_witness_rate)
+    res_wit = select_interv(df_res, df_resa, col_drone_delay, no_witness_rate)
+    df_res = res_wit[0]
+    no_drone['not enough witnesses'] = res_wit[1]
 
     df_ic = df_res.loc[df_res[col_drone_delay] != 0]
     distance_field = 'Distance'
@@ -221,16 +230,19 @@ def _compute_drone_time(
     dfi = df_res.dropna(axis=0, how='all', thresh=None, subset=[res_col_b], inplace=False)
 
     n_tot = len(dfi)
-    dfii = copy.deepcopy(dfi)
+    n_nodrone = len(dfi.loc[dfi[res_col_a] == 0])
+    n_drone = len(dfi.loc[dfi[res_col_b] > 0])
+    n_bls = len(dfi.loc[dfi[res_col_b] > 0]) - n_nodrone
+
+    per_drone = n_drone / n_tot
+    per_bls = n_bls / n_tot
+    per_nodrone = n_nodrone / n_tot
+
+    #dfii = copy.deepcopy(dfi)
 
     # 1st graph: only when a drone is sent: res_col_a > 0
     df_density = copy.deepcopy(dfi)
     df_density = df_density.loc[df_density[res_col_a] > 0]
-
-    df_drone = dfii.loc[dfii[res_col_b] < 0]
-
-    n_drone = len(df_drone)
-    per_drone = np.around(n_drone / n_tot, 2)
 
     X = df_density[col_BLS_time][:, np.newaxis]
     kde = KernelDensity(kernel='gaussian', bandwidth=2).fit(X)
@@ -240,7 +252,7 @@ def _compute_drone_time(
         x=X_plot[:, 0], y=np.exp(log_dens),
         mode='lines',
         # line='blue',
-        name="VSAV",
+        name="BLS team",
     )
 
     X2 = df_density[res_col_a][:, np.newaxis]
@@ -269,7 +281,7 @@ def _compute_drone_time(
         marker=dict(color=list_col),
     )
 
-    stats = per_drone
+    stats = [per_bls]
 
     indicator_graphic_2 = {
         'data': [trace3, trace4],
