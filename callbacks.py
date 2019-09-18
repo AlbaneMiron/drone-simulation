@@ -243,7 +243,7 @@ def _compute_drone_time(
 
     n_tot = len(dfi)
     n_nodrone = len(dfi.loc[dfi[res_col_a] == 0])
-    n_drone = len(dfi.loc[dfi[res_col_b] > 0])
+    # n_drone = len(dfi.loc[dfi[res_col_b] > 0])
     n_bls = len(dfi.loc[dfi[res_col_b] > 0]) - n_nodrone
 
     # per_drone = n_drone / n_tot
