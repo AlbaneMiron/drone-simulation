@@ -1,0 +1,110 @@
+# French translations for PROJECT.
+# Copyright (C) 2019 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2019.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2019-09-12 21:23+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: fr\n"
+"Language-Team: fr <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.7.0\n"
+
+#: layouts.py:14
+msgid "Simulation "
+msgstr ""
+
+#: layouts.py:18
+msgid "Drone parameters"
+msgstr "Paramètres du drone"
+
+#: layouts.py:20
+msgid "Initial drone location"
+msgstr "Position initiale du drone"
+
+#: layouts.py:28
+msgid "Max drone speed (in km/h)"
+msgstr "Vitesse max du drone (en km/h)"
+
+#: layouts.py:31
+msgid "Drone's acceleration time (in sec):"
+msgstr "Durée d'accélération du drone (en sec) :"
+
+#: layouts.py:34
+msgid "Drone's vertical speed (in m/s):"
+msgstr "Vitesse verticale du drone (en m/s) :"
+
+#: layouts.py:37
+msgid "Drone's cruise altitude (in m):"
+msgstr "Altitude de croisière du drone (en m) :"
+
+#: layouts.py:40
+msgid "Unavailability of the drone after a run (in h):"
+msgstr "Indisponibilité du drone après un lancer (en h) :"
+
+#: layouts.py:43
+msgid "Flying restricted to aeronautical day"
+msgstr "Vol uniquement pendant le jour aéronautique"
+
+#: layouts.py:47
+msgid "Yes"
+msgstr "Oui"
+
+#: layouts.py:48
+msgid "No"
+msgstr "Non"
+
+#: layouts.py:57
+msgid "Operational parameters"
+msgstr "Paramètres opérationnels"
+
+#: layouts.py:59
+msgid "Delay at departure (in s):"
+msgstr "Retard au départ (en s) :"
+
+#: layouts.py:62
+msgid "Delay on arrival (in s):"
+msgstr "Retard à l'arrivée (en s) :"
+
+#: layouts.py:65
+msgid "Delay between detection of unconsciousness and OHCA detection (in s):"
+msgstr "Décalage de détection inconscience/ACR (en s) :"
+
+#: layouts.py:69
+msgid "Rate of OHCA detection by call center operators (between 0 and 1):"
+msgstr ""
+
+#: layouts.py:73
+msgid ""
+"Odd ratio of OHCA in the streets vs OHCA at home or in a public place "
+"detection by call center operators (between 0 and 1):"
+msgstr ""
+"Odd ratio de la détection ACR voie publique à la prise d'appel (entre 0 "
+"et 1) :"
+
+#: layouts.py:78
+msgid "Rate of OHCA at home, which only have one witness alone (between 0 and 1):"
+msgstr "Taux de témoins seuls ACR lieu privé (entre 0 et 1) :"
+
+#: layouts.py:86
+msgid "Results"
+msgstr "Résultats"
+
+#: layouts.py:89
+msgid "Rate of faster drones among all interventions: "
+msgstr "Taux de drones plus rapides, sur toutes les interventions : "
+
+#~ msgid "A gauche, VSAV plus rapide. A droite drone plus rapide"
+#~ msgstr ""
+
+#~ msgid "Temps présentation VSAV vs temps drone"
+#~ msgstr ""
+

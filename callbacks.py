@@ -1,5 +1,6 @@
 import copy
 import datetime as dt
+import gettext
 import math
 
 from dash.dependencies import Input, Output
@@ -11,7 +12,6 @@ from sklearn.neighbors import KernelDensity
 
 from app import app
 import drones
-
 
 # datetime of the beginning of the emergency call
 col_time_em_call = 'DT_då_crochå_'
@@ -49,8 +49,8 @@ def update_avail(time_dec, avail, unavail):
 
     :param time_dec: (dt.datetime) Datetime when the intervention started.
     :param avail: (np.array) List of available drones (name, GPS location)
-    :param unavail: (np.array) List of unavailable drones (name, GPS location and datetime
-        until when they are unavailable)
+    :param unavail: (np.array) List of unavailable drones (name, GPS location and datetime until
+        when they are unavailable)
 
     :return: (np.array, np.array) Updated list of available and unavailable drones.
     """
@@ -109,17 +109,24 @@ def drone_unavail(df, duree, avail_ini):
     return list_dist
 
 
-def select_interv(df_, df_sub,  col_, rate_):
-    n = int(len(df_sub) * rate_)
-    index_s = np.random.choice(df_sub.index, n, replace=False)
-    df_.loc[index_s, col_] = 0
-    return df_, index_s
+def select_interv(all_interventions, condition, column, rate):
+    """Select randomly some interventions.
+
+    :param all_interventions: a DataFrame containing interventions. This will be modified.
+    :param condition: a boolean array, the same size of df to restrict the rows that can be
+        affected: True for those that can be selected, False if not.
+    :param column: (str) The name of the column of df to null if not selected.
+    :param rate (float) The rate (between 0 and 1) of rows that should be kept.
+    """
+    selected = np.random.rand(len(all_interventions)) > rate
+    all_interventions.loc[condition & selected, column] = 0
+
 
 
 def _compute_drone_time(
         drone_input,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
-        input_jour_, detec_rate, no_witness_rate, detec_VP, unavail_delta):
+        input_jour_, detec_rate, no_witness_rate, detec_VP, unavail_delta, lang):
 
     """
     Computes drone simulated flights.
@@ -140,6 +147,7 @@ def _compute_drone_time(
         detection by 18/112 operators ([0,1])
     :param unavail_delta: (str) delay during which a drone is unavailable after being sent to an
         OHCA in hours
+    :param lang: (str) the language code used by the interface.
 
     :return: graphs for Dash visualisation
     """
@@ -157,6 +165,11 @@ def _compute_drone_time(
     # no_witness_rate = '0.56'
     # detec_VP = '0.15'
     # unavail_delta = '6'
+    # lang = 'fr'
+
+    if lang:
+        t11n = gettext.translation('messages', localedir='locales', languages=[lang], fallback=True)
+        t11n.install()
 
     dep_delay = np.float(dep_delay) + np.float(detec_delay) + (np.float(alt) / np.float(vert_acc))
     arr_delay = np.float(arr_delay) + (np.float(alt) / np.float(vert_acc))
@@ -182,25 +195,25 @@ def _compute_drone_time(
 
     df_res[col_drone_delay] = np.nan
     if input_jour:
-        index_nuit = df_res[df_res[col_indic_day] == 0].index
+        index_nuit = df_res[col_indic_day] == 0
         df_res.loc[index_nuit, col_drone_delay] = 0
         no_drone['night'] = index_nuit
 
-    # taux de détection des ACR au téléphone voie publique et lieu public
-    df_resb = df_res.loc[df_res[col_indic_home] == 0]
-    res_detec_vp = select_interv(df_res, df_resb, col_drone_delay, (1-detec_rate * detec_VP))
-    df_res = res_detec_vp[0]
-    # taux de détection des ACR au téléphone lieu privé
-    df_resa = df_res.loc[df_res[col_indic_home] == 1]
-    res_detec_priv = select_interv(df_res, df_resa, col_drone_delay, (1-detec_rate))
-    df_res = res_detec_priv[0]
-    # update no drone reasons
-    no_drone['no detection'] = np.append(res_detec_vp[1],res_detec_priv[1])
+    in_a_public_place = df_res[col_indic_home] == 0
+    # detection rate of OHCA in a public place
+    select_interv(df_res, in_a_public_place, col_drone_delay, detec_rate * detec_VP)
 
-    # taux de témoin seul en lieu privé
-    res_wit = select_interv(df_res, df_resa, col_drone_delay, no_witness_rate)
-    df_res = res_wit[0]
-    no_drone['not enough witnesses'] = res_wit[1]
+    # detection rate of OHCA in a private place (at home)
+    select_interv(df_res, ~in_a_public_place, col_drone_delay, detec_rate)
+
+    # update no drone reasons : lack of detection
+    # no_drone['no detection'] = np.append(index_detec_vp ,index_detec_priv)
+
+    # rate of OHCA witnesses home alone
+    select_interv(df_res, ~in_a_public_place, col_drone_delay, 1 - no_witness_rate)
+
+    # update no drone reasons : not enough witnesses
+    # no_drone['not enough witnesses'] = index_witness
 
     df_ic = df_res.loc[df_res[col_drone_delay] != 0]
     distance_field = 'Distance'
@@ -333,16 +346,17 @@ def _compute_drone_time(
      Input('detec', 'value'),
      Input('wit_detec', 'value'),
      Input('detec_VP', 'value'),
-     Input('unavail_delta', 'value')])
+     Input('unavail_delta', 'value'),
+     Input('lang', 'value')])
 def drone_time(
         drone_input,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
-        input_jour_, detec_rate, no_witness_rate, detec_VP, unavail_delta):
+        input_jour_, detec_rate, no_witness_rate, detec_VP, unavail_delta, lang):
 
     return _compute_drone_time(
         drone_input,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
-        input_jour_, detec_rate, no_witness_rate, detec_VP, unavail_delta)
+        input_jour_, detec_rate, no_witness_rate, detec_VP, unavail_delta, lang)
 
 
 @app.callback(
@@ -361,13 +375,14 @@ def drone_time(
      Input('detec_b', 'value'),
      Input('wit_detec_b', 'value'),
      Input('detec_VP_b', 'value'),
-     Input('unavail_delta_b', 'value')])
+     Input('unavail_delta_b', 'value'),
+     Input('lang', 'value')])
 def drone_time_b(
         drone_input,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
-        input_jour_, detec_rate, no_witness_rate, detec_VP, unavail_delta):
+        input_jour_, detec_rate, no_witness_rate, detec_VP, unavail_delta, lang):
 
     return _compute_drone_time(
         drone_input,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
-        input_jour_, detec_rate, no_witness_rate, detec_VP, unavail_delta)
+        input_jour_, detec_rate, no_witness_rate, detec_VP, unavail_delta, lang)
