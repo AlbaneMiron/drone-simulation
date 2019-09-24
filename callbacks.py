@@ -8,7 +8,6 @@ import geopy.distance
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
-from sklearn.neighbors import KernelDensity
 
 from app import app
 import drones
@@ -255,30 +254,8 @@ def _compute_drone_time(
     df_density = copy.deepcopy(dfi)
     df_density = df_density.loc[df_density[res_col_a] > 0]
 
-    X = df_density[col_BLS_time][:, np.newaxis]
-    kde = KernelDensity(kernel='gaussian', bandwidth=2).fit(X)
-    X_plot = np.linspace(0, 20 * 60, 20 * 4)[:, np.newaxis]
-    log_dens = kde.score_samples(X_plot)
-    trace3 = go.Scatter(
-        x=X_plot[:, 0], y=np.exp(log_dens),
-        mode='lines',
-        # line='blue',
-        name="BLS team",
-    )
-
-    X2 = df_density[res_col_a][:, np.newaxis]
-    kde2 = KernelDensity(kernel='gaussian', bandwidth=2).fit(X2)
-    X_plot2 = np.linspace(0, 20 * 60, 20 * 4)[:, np.newaxis]
-    log_dens = kde2.score_samples(X_plot2)
-    trace4 = go.Scatter(
-        x=X_plot[:, 0], y=np.exp(log_dens),
-        mode='lines',
-        # line='red',
-        name="Drone",
-    )
-
-    # trace3 = go.Figure(data=[go.Histogram(x=df_density[col_BLS_time])])
-    # trace4 = go.Figure(data=[go.Histogram(x=df_density[res_col_a])])
+    trace3 = go.Histogram(x=df_density[col_BLS_time], name=_('BLS team'))
+    trace4 = go.Histogram(x=df_density[res_col_a], name=_('Drone'))
 
     dfi['col_bar'] = ['rgba(222,45,38,0.8)'] * len(dfi)
     dfi.loc[dfi[res_col_a] == 0, 'col_bar'] = 'rgba(204,204,204,1)'
