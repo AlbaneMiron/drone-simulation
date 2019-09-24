@@ -7,7 +7,7 @@ from dash.dependencies import Input, Output
 import geopy.distance
 import numpy as np
 import pandas as pd
-import plotly.graph_objs as go
+import plotly.graph_objects as go
 from sklearn.neighbors import KernelDensity
 
 from app import app
@@ -243,14 +243,13 @@ def _compute_drone_time(
 
     n_tot = len(dfi)
     n_nodrone = len(dfi.loc[dfi[res_col_a] == 0])
-    # n_drone = len(dfi.loc[dfi[res_col_b] > 0])
+    n_drone = len(dfi.loc[dfi[res_col_b] < 0])
     n_bls = len(dfi.loc[dfi[res_col_b] > 0]) - n_nodrone
 
-    # per_drone = n_drone / n_tot
-    per_bls = n_bls / n_tot
-    # per_nodrone = n_nodrone / n_tot
+    per_drone = 100 * n_drone / n_tot
+    per_bls = 100 * n_bls / n_tot
+    per_nodrone = 100 * n_nodrone / n_tot
 
-    # dfii = copy.deepcopy(dfi)
 
     # 1st graph: only when a drone is sent: res_col_a > 0
     df_density = copy.deepcopy(dfi)
@@ -287,13 +286,37 @@ def _compute_drone_time(
     ynew = dfi.sort_values(res_col_b)
     list_col = list(ynew['col_bar'])
 
+    trace1 = go.Bar(
+        x=[0, 1, 2],
+        text=['Faster drone', 'BLS team faster', 'No drone sent'],
+        y=[per_drone, per_bls, per_nodrone],
+        textposition='auto',
+        name=_('Test')
+    )
+
     trace5 = go.Bar(
         x=[i for i in range(0, len(dfi))],
         y=ynew[res_col_b], name=_('Time saved with a drone'),
         marker=dict(color=list_col),
     )
 
-    stats = [per_bls]
+    indicator_graphic_1 = {
+        'data': [trace1],
+        'layout': go.Layout(
+            xaxis={
+                'title': _('Intervention distribution'),
+                'type': 'linear',
+                'showticklabels': False,
+            },
+            yaxis={
+                'title': _('Percentage of interventions'),
+                'type': 'linear',
+            },
+            #margin={'l': 40, 'b': 40, 't': 10, 'r': 0},
+            hovermode='closest',
+        ),
+
+    }
 
     indicator_graphic_2 = {
         'data': [trace3, trace4],
@@ -326,11 +349,11 @@ def _compute_drone_time(
             hovermode='closest',
         )}
 
-    return stats, indicator_graphic_2, indicator_graphic_3
+    return indicator_graphic_1, indicator_graphic_2, indicator_graphic_3
 
 
 @app.callback(
-    [Output('stats', 'children'),
+    [Output('indicator-graphic1', 'figure'),
      Output('indicator-graphic2', 'figure'),
      Output('indicator-graphic3', 'figure')],
     [Input('input_drone', 'value'),
@@ -359,7 +382,7 @@ def drone_time(
 
 
 @app.callback(
-    [Output('stats_b', 'children'),
+    [Output('indicator-graphic1_b', 'figure'),
      Output('indicator-graphic2_b', 'figure'),
      Output('indicator-graphic3_b', 'figure')],
     [Input('input_drone_b', 'value'),

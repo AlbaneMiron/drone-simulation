@@ -86,11 +86,11 @@ def create_simulation_layout(name, suffix='', input_drone=_POSITIONS[0], style=N
         html.H6(_('Results')),
 
         dcc.Loading(children=[
-            html.Div([
-                _('Rate of faster drones among all interventions: '),
-                html.Span(id=f'stats{suffix}'),
-            ]),
-
+            # html.Div([
+            #     _('Rate of faster drones among all interventions: '),
+            #     html.Span(id=f'stats{suffix}'),
+            # ]),
+            dcc.Graph(id=f'indicator-graphic1{suffix}'),
             dcc.Graph(id=f'indicator-graphic2{suffix}'),
             dcc.Graph(id=f'indicator-graphic3{suffix}'),
         ])
