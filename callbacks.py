@@ -249,7 +249,6 @@ def _compute_drone_time(
     per_bls = 100 * n_bls / n_tot
     per_nodrone = 100 * n_nodrone / n_tot
 
-
     # 1st graph: only when a drone is sent: res_col_a > 0
     df_density = copy.deepcopy(dfi)
     df_density = df_density.loc[df_density[res_col_a] > 0]
@@ -289,7 +288,7 @@ def _compute_drone_time(
                 'title': _('Percentage of interventions'),
                 'type': 'linear',
             },
-            #margin={'l': 40, 'b': 40, 't': 10, 'r': 0},
+            # margin={'l': 40, 'b': 40, 't': 10, 'r': 0},
             hovermode='closest',
         ),
 
