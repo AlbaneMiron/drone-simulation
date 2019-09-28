@@ -202,16 +202,13 @@ def _compute_drone_time(
     in_a_public_place = df_res[col_indic_home] == 0
     # detection rate of OHCA in a public place
     df_res, index_detec_vp = select_interv(df_res, in_a_public_place, col_drone_delay, detec_rate * detec_VP)
-
     # detection rate of OHCA in a private place (at home)
     df_res, index_detec_priv = select_interv(df_res, ~in_a_public_place, col_drone_delay, detec_rate)
-
     # update no drone reasons : lack of detection
     no_drone['no detection'] = np.logical_or(index_detec_vp, index_detec_priv)
 
     # rate of OHCA witnesses home alone
     df_res, index_witness = select_interv(df_res, ~in_a_public_place, col_drone_delay, 1 - no_witness_rate)
-
     # update no drone reasons : not enough witnesses
     no_drone['not enough witnesses'] = index_witness
 
@@ -242,6 +239,7 @@ def _compute_drone_time(
         df_res.loc[df_res[res_col_a] == 0, col_BLS_time]
     dfi = df_res.dropna(axis=0, how='all', thresh=None, subset=[res_col_b], inplace=False)
 
+    # simple metrics
     n_tot = len(dfi)
     n_nodrone = len(dfi.loc[dfi[res_col_a] == 0])
     n_drone = len(dfi.loc[dfi[res_col_b] < 0])
@@ -250,13 +248,6 @@ def _compute_drone_time(
     per_drone = 100 * n_drone / n_tot
     per_bls = 100 * n_bls / n_tot
     per_nodrone = 100 * n_nodrone / n_tot
-
-    # 1st graph: only when a drone is sent: res_col_a > 0
-    df_density = copy.deepcopy(dfi)
-    df_density = df_density.loc[df_density[res_col_a] > 0]
-
-    trace3 = go.Histogram(x=df_density[col_BLS_time], name=_('BLS team'))
-    trace4 = go.Histogram(x=df_density[res_col_a], name=_('Drone'))
 
     dfi['col_bar'] = ['rgba(222,45,38,0.8)'] * len(dfi)
     dfi.loc[dfi[res_col_a] == 0, 'col_bar'] = 'rgba(204,204,204,1)'
@@ -271,6 +262,26 @@ def _compute_drone_time(
         textposition='auto',
         name=_('Test')
     )
+
+    # flight restriction reasons
+    # n_no_detec = no_drone['no detection'].sum()
+    # n_no_detec_night = np.logical_and(no_drone['no detection'], no_drone['night']).sum()
+    # n_no_detec_wit = np.logical_and(no_drone['no detection'], no_drone['not enough witnesses']).sum()
+    # n_no_detec_both = np.logical_and(np.logical_and(no_drone['no detection'], no_drone['night']),
+    #                                  no_drone['not enough witnesses']).sum()
+
+    no_drone['detection'] = np.logical_not(no_drone['no detection'])
+    # n_detec_night = np.logical_and(no_drone['detection'], no_drone['night']).sum()
+    # n_detec_wit = np.logical_and(no_drone['detection'], no_drone['not enough witnesses']).sum()
+    # n_detec_both = np.logical_and(np.logical_and(no_drone['detection'], no_drone['night']),
+    #                               no_drone['not enough witnesses']).sum()
+
+    # graph: only when a drone is sent: res_col_a > 0
+    df_density = copy.deepcopy(dfi)
+    df_density = df_density.loc[df_density[res_col_a] > 0]
+
+    trace3 = go.Histogram(x=df_density[col_BLS_time], name=_('BLS team'))
+    trace4 = go.Histogram(x=df_density[res_col_a], name=_('Drone'))
 
     trace5 = go.Bar(
         x=[i for i in range(0, len(dfi))],
