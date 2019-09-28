@@ -118,7 +118,9 @@ def select_interv(all_interventions, condition, column, rate):
     :param rate (float) The rate (between 0 and 1) of rows that should be kept.
     """
     selected = np.random.rand(len(all_interventions)) > rate
-    all_interventions.loc[condition & selected, column] = 0
+    selected_final = condition & selected
+    all_interventions.loc[selected_final, column] = 0
+    return all_interventions, selected_final
 
 
 def _compute_drone_time(
@@ -199,19 +201,19 @@ def _compute_drone_time(
 
     in_a_public_place = df_res[col_indic_home] == 0
     # detection rate of OHCA in a public place
-    select_interv(df_res, in_a_public_place, col_drone_delay, detec_rate * detec_VP)
+    df_res, index_detec_vp = select_interv(df_res, in_a_public_place, col_drone_delay, detec_rate * detec_VP)
 
     # detection rate of OHCA in a private place (at home)
-    select_interv(df_res, ~in_a_public_place, col_drone_delay, detec_rate)
+    df_res, index_detec_priv = select_interv(df_res, ~in_a_public_place, col_drone_delay, detec_rate)
 
     # update no drone reasons : lack of detection
-    # no_drone['no detection'] = np.append(index_detec_vp ,index_detec_priv)
+    no_drone['no detection'] = np.logical_or(index_detec_vp, index_detec_priv)
 
     # rate of OHCA witnesses home alone
-    select_interv(df_res, ~in_a_public_place, col_drone_delay, 1 - no_witness_rate)
+    df_res, index_witness = select_interv(df_res, ~in_a_public_place, col_drone_delay, 1 - no_witness_rate)
 
     # update no drone reasons : not enough witnesses
-    # no_drone['not enough witnesses'] = index_witness
+    no_drone['not enough witnesses'] = index_witness
 
     df_ic = df_res.loc[df_res[col_drone_delay] != 0]
     distance_field = 'Distance'
