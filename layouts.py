@@ -93,6 +93,7 @@ def create_simulation_layout(name, suffix='', input_drone=_POSITIONS[0], style=N
             dcc.Graph(id=f'indicator-graphic1{suffix}'),
             dcc.Graph(id=f'indicator-graphic2{suffix}'),
             dcc.Graph(id=f'indicator-graphic3{suffix}'),
+            dcc.Graph(id=f'indicator-graphic4{suffix}'),
         ])
 
     ], style={'flex': 1} if style is None else dict(style, flex=1))
