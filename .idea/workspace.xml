@@ -4,7 +4,6 @@
     <list default="true" id="8a5d5635-a35f-4d28-81c8-dea19f3377c9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/callbacks.py" beforeDir="false" afterPath="$PROJECT_DIR$/callbacks.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/layouts.py" beforeDir="false" afterPath="$PROJECT_DIR$/layouts.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -18,44 +17,6 @@
         <option value="Python Script" />
       </list>
     </option>
-  </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>Input</find>
-      <find>value</find>
-      <find>Output</find>
-      <find>delay</find>
-      <find>acc</find>
-      <find>avail_ini_</find>
-      <find>'DeltaPresentation'</find>
-      <find>speed</find>
-      <find>jour</find>
-      <find>print</find>
-      <find>indic</find>
-      <find>=</find>
-      <find>CS le plus proche</find>
-      <find>PC le plus proche</find>
-      <find>input_wind</find>
-      <find>new_col</find>
-      <find>'apport_drone'</find>
-      <find>col_drone_distance</find>
-      <find>df_res</find>
-    </findStrings>
-    <replaceStrings>
-      <replace>Output</replace>
-      <replace>options</replace>
-      <replace>value</replace>
-      <replace>Inout</replace>
-      <replace>Input</replace>
-      <replace>:</replace>
-      <replace>Centres de secours</replace>
-      <replace>Postes de commandement</replace>
-      <replace>new_col</replace>
-      <replace>res_col_a</replace>
-      <replace>res_col_b</replace>
-      <replace>df_res</replace>
-      <replace>dfi</replace>
-    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />

@@ -201,20 +201,23 @@ def _compute_drone_time(
 
     in_a_public_place = df_res[col_indic_home] == 0
     # detection rate of OHCA in a public place
-    df_res, index_detec_vp = select_interv(df_res, in_a_public_place, col_drone_delay, detec_rate * detec_VP)
+    df_res, index_detec_vp = select_interv(df_res, in_a_public_place, col_drone_delay,
+                                           detec_rate * detec_VP)
     # detection rate of OHCA in a private place (at home)
-    df_res, index_detec_priv = select_interv(df_res, ~in_a_public_place, col_drone_delay, detec_rate)
+    df_res, index_detec_priv = select_interv(df_res, ~in_a_public_place, col_drone_delay,
+                                             detec_rate)
     # update no drone reasons : lack of detection
     no_drone['no detection'] = np.logical_or(index_detec_vp, index_detec_priv)
 
     # rate of OHCA witnesses home alone
-    df_res, index_witness = select_interv(df_res, ~in_a_public_place, col_drone_delay, 1 - no_witness_rate)
+    df_res, index_witness = select_interv(df_res, ~in_a_public_place, col_drone_delay,
+                                          1 - no_witness_rate)
     # update no drone reasons : not enough witnesses
     no_drone['not enough witnesses'] = index_witness
 
     df_ic = df_res.loc[df_res[col_drone_delay] != 0]
     distance_field = 'Distance'
-    df_ic[distance_field] = drone_unavail(df_ic, unavail_delta, avail_ini_)  # TODO : setting with copy warning
+    df_ic[distance_field] = drone_unavail(df_ic, unavail_delta, avail_ini_)  # TODO
 
     for i, r in df_ic.iterrows():
         eff_speed = input_speed
@@ -268,9 +271,12 @@ def _compute_drone_time(
     n_pub_place = in_a_public_place.sum()
 
     n_no_detec = no_drone['no detection'].sum()
-    # n_no_detec_night = np.logical_and(no_drone['no detection'], no_drone['night']).sum()
-    # n_no_detec_wit = np.logical_and(no_drone['no detection'], no_drone['not enough witnesses']).sum()
-    # n_no_detec_both = np.logical_and(np.logical_and(no_drone['no detection'], no_drone['night']),
+    # n_no_detec_night = np.logical_and(no_drone['no detection'],
+    # no_drone['night']).sum()
+    # n_no_detec_wit = np.logical_and(no_drone['no detection'],
+    # no_drone['not enough witnesses']).sum()
+    # n_no_detec_both = np.logical_and(np.logical_and(no_drone['no detection'],
+    # no_drone['night']),
     #                                  no_drone['not enough witnesses']).sum()
 
     no_drone['detection'] = np.logical_not(no_drone['no detection'])
@@ -279,14 +285,17 @@ def _compute_drone_time(
     n_detec_both = np.logical_and(np.logical_and(no_drone['detection'], no_drone['night']),
                                   no_drone['not enough witnesses']).sum()
 
-    y_waterf = np.array([n_pub_place, (n_tot-n_pub_place), n_tot, - n_no_detec, - n_detec_wit,
-                         -(n_detec_night - n_detec_both), (n_drone + n_bls), -n_bls, n_drone])
-    text_waterf = np.around(y_waterf*100/n_tot, 0).astype('int')
-    text_waterf = np.core.defchararray.add(text_waterf.astype('str'), np.array(['%']*len(text_waterf)))
+    y_waterf = np.array([n_pub_place, (n_tot - n_pub_place), n_tot,
+                         - n_no_detec, - n_detec_wit, -(n_detec_night - n_detec_both),
+                         (n_drone + n_bls), -n_bls, n_drone])
+    text_waterf = np.around(y_waterf * 100 / n_tot, 0).astype('int')
+    text_waterf = np.core.defchararray.add(text_waterf.astype('str'),
+                                           np.array(['%'] * len(text_waterf)))
 
     trace2 = go.Waterfall(
         name="20", orientation="v",
-        measure=["relative", "relative", "total", "relative", "relative", "relative", "total", "relative", "total"],
+        measure=["relative", "relative", "total", "relative", "relative",
+                 "relative", "total", "relative", "total"],
         x=[1, 2, 3, 4, 5, 6, 7, 8, 9],
         textposition="outside",
         text=text_waterf,
@@ -325,9 +334,6 @@ def _compute_drone_time(
 
     }
 
-    # x=["In a public place", "At home", "All interventions", "Not detected", "Not enough witnesses",
-    #    "No fight at night", "Drone sent", "BLS team is faster", "Drone is faster"]
-
     indicator_graphic_2 = {
         'data': [trace2],
         'layout': go.Layout(
@@ -335,9 +341,9 @@ def _compute_drone_time(
                 'title': _(''),
                 'type': 'linear',
                 'showticklabels': True,
-                'ticktext': ["In a public place", "At home", "All interventions", "Not detected",
-                             "Not enough witnesses", "No fight at night", "Drone sent", "BLS team is faster",
-                             "Drone is faster"],
+                'ticktext': ["In a public place", "At home", "All interventions",
+                             "Not detected", "Not enough witnesses", "No fight at night",
+                             "Drone sent", "BLS team is faster", "Drone is faster"],
                 'tickvals': [1, 2, 3, 4, 5, 6, 7, 8, 9],
             },
             yaxis={
