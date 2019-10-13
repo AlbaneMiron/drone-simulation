@@ -7,6 +7,7 @@ EXPOSE 8050
 
 COPY requirements.txt .
 RUN pip install -r requirements.txt
+COPY sankey/sankey/*.py sankey/sankey/*.js sankey/sankey/*.json sankey/sankey/*.js.map /usr/local/lib/python3.7/site-packages/sankey/
 
 ENV BIND_HOST 0.0.0.0
 

@@ -6,6 +6,7 @@ services:
       - "8050:8050"
     volumes:
       - .:/work/
+      - ./sankey/sankey:/usr/local/lib/python3.7/site-packages/sankey/:ro
     environment:
       DEBUG: 1
   test:

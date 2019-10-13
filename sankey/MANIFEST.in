@@ -1,0 +1,7 @@
+include sankey/sankey.min.js
+include sankey/sankey.min.js.map
+include sankey/metadata.json
+include sankey/package-info.json
+include README.md
+include LICENSE
+include package.json

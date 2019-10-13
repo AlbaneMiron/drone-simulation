@@ -2,6 +2,7 @@ import gettext
 
 import dash_core_components as dcc
 import dash_html_components as html
+import sankey
 
 import drones
 
@@ -91,10 +92,10 @@ def create_simulation_layout(name, suffix='', input_drone=_POSITIONS[0], style=N
             #     html.Span(id=f'stats{suffix}'),
             # ]),
             dcc.Graph(id=f'indicator-graphic1{suffix}'),
-            dcc.Graph(id=f'indicator-graphic2{suffix}'),
+            sankey.Sankey(id=f'flows-graphic{suffix}'),
             dcc.Graph(id=f'indicator-graphic3{suffix}'),
             dcc.Graph(id=f'indicator-graphic4{suffix}'),
-        ])
+        ]),
 
     ], style={'flex': 1} if style is None else dict(style, flex=1))
 
