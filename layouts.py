@@ -2,6 +2,8 @@ import gettext
 
 import dash_core_components as dcc
 import dash_html_components as html
+import sys
+sys.path.append("./sankey")
 import sankey
 
 import drones
