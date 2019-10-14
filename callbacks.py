@@ -284,14 +284,12 @@ def _compute_drone_time(
     n_detec_both = np.logical_and(np.logical_and(no_drone['detection'], no_drone['night']),
                                   no_drone['not enough witnesses']).sum()
 
-
     y_waterf = np.array([n_pub_place, (n_tot - n_pub_place), n_tot,
                          - n_no_detec, - n_detec_wit, -(n_detec_night - n_detec_both),
                          (n_drone + n_bls), -n_bls, n_drone])
     text_waterf = np.around(y_waterf * 100 / n_tot, 0).astype('int')
     text_waterf = np.core.defchararray.add(text_waterf.astype('str'),
                                            np.array(['%'] * len(text_waterf)))
-
 
     # graph: only when a drone is sent: res_col_a > 0
     df_density = copy.deepcopy(dfi)
@@ -323,7 +321,6 @@ def _compute_drone_time(
         ),
 
     }
-
 
     fsize = 100 / n_tot
     flows = [
@@ -381,7 +378,6 @@ def _compute_drone_time(
         )}
 
     return indicator_graphic_1, flows, indicator_graphic_3, indicator_graphic_4
-
 
 
 @app.callback(
