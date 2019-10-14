@@ -284,23 +284,12 @@ def _compute_drone_time(
     n_detec_both = np.logical_and(np.logical_and(no_drone['detection'], no_drone['night']),
                                   no_drone['not enough witnesses']).sum()
 
-    # y_waterf = np.array([n_pub_place, (n_tot - n_pub_place), n_tot,
-    #                      - n_no_detec, - n_detec_wit, -(n_detec_night - n_detec_both),
-    #                      (n_drone + n_bls), -n_bls, n_drone])
-    # text_waterf = np.around(y_waterf * 100 / n_tot, 0).astype('int')
-    # text_waterf = np.core.defchararray.add(text_waterf.astype('str'),
-    #                                        np.array(['%'] * len(text_waterf)))
-    #
-    # trace2 = go.Waterfall(
-    #     name="20", orientation="v",
-    #     measure=["relative", "relative", "total", "relative", "relative",
-    #              "relative", "total", "relative", "total"],
-    #     x=[1, 2, 3, 4, 5, 6, 7, 8, 9],
-    #     textposition="outside",
-    #     text=text_waterf,
-    #     y=y_waterf,
-    #     connector={"line": {"color": "rgb(63, 63, 63)"}},
-    # )
+    y_waterf = np.array([n_pub_place, (n_tot - n_pub_place), n_tot,
+                         - n_no_detec, - n_detec_wit, -(n_detec_night - n_detec_both),
+                         (n_drone + n_bls), -n_bls, n_drone])
+    text_waterf = np.around(y_waterf * 100 / n_tot, 0).astype('int')
+    text_waterf = np.core.defchararray.add(text_waterf.astype('str'),
+                                           np.array(['%'] * len(text_waterf)))
 
     # graph: only when a drone is sent: res_col_a > 0
     df_density = copy.deepcopy(dfi)
@@ -333,28 +322,29 @@ def _compute_drone_time(
 
     }
 
-    # indicator_graphic_2 = {
-    #     'data': [trace2],
-    #     'layout': go.Layout(
-    #         xaxis={
-    #             'title': _(''),
-    #             'type': 'linear',
-    #             'showticklabels': True,
-    #             'ticktext': ["In a public place", "At home", "All interventions",
-    #                          "Not detected", "Not enough witnesses", "No fight at night",
-    #                          "Drone sent", "BLS team is faster", "Drone is faster"],
-    #             'tickvals': [1, 2, 3, 4, 5, 6, 7, 8, 9],
-    #         },
-    #         yaxis={
-    #             'title': _('Number of interventions'),
-    #             'type': 'linear',
-    #         },
-    #         title='Impact of operational parameters',
-    #         # margin={'l': 40, 'b': 40, 't': 10, 'r': 0},
-    #         hovermode='closest',
-    #     ),
-    #
-    # }
+    fsize = 100 / n_tot
+    flows = [
+        dict(
+            fill='red',
+            size=fsize * n_no_detec,
+            text=_('Not detected') + f' {round(fsize * n_no_detec)}%',
+        ),
+        dict(
+            fill='blue',
+            size=fsize * n_no_detec,
+            text=_('Not enough witnesses') + f' {round(fsize * n_detec_wit)}%',
+        ),
+        dict(
+            fill='orange',
+            size=fsize * n_bls,
+            text=_('BLS team faster than drone') + f' {round(fsize * n_bls)}%',
+        ),
+        dict(
+            fill='green',
+            size=fsize * n_drone,
+            text=_('Drone faster') + f' {round(fsize * n_drone)}%',
+        ),
+    ]
 
     indicator_graphic_3 = {
         'data': [trace3, trace4],
@@ -387,11 +377,12 @@ def _compute_drone_time(
             hovermode='closest',
         )}
 
-    return indicator_graphic_1, indicator_graphic_3, indicator_graphic_4
+    return indicator_graphic_1, flows, indicator_graphic_3, indicator_graphic_4
 
 
 @app.callback(
     [Output('indicator-graphic1', 'figure'),
+     Output('flows-graphic', 'flows'),
      Output('indicator-graphic3', 'figure'),
      Output('indicator-graphic4', 'figure')],
     [Input('input_drone', 'value'),
@@ -421,6 +412,7 @@ def drone_time(
 
 @app.callback(
     [Output('indicator-graphic1_b', 'figure'),
+     Output('flows-graphic_b', 'flows'),
      Output('indicator-graphic3_b', 'figure'),
      Output('indicator-graphic4_b', 'figure')],
     [Input('input_drone_b', 'value'),
