@@ -1,6 +1,7 @@
 dash
 geopy
 pandas
+sankey
 scikit-learn
 numpy
 plotly
