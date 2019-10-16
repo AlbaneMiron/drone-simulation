@@ -70,13 +70,12 @@ def create_simulation_layout(name, suffix='', input_drone=_POSITIONS[0], style=N
                 dcc.Input(id=f'detec_delay{suffix}', value='104', type='text'),
 
                 html.Label(_(
-                    "Rate of OHCA detection by call center operators (between 0 and 1):")),
-                dcc.Input(id=f'detec{suffix}', value='0.8', type='text'),
+                    "Rate of OHCA at home, which are detected by call center operators (between 0 and 1):")),
+                dcc.Input(id=f'detec_rate_home{suffix}', value='0.8', type='text'),
 
                 html.Label(_(
-                    "Odd ratio of OHCA in the streets vs OHCA at home or in a public place "
-                    "detection by call center operators (between 0 and 1):")),
-                dcc.Input(id=f'detec_VP{suffix}', value='0.15', type='text'),
+                    "Rate of OHCA in the streets, which are detected by call center operators (between 0 and 1):")),
+                dcc.Input(id=f'detec_rate_vp{suffix}', value='0.12', type='text'),
 
                 html.Label(_(
                     "Rate of OHCA at home, which only have one witness alone (between 0 and 1):")),

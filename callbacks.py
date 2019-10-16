@@ -126,7 +126,7 @@ def select_interv(all_interventions, condition, column, rate):
 def _compute_drone_time(
         drone_input,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
-        input_jour_, detec_rate, no_witness_rate, detec_VP, unavail_delta, lang):
+        input_jour_, detec_rate_home, no_witness_rate, detec_rate_vp, unavail_delta, lang):
 
     """
     Computes drone simulated flights.
@@ -141,9 +141,9 @@ def _compute_drone_time(
     :param detec_delay: (str) delay between detection of unconsciousness and OHCA detection
         by 18/112 operators in seconds
     :param input_jour: (str) whether drone flights are unauthorized at night (yes/no)
-    :param detec_rate: (str) rate of OHCA detection by 18/112 operators ([0,1])
+    :param detec_rate_home: (str) rate of OHCA detection by 18/112 operators ([0,1])
     :param no_witness_rate: (str) rate of OHCA at home, which only have one witness alone ([0,1])
-    :param detec_VP: (str) odd ratio of OHCA in the streets vs OHCA at home or in a public place
+    :param detec_rate_vp: (str) odd ratio of OHCA in the streets vs OHCA at home or in a public place
         detection by 18/112 operators ([0,1])
     :param unavail_delta: (str) delay during which a drone is unavailable after being sent to an
         OHCA in hours
@@ -161,9 +161,9 @@ def _compute_drone_time(
     # arr_delay = '15'
     # detec_delay = '104'
     # input_jour_ = 'Non'
-    # detec_rate = '1'
+    # detec_rate_home = '1'
     # no_witness_rate = '0.56'
-    # detec_VP = '0.15'
+    # detec_rate_vp = '0.15'
     # unavail_delta = '6'
     # lang = 'fr'
 
@@ -174,9 +174,9 @@ def _compute_drone_time(
     dep_delay = np.float(dep_delay) + np.float(detec_delay) + (np.float(alt) / np.float(vert_acc))
     arr_delay = np.float(arr_delay) + (np.float(alt) / np.float(vert_acc))
     input_acc = np.float(input_acc)
-    detec_rate = np.float(detec_rate)
+    detec_rate_home = np.float(detec_rate_home)
     no_witness_rate = np.float(no_witness_rate)
-    detec_VP = np.float(detec_VP)
+    detec_rate_vp = np.float(detec_rate_vp)
     unavail_delta = np.float(unavail_delta)
 
     input_jour = input_jour_ == 'Oui' or input_jour_ == 'Yes'
@@ -201,13 +201,12 @@ def _compute_drone_time(
 
     in_a_public_place = df_res[col_indic_home] == 0
     # detection rate of OHCA in a public place
-    df_res, index_detec_vp = select_interv(df_res, in_a_public_place, col_drone_delay,
-                                           detec_rate * detec_VP)
+    df_res, index_detec_rate_vp = select_interv(df_res, in_a_public_place, col_drone_delay, detec_rate_vp)
     # detection rate of OHCA in a private place (at home)
-    df_res, index_detec_priv = select_interv(df_res, ~in_a_public_place, col_drone_delay,
-                                             detec_rate)
+    df_res, index_detec_home = select_interv(df_res, ~in_a_public_place, col_drone_delay,
+                                             detec_rate_home)
     # update no drone reasons : lack of detection
-    no_drone['no detection'] = np.logical_or(index_detec_vp, index_detec_priv)
+    no_drone['no detection'] = np.logical_or(index_detec_rate_vp, index_detec_home)
 
     # rate of OHCA witnesses home alone
     df_res, index_witness = select_interv(df_res, ~in_a_public_place, col_drone_delay,
@@ -371,7 +370,7 @@ def _compute_drone_time(
                 'showgrid': False,
             },
             yaxis={
-                'title': _("Time difference: drone - BLS team (in seconds)"),
+                'title': _("Time difference drone - BLS team (in seconds)"),
                 'type': 'linear',
             },
             margin={'l': 40, 'b': 40, 't': 10, 'r': 0},
@@ -395,20 +394,20 @@ def _compute_drone_time(
      Input('arr_delay', 'value'),
      Input('detec_delay', 'value'),
      Input('day', 'value'),
-     Input('detec', 'value'),
+     Input('detec_rate_home', 'value'),
      Input('wit_detec', 'value'),
-     Input('detec_VP', 'value'),
+     Input('detec_rate_vp', 'value'),
      Input('unavail_delta', 'value'),
      Input('lang', 'value')])
 def drone_time(
         drone_input,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
-        input_jour_, detec_rate, no_witness_rate, detec_VP, unavail_delta, lang):
+        input_jour_, detec_rate_home, no_witness_rate, detec_rate_vp, unavail_delta, lang):
 
     return _compute_drone_time(
         drone_input,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
-        input_jour_, detec_rate, no_witness_rate, detec_VP, unavail_delta, lang)
+        input_jour_, detec_rate_home, no_witness_rate, detec_rate_vp, unavail_delta, lang)
 
 
 @app.callback(
@@ -425,17 +424,17 @@ def drone_time(
      Input('arr_delay_b', 'value'),
      Input('detec_delay_b', 'value'),
      Input('day_b', 'value'),
-     Input('detec_b', 'value'),
+     Input('detec_rate_home_b', 'value'),
      Input('wit_detec_b', 'value'),
-     Input('detec_VP_b', 'value'),
+     Input('detec_rate_vp_b', 'value'),
      Input('unavail_delta_b', 'value'),
      Input('lang', 'value')])
 def drone_time_b(
         drone_input,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
-        input_jour_, detec_rate, no_witness_rate, detec_VP, unavail_delta, lang):
+        input_jour_, detec_rate_home, no_witness_rate, detec_rate_vp, unavail_delta, lang):
 
     return _compute_drone_time(
         drone_input,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
-        input_jour_, detec_rate, no_witness_rate, detec_VP, unavail_delta, lang)
+        input_jour_, detec_rate_home, no_witness_rate, detec_rate_vp, unavail_delta, lang)
