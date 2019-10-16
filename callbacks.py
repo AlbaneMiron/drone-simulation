@@ -262,7 +262,7 @@ def _compute_drone_time(
         text=['Faster drone', 'BLS team faster', 'No drone sent'],
         y=[per_drone, per_bls, per_nodrone],
         textposition='auto',
-        name=_('Test')
+        name='Test'
     )
 
     # flight restriction reasons

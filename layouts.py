@@ -11,7 +11,61 @@ import drones
 _POSITIONS = list(drones.STARTING_POINTS.keys())
 
 
-def create_simulation_layout(name, suffix='', input_drone=_POSITIONS[0], style=None):
+def create_tabs_layout():
+
+    return html.Div(
+        html.Div(id='app-control-tabs', className='control-tabs', children=[
+            dcc.Tabs(id='app-tabs', value='what-is', children=[
+                dcc.Tab(label='About',
+                        value='what-is',
+                        children=html.Div(className='control-tab', children=[
+                            html.H4(className='what-is', children="App presentation"),
+                            html.P('This app simulates drones sent with Automatic External Defibrillators (AEDs) to '
+                                   'Out-of-Hospital Cardiac Arrest (OHCA) interventions. '
+                                   "Simulation is based on real life data, gathered in 2017 by Paris' Firefighters,  "
+                                   'who intervened on more than 3000 OHCA in Paris and Paris suburbs.'
+                                   ),
+                            html.P("The aim is to compare the hypothetical time to arrival of drones to the actual time"
+                                   "to arrival of BLS teams, and to estimate to what extent drones could improve "
+                                   "the chain of survival."),
+                            html.P("This app allows the user to compute their own simulation, by changing both "
+                                   "operational and drone flight parameters."),
+
+                        ])
+                        ),
+
+                dcc.Tab(label='Parameters simulation A',
+                        value='simA',
+                        children=html.Div(create_parameters_layout('A', style={
+                            'border-right': 'solid 1px #ddd',
+                            'margin-right': '15px',
+                            'padding-right': '15px',
+                        }),
+                                           ),
+                        ),
+                dcc.Tab(label='Parameters simulation B',
+                        value='simB',
+                        children=html.Div(create_parameters_layout('B', suffix='_b', input_drone='Centres de secours'),
+                                          ),
+                        ),
+
+                dcc.Tab(
+                    label='Parameters description',
+                    value='datasets',
+                    children=html.Div(className='control-tab', children=[
+                        html.H4(className='datasets', children="Parameters description"),
+                        html.H6("Operational parameters"),
+                        html.P('blabla'),
+                        html.H6("Drone parameters"),
+                        html.P('blabla'),
+                    ]
+                                      ),
+                ),
+            ]),
+        ]),)
+
+
+def create_parameters_layout(name, suffix='', input_drone=_POSITIONS[0], style=None):
 
     return html.Div([
         html.H3(_('Simulation ') + name),
@@ -85,19 +139,20 @@ def create_simulation_layout(name, suffix='', input_drone=_POSITIONS[0], style=N
 
         ], style={'display': 'flex'}),
 
-        html.H6(_('Results')),
+    ], style={'flex': 1} if style is None else dict(style, flex=1))
 
+
+def create_graphs_layout(name, suffix='', style=None):
+
+    return html.Div([
+        html.H3(_('Simulation ') + name),
+        html.H6(_('Results')),
         dcc.Loading(children=[
-            # html.Div([
-            #     _('Rate of faster drones among all interventions: '),
-            #     html.Span(id=f'stats{suffix}'),
-            # ]),
             dcc.Graph(id=f'indicator-graphic1{suffix}'),
             sankey.Sankey(id=f'flows-graphic{suffix}'),
             dcc.Graph(id=f'indicator-graphic3{suffix}'),
             dcc.Graph(id=f'indicator-graphic4{suffix}'),
         ]),
-
     ], style={'flex': 1} if style is None else dict(style, flex=1))
 
 
@@ -105,25 +160,23 @@ def create(lang):
     lang = gettext.translation('messages', localedir='locales', languages=[lang], fallback=True)
     lang.install()
     return html.Div([
+        html.Div(id='vp-control-tabs', className='control-tabs', children=[create_tabs_layout()],),
+        html.Div(id='vp-page-content', className='app-body', children=[
+            html.Div([
+                create_graphs_layout('A', style={
+                    'border-right': 'solid 1px #ddd',
+                    'margin-right': '15px',
+                    'padding-right': '15px',
+                }),
+                create_graphs_layout('B', suffix='_b'),
+            ], style={'display': 'flex'}),
 
-        html.Div([
-
-            create_simulation_layout('A', style={
-                'border-right': 'solid 1px #ddd',
-                'margin-right': '15px',
-                'padding-right': '15px',
-            }),
-            create_simulation_layout('B', suffix='_b', input_drone='Centres de secours'),
-        ], style={'display': 'flex'}),
-
-        html.Div(children=_("This graph shows the time difference between the simulated time to arrival of a drone and "
-                            "the actual time of arrival of the BLS team sent for every intervention. "
-                            "On the right hand side (positive values) a drone would have been faster by the number of"
-                            "seconds shown by the vertical bar. On the left hand side (negative values) the BLS team "
-                            "would have been faster again by the number of seconds shown by the vertical bar. "
-                            "Grey bars correspond to interventions for which a drone would not be sent, "
-                            "vertical values are the actual BLS team time to arrival.")),
-        ],
-        style={'display': 'inline'})
-
-
+            html.Div(children=_("This graph shows the time difference between the simulated time to arrival of a drone and "
+                                "the actual time of arrival of the BLS team sent for every intervention. "
+                                "On the right hand side (positive values) a drone would have been faster by the number of"
+                                "seconds shown by the vertical bar. On the left hand side (negative values) the BLS team "
+                                "would have been faster again by the number of seconds shown by the vertical bar. "
+                                "Grey bars correspond to interventions for which a drone would not be sent, "
+                                "vertical values are the actual BLS team time to arrival.")),
+        ])
+    ],)
