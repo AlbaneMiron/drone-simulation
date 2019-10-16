@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-09-12 21:23+0000\n"
+"POT-Creation-Date: 2019-10-16 13:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -18,71 +18,123 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.7.0\n"
 
-#: layouts.py:14
-msgid "Simulation "
-msgstr ""
+#: callbacks.py:266
+msgid "Test"
+msgstr "Test"
 
-#: layouts.py:18
+#: callbacks.py:298
+msgid "BLS team"
+msgstr "VSAV"
+
+#: callbacks.py:299
+msgid "Drone"
+msgstr "Drone"
+
+#: callbacks.py:303
+msgid "Time saved with a drone"
+msgstr "Temps gagné avec le drone"
+
+#: callbacks.py:311
+msgid "Intervention distribution"
+msgstr "Répartition des interventions"
+
+#: callbacks.py:316
+msgid "Percentage of interventions"
+msgstr "Pourcentage d'interventions"
+
+#: callbacks.py:330
+msgid "Not detected"
+msgstr "ACR non détecté"
+
+#: callbacks.py:335
+msgid "Not enough witnesses"
+msgstr "Un seul témoin à domicile"
+
+#: callbacks.py:340
+msgid "BLS team faster than drone"
+msgstr "VSAV plus rapide que le drone"
+
+#: callbacks.py:345
+msgid "Drone faster"
+msgstr "Drone plus rapide"
+
+#: callbacks.py:353
+msgid "Time to arrival when a drone is sent (in seconds)"
+msgstr "Temps de présentation quand un drone est envoyé (en secondes)"
+
+#: callbacks.py:357
+msgid "Number of interventions"
+msgstr "Nombre d'interventions"
+
+#: callbacks.py:374
+msgid "Time difference (in seconds)"
+msgstr "Différence de temps (en secondes)"
+
+#: layouts.py:15
+msgid "Simulation "
+msgstr "Simulation"
+
+#: layouts.py:19
 msgid "Drone parameters"
 msgstr "Paramètres du drone"
 
-#: layouts.py:20
+#: layouts.py:21
 msgid "Initial drone location"
 msgstr "Position initiale du drone"
 
-#: layouts.py:28
+#: layouts.py:29
 msgid "Max drone speed (in km/h)"
 msgstr "Vitesse max du drone (en km/h)"
 
-#: layouts.py:31
+#: layouts.py:32
 msgid "Drone's acceleration time (in sec):"
 msgstr "Durée d'accélération du drone (en sec) :"
 
-#: layouts.py:34
+#: layouts.py:35
 msgid "Drone's vertical speed (in m/s):"
 msgstr "Vitesse verticale du drone (en m/s) :"
 
-#: layouts.py:37
+#: layouts.py:38
 msgid "Drone's cruise altitude (in m):"
 msgstr "Altitude de croisière du drone (en m) :"
 
-#: layouts.py:40
+#: layouts.py:41
 msgid "Unavailability of the drone after a run (in h):"
 msgstr "Indisponibilité du drone après un lancer (en h) :"
 
-#: layouts.py:43
+#: layouts.py:44
 msgid "Flying restricted to aeronautical day"
 msgstr "Vol uniquement pendant le jour aéronautique"
 
-#: layouts.py:47
+#: layouts.py:48
 msgid "Yes"
 msgstr "Oui"
 
-#: layouts.py:48
+#: layouts.py:49
 msgid "No"
 msgstr "Non"
 
-#: layouts.py:57
+#: layouts.py:58
 msgid "Operational parameters"
 msgstr "Paramètres opérationnels"
 
-#: layouts.py:59
+#: layouts.py:60
 msgid "Delay at departure (in s):"
 msgstr "Retard au départ (en s) :"
 
-#: layouts.py:62
+#: layouts.py:63
 msgid "Delay on arrival (in s):"
 msgstr "Retard à l'arrivée (en s) :"
 
-#: layouts.py:65
+#: layouts.py:66
 msgid "Delay between detection of unconsciousness and OHCA detection (in s):"
 msgstr "Décalage de détection inconscience/ACR (en s) :"
 
-#: layouts.py:69
+#: layouts.py:70
 msgid "Rate of OHCA detection by call center operators (between 0 and 1):"
 msgstr "Taux de détection des ACR à la prise d'appel (entre 0 et 1) :"
 
-#: layouts.py:73
+#: layouts.py:74
 msgid ""
 "Odd ratio of OHCA in the streets vs OHCA at home or in a public place "
 "detection by call center operators (between 0 and 1):"
@@ -90,17 +142,13 @@ msgstr ""
 "Odd ratio de la détection ACR voie publique à la prise d'appel (entre 0 "
 "et 1) :"
 
-#: layouts.py:78
+#: layouts.py:79
 msgid "Rate of OHCA at home, which only have one witness alone (between 0 and 1):"
 msgstr "Taux de témoins seuls ACR lieu privé (entre 0 et 1) :"
 
-#: layouts.py:86
+#: layouts.py:87
 msgid "Results"
 msgstr "Résultats"
-
-#: layouts.py:90
-msgid "Rate of faster drones among all interventions: "
-msgstr "Taux de drones plus rapides, sur toutes les interventions : "
 
 #~ msgid "A gauche, VSAV plus rapide. A droite drone plus rapide"
 #~ msgstr ""
@@ -108,14 +156,12 @@ msgstr "Taux de drones plus rapides, sur toutes les interventions : "
 #~ msgid "Temps présentation VSAV vs temps drone"
 #~ msgstr ""
 
-#: callbacks.py:286
-msgid "Time to arrival when a drone is sent"
-msgstr "Temps de présentation quand le drone est envoyé"
+#~ msgid "Rate of faster drones among all interventions: "
+#~ msgstr "Taux de drones plus rapides, sur toutes les interventions : "
 
-#: callbacks.py:290
-msgid "Number of interventions"
-msgstr "Nombre d'interventions"
+#~ msgid "Time to arrival when a drone is sent"
+#~ msgstr "Temps de présentation quand le drone est envoyé"
 
-#: callbacks.py:306
-msgid "Time difference"
-msgstr "Différence de temps"
+#~ msgid "Time difference"
+#~ msgstr "Différence de temps"
+

@@ -350,7 +350,7 @@ def _compute_drone_time(
         'data': [trace3, trace4],
         'layout': go.Layout(
             xaxis={
-                'title': _('Time to arrival when a drone is sent'),
+                'title': _('Time to arrival when a drone is sent (in seconds)'),
                 'type': 'linear',
             },
             yaxis={
@@ -368,9 +368,10 @@ def _compute_drone_time(
             xaxis={
                 'title': u'Interventions',  # , quand le drone se présente avant le VSAV',
                 'type': 'linear',
+                'showgrid': False,
             },
             yaxis={
-                'title': _("Time difference"),
+                'title': _("Time difference: drone - BLS team (in seconds)"),
                 'type': 'linear',
             },
             margin={'l': 40, 'b': 40, 't': 10, 'r': 0},

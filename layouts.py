@@ -1,12 +1,12 @@
-import gettext
-
-import dash_core_components as dcc
-import dash_html_components as html
 import sys
 sys.path.append("./sankey")
-import sankey
 
+import gettext
+import dash_core_components as dcc
+import dash_html_components as html
+import sankey
 import drones
+
 
 _POSITIONS = list(drones.STARTING_POINTS.keys())
 
@@ -107,11 +107,24 @@ def create(lang):
     lang.install()
     return html.Div([
 
-        create_simulation_layout('A', style={
-            'border-right': 'solid 1px #ddd',
-            'margin-right': '15px',
-            'padding-right': '15px',
-        }),
-        create_simulation_layout('B', suffix='_b', input_drone='Centres de secours'),
+        html.Div([
 
-    ], style={'display': 'flex'})
+            create_simulation_layout('A', style={
+                'border-right': 'solid 1px #ddd',
+                'margin-right': '15px',
+                'padding-right': '15px',
+            }),
+            create_simulation_layout('B', suffix='_b', input_drone='Centres de secours'),
+        ], style={'display': 'flex'}),
+
+        html.Div(children=_("This graph shows the time difference between the simulated time to arrival of a drone and "
+                            "the actual time of arrival of the BLS team sent for every intervention. "
+                            "On the right hand side (positive values) a drone would have been faster by the number of"
+                            "seconds shown by the vertical bar. On the left hand side (negative values) the BLS team "
+                            "would have been faster again by the number of seconds shown by the vertical bar. "
+                            "Grey bars correspond to interventions for which a drone would not be sent, "
+                            "vertical values are the actual BLS team time to arrival.")),
+        ],
+        style={'display': 'inline'})
+
+
