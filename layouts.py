@@ -57,8 +57,7 @@ def create_tabs_layout():
                         html.P('blabla'),
                         html.H6("Drone parameters"),
                         html.P('blabla'),
-                    ]
-                                      ),
+                    ]),
                 ),
             ]),
         ]),)
