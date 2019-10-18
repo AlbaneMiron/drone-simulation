@@ -31,20 +31,22 @@ def create_tabs_layout():
                         ])
                         ),
 
-                dcc.Tab(label='Parameters simulation A',
-                        value='simA',
-                        children=html.Div(create_parameters_layout('A', style={
-                            'border-right': 'solid 1px #ddd',
-                            'margin-right': '15px',
-                            'padding-right': '15px',
-                        }),
-                                           ),
-                        ),
-                dcc.Tab(label='Parameters simulation B',
-                        value='simB',
-                        children=html.Div(create_parameters_layout('B', suffix='_b', input_drone='Centres de secours'),
-                                          ),
-                        ),
+                dcc.Tab(
+                    label='Parameters simulation A',
+                    value='simA',
+                    children=html.Div(create_parameters_layout('A', style={
+                        'border-right': 'solid 1px #ddd',
+                        'margin-right': '15px',
+                        'padding-right': '15px',
+                    })),
+                ),
+                dcc.Tab(
+                    label='Parameters simulation B',
+                    value='simB',
+                    children=html.Div(
+                        create_parameters_layout('B', suffix='_b', input_drone='Centres de secours'),
+                    ),
+                ),
 
                 dcc.Tab(
                     label='Parameters description',
