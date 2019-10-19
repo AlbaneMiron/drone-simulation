@@ -248,9 +248,9 @@ def _compute_drone_time(
     n_drone = len(dfi.loc[dfi[res_col_b] < 0])
     n_bls = len(dfi.loc[dfi[res_col_b] > 0]) - n_nodrone
 
-    per_drone = 100 * n_drone / n_tot
-    per_bls = 100 * n_bls / n_tot
-    per_nodrone = 100 * n_nodrone / n_tot
+    # per_drone = 100 * n_drone / n_tot
+    #     # per_bls = 100 * n_bls / n_tot
+    #     # per_nodrone = 100 * n_nodrone / n_tot
 
     dfi['col_bar'] = ['rgba(222,45,38,0.8)'] * len(dfi)
     dfi.loc[dfi[res_col_a] == 0, 'col_bar'] = 'rgba(204,204,204,1)'
