@@ -258,13 +258,13 @@ def _compute_drone_time(
     ynew = dfi.sort_values(res_col_b)
     list_col = list(ynew['col_bar'])
 
-    trace1 = go.Bar(
-        x=[0, 1, 2],
-        text=['Faster drone', 'BLS team faster', 'No drone sent'],
-        y=[per_drone, per_bls, per_nodrone],
-        textposition='auto',
-        name='Test'
-    )
+    # trace1 = go.Bar(
+    #     x=[0, 1, 2],
+    #     text=['Faster drone', 'BLS team faster', 'No drone sent'],
+    #     y=[per_drone, per_bls, per_nodrone],
+    #     textposition='auto',
+    #     name='Test'
+    # )
 
     # flight restriction reasons
     n_pub_place = in_a_public_place.sum()
@@ -304,23 +304,23 @@ def _compute_drone_time(
         marker=dict(color=list_col),
     )
 
-    indicator_graphic_1 = {
-        'data': [trace1],
-        'layout': go.Layout(
-            xaxis={
-                'title': _('Intervention distribution'),
-                'type': 'linear',
-                'showticklabels': False,
-            },
-            yaxis={
-                'title': _('Percentage of interventions'),
-                'type': 'linear',
-            },
-            # margin={'l': 40, 'b': 40, 't': 10, 'r': 0},
-            hovermode='closest',
-        ),
-
-    }
+    # indicator_graphic_1 = {
+    #     'data': [trace1],
+    #     'layout': go.Layout(
+    #         xaxis={
+    #             'title': _('Intervention distribution'),
+    #             'type': 'linear',
+    #             'showticklabels': False,
+    #         },
+    #         yaxis={
+    #             'title': _('Percentage of interventions'),
+    #             'type': 'linear',
+    #         },
+    #         # margin={'l': 40, 'b': 40, 't': 10, 'r': 0},
+    #         hovermode='closest',
+    #     ),
+    #
+    # }
 
     fsize = 100 / n_tot
     flows = [
@@ -378,12 +378,11 @@ def _compute_drone_time(
             hovermode='closest',
         )}
 
-    return indicator_graphic_1, flows, indicator_graphic_3, indicator_graphic_4
+    return flows, indicator_graphic_3, indicator_graphic_4
 
 
 @app.callback(
-    [Output('indicator-graphic1', 'figure'),
-     Output('flows-graphic', 'flows'),
+    [Output('flows-graphic', 'flows'),
      Output('indicator-graphic3', 'figure'),
      Output('indicator-graphic4', 'figure')],
     [Input('input_drone', 'value'),
@@ -412,8 +411,7 @@ def drone_time(
 
 
 @app.callback(
-    [Output('indicator-graphic1_b', 'figure'),
-     Output('flows-graphic_b', 'flows'),
+    [Output('flows-graphic_b', 'flows'),
      Output('indicator-graphic3_b', 'figure'),
      Output('indicator-graphic4_b', 'figure')],
     [Input('input_drone_b', 'value'),

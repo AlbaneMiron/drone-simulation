@@ -154,7 +154,7 @@ def create_graphs_layout(name, suffix='', style=None):
         html.H3(_('Simulation ') + name),
         html.H6(_('Results')),
         dcc.Loading(children=[
-            dcc.Graph(id=f'indicator-graphic1{suffix}'),
+            # dcc.Graph(id=f'indicator-graphic1{suffix}'),
             sankey.Sankey(id=f'flows-graphic{suffix}'),
             dcc.Graph(id=f'indicator-graphic3{suffix}'),
             dcc.Graph(id=f'indicator-graphic4{suffix}'),
