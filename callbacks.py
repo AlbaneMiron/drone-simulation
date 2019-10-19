@@ -143,8 +143,8 @@ def _compute_drone_time(
     :param input_jour: (str) whether drone flights are unauthorized at night (yes/no)
     :param detec_rate_home: (str) rate of OHCA detection by 18/112 operators ([0,1])
     :param no_witness_rate: (str) rate of OHCA at home, which only have one witness alone ([0,1])
-    :param detec_rate_vp: (str) odd ratio of OHCA in the streets vs OHCA at home or in a public place
-        detection by 18/112 operators ([0,1])
+    :param detec_rate_vp: (str) odd ratio of OHCA in the streets vs OHCA at home or in a public
+        place detection by 18/112 operators ([0,1])
     :param unavail_delta: (str) delay during which a drone is unavailable after being sent to an
         OHCA in hours
     :param lang: (str) the language code used by the interface.
@@ -201,7 +201,8 @@ def _compute_drone_time(
 
     in_a_public_place = df_res[col_indic_home] == 0
     # detection rate of OHCA in a public place
-    df_res, index_detec_rate_vp = select_interv(df_res, in_a_public_place, col_drone_delay, detec_rate_vp)
+    df_res, index_detec_rate_vp = \
+        select_interv(df_res, in_a_public_place, col_drone_delay, detec_rate_vp)
     # detection rate of OHCA in a private place (at home)
     df_res, index_detec_home = select_interv(df_res, ~in_a_public_place, col_drone_delay,
                                              detec_rate_home)

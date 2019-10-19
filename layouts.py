@@ -13,23 +13,29 @@ def create_tabs_layout():
     return html.Div(
         html.Div(id='app-control-tabs', className='control-tabs', children=[
             dcc.Tabs(id='app-tabs', value='what-is', children=[
-                dcc.Tab(label='About',
-                        value='what-is',
-                        children=html.Div(className='control-tab', children=[
-                            html.H4(className='what-is', children="App presentation"),
-                            html.P('This app simulates drones sent with Automatic External Defibrillators (AEDs) to '
-                                   'Out-of-Hospital Cardiac Arrest (OHCA) interventions. '
-                                   "Simulation is based on real life data, gathered in 2017 by Paris' Firefighters,  "
-                                   'who intervened on more than 3000 OHCA in Paris and Paris suburbs.'
-                                   ),
-                            html.P("The aim is to compare the hypothetical time to arrival of drones to the actual time"
-                                   "to arrival of BLS teams, and to estimate to what extent drones could improve "
-                                   "the chain of survival."),
-                            html.P("This app allows the user to compute their own simulation, by changing both "
-                                   "operational and drone flight parameters."),
-
-                        ])
+                dcc.Tab(
+                    label='About',
+                    value='what-is',
+                    children=html.Div(className='control-tab', children=[
+                        html.H4(className='what-is', children="App presentation"),
+                        html.P(
+                            'This app simulates drones sent with Automatic External Defibrillators '
+                            '(AEDs) to Out-of-Hospital Cardiac Arrest (OHCA) interventions. '
+                            "Simulation is based on real life data, gathered in 2017 by Paris' "
+                            'Firefighters, who intervened on more than 3000 OHCA in Paris and '
+                            'Paris suburbs.'
                         ),
+                        html.P(
+                            'The aim is to compare the hypothetical time to arrival of drones to '
+                            'the actual time to arrival of BLS teams, and to estimate to what '
+                            'extent drones could improve the chain of survival.'
+                        ),
+                        html.P(
+                            'This app allows the user to compute their own simulation, by changing '
+                            'both operational and drone flight parameters.'
+                        ),
+                    ])
+                ),
 
                 dcc.Tab(
                     label='Parameters simulation A',
@@ -43,9 +49,9 @@ def create_tabs_layout():
                 dcc.Tab(
                     label='Parameters simulation B',
                     value='simB',
-                    children=html.Div(
-                        create_parameters_layout('B', suffix='_b', input_drone='Centres de secours'),
-                    ),
+                    children=html.Div(create_parameters_layout(
+                        'B', suffix='_b', input_drone='Centres de secours',
+                    )),
                 ),
 
                 dcc.Tab(
@@ -122,11 +128,13 @@ def create_parameters_layout(name, suffix='', input_drone=_POSITIONS[0], style=N
                 dcc.Input(id=f'detec_delay{suffix}', value='104', type='text'),
 
                 html.Label(_(
-                    "Rate of OHCA at home, which are detected by call center operators (between 0 and 1):")),
+                    'Rate of OHCA at home, which are detected by call center operators (between 0 '
+                    'and 1):')),
                 dcc.Input(id=f'detec_rate_home{suffix}', value='0.8', type='text'),
 
                 html.Label(_(
-                    "Rate of OHCA in the streets, which are detected by call center operators (between 0 and 1):")),
+                    'Rate of OHCA in the streets, which are detected by call center operators '
+                    '(between 0 and 1):')),
                 dcc.Input(id=f'detec_rate_vp{suffix}', value='0.12', type='text'),
 
                 html.Label(_(
@@ -169,12 +177,14 @@ def create(lang):
                 create_graphs_layout('B', suffix='_b'),
             ], style={'display': 'flex'}),
 
-            html.Div(children=_("This graph shows the time difference between the simulated time to arrival of a drone and "
-                                "the actual time of arrival of the BLS team sent for every intervention. "
-                                "On the right hand side (positive values) a drone would have been faster by the number of"
-                                "seconds shown by the vertical bar. On the left hand side (negative values) the BLS team "
-                                "would have been faster again by the number of seconds shown by the vertical bar. "
-                                "Grey bars correspond to interventions for which a drone would not be sent, "
-                                "vertical values are the actual BLS team time to arrival.")),
+            html.Div(children=_(
+                'This graph shows the time difference between the simulated time to arrival of a '
+                'drone and the actual time of arrival of the BLS team sent for every intervention. '
+                'On the right hand side (positive values) a drone would have been faster by the '
+                'number of seconds shown by the vertical bar. On the left hand side (negative '
+                'values) the BLS team would have been faster again by the number of seconds shown '
+                'by the vertical bar. Grey bars correspond to interventions for which a drone '
+                'would not be sent, vertical values are the actual BLS team time to arrival.'
+            )),
         ])
     ],)
