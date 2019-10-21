@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8a5d5635-a35f-4d28-81c8-dea19f3377c9" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/callbacks.py" beforeDir="false" afterPath="$PROJECT_DIR$/callbacks.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -145,6 +146,14 @@
       <workItem from="1567844310006" duration="13169000" />
       <workItem from="1568219417379" duration="4790000" />
     </task>
+    <task id="LOCAL-00001" summary="Change colors for butterfly graph">
+      <created>1571687736360</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1571687736360</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -174,6 +183,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Change colors for butterfly graph" />
+    <option name="LAST_COMMIT_MESSAGE" value="Change colors for butterfly graph" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -252,12 +252,16 @@ def _compute_drone_time(
     #     # per_bls = 100 * n_bls / n_tot
     #     # per_nodrone = 100 * n_nodrone / n_tot
 
+    dfi['text'] = [_('<b>BLS team faster</b> <br> by: ')] * len(dfi)
     dfi['col_bar'] = ['rgba(222,45,38,0.8)'] * len(dfi)
     dfi.loc[dfi[res_col_b] < 0, 'col_bar'] = 'rgba(0,128,0,0.8)'
+    dfi.loc[dfi[res_col_b] < 0, 'text'] = _('<b>Drone faster</b> <br> by: ')
+    dfi.loc[dfi[res_col_a] == 0, 'text'] = _('<b>No drone</b> <br> BLS team time to arrival: ')
     dfi.loc[dfi[res_col_a] == 0, 'col_bar'] = 'rgba(204,204,204,1)'
     dfi[res_col_b] = - dfi[res_col_b]
     ynew = dfi.sort_values(res_col_b)
     list_col = list(ynew['col_bar'])
+    list_text = list(ynew['text'])
 
     # trace1 = go.Bar(
     #     x=[0, 1, 2],
@@ -301,8 +305,11 @@ def _compute_drone_time(
 
     trace5 = go.Bar(
         x=[i for i in range(0, len(dfi))],
-        y=ynew[res_col_b], name=_('Time saved with a drone'),
+        y=ynew[res_col_b],
+        name=_('Time saved with a drone'),
         marker=dict(color=list_col),
+        text=list_text,
+        hovertemplate='%{text}%{y} seconds',
     )
 
     # indicator_graphic_1 = {
