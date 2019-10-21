@@ -253,6 +253,7 @@ def _compute_drone_time(
     #     # per_nodrone = 100 * n_nodrone / n_tot
 
     dfi['col_bar'] = ['rgba(222,45,38,0.8)'] * len(dfi)
+    dfi.loc[dfi[res_col_b] < 0, 'col_bar'] = 'rgba(0,128,0,0.8)'
     dfi.loc[dfi[res_col_a] == 0, 'col_bar'] = 'rgba(204,204,204,1)'
     dfi[res_col_b] = - dfi[res_col_b]
     ynew = dfi.sort_values(res_col_b)
