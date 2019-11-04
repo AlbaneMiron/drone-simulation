@@ -4,12 +4,10 @@ import dash_html_components as html
 import sankey
 import drones
 
-
 _POSITIONS = list(drones.STARTING_POINTS.keys())
 
 
 def create_tabs_layout():
-
     return html.Div(
         html.Div(id='app-control-tabs', className='control-tabs', children=[
             dcc.Tabs(id='app-tabs', value='what-is', children=[
@@ -59,18 +57,47 @@ def create_tabs_layout():
                     value='datasets',
                     children=html.Div(className='control-tab', children=[
                         html.H4(className='datasets', children="Parameters description"),
-                        html.H6("Operational parameters"),
-                        html.P('blabla'),
-                        html.H6("Drone parameters"),
-                        html.P('blabla'),
+                        html.H6(_("Operational parameters")),
+                        dcc.Markdown(_('''
+                            - Delay at departure: delay at departure needed for the operator to set up
+                            flight information for the drone then for the fire station where the drone is stationed
+                            to launch it.
+                            - Delay on arrival: delay on arrival needed for the drone to narrow its landing and for
+                            the bystander to catch the AED.
+                            - Delay between detection of unconsciousness and OHCA detection:  mean time spent between
+                            unconsciousness and OHCA detection by emergency call dispatchers. Unconsciousness detection
+                            activates BLS teams whereas drones are activated only at OHCA detection.
+                            - Rate of OHCA at home, which are detected by call center operators: when the OHCA is not
+                            detected by the emergency dispatchers no drone is sent.
+                            - Rate of OHCA in the streets, which are detected by call center operators: when the OHCA is
+                            not detected by the emergency dispatchers no drone is sent.
+                            - Rate of OHCA at home, which only have one witness alone: The simulation requires at least
+                            two witnesses for OHCA at home : one to stay near the victim, the other to go out in the
+                            street to get the AED brought by drone.
+                            ''')),
+                        html.H6(_("Drone parameters")),
+                        dcc.Markdown(_('''
+                            - Initial drone location : where drones are stationed. The simulator selects
+                             the closest available drone (as the crow flies).
+                             - Max drone speed: maximum horizontal speed.
+                             - Drone's acceleration time: time needed for the drone to reach its
+                                  maximum horizontal speed.
+                             - Drone's vertical speed: maximum vertical speed. It is assumed that the time
+                                   needed for the drone to reach this speed is negligible.
+                            - Drone's cruise altitude: horizontal cruise altitude.
+                            - Unavailability of the drone after a run: time needed after a run for the
+                                  drone to be available again. It accounts for the time spent on the OHCA
+                                  location and the time of refurbishment and rehabilitation of equipment.
+                            - Flying restricted to aeronautical day: whether the drone can only fly
+                                  during the aeronautical day or not.
+                             ''')),
                     ]),
                 ),
             ]),
-        ]),)
+        ]), )
 
 
 def create_parameters_layout(name, suffix='', input_drone=_POSITIONS[0], style=None):
-
     return html.Div([
         html.H3(_('Simulation ') + name),
 
@@ -143,7 +170,7 @@ def create_parameters_layout(name, suffix='', input_drone=_POSITIONS[0], style=N
 
             ], style={'flex': 1}),
 
-            html.Button(id=f'seq_start{suffix}', n_clicks=0, children='Submit'),
+            html.Button(id=f'seq_start{suffix}', n_clicks=0, children=_('Update simulation')),
 
         ], style={'display': 'flex'}),
 
@@ -151,7 +178,6 @@ def create_parameters_layout(name, suffix='', input_drone=_POSITIONS[0], style=N
 
 
 def create_graphs_layout(name, suffix='', style=None):
-
     return html.Div([
         html.H3(_('Simulation ') + name),
         html.H6(_('Results')),
@@ -168,7 +194,7 @@ def create(lang):
     lang = gettext.translation('messages', localedir='locales', languages=[lang], fallback=True)
     lang.install()
     return html.Div([
-        html.Div(id='vp-control-tabs', className='control-tabs', children=[create_tabs_layout()],),
+        html.Div(id='vp-control-tabs', className='control-tabs', children=[create_tabs_layout()], ),
         html.Div(id='vp-page-content', className='app-body', children=[
             html.Div([
                 create_graphs_layout('A', style={
@@ -189,4 +215,4 @@ def create(lang):
                 'would not be sent, vertical values are the actual BLS team time to arrival.'
             )),
         ])
-    ],)
+    ], )
