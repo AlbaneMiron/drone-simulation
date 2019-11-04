@@ -143,6 +143,8 @@ def create_parameters_layout(name, suffix='', input_drone=_POSITIONS[0], style=N
 
             ], style={'flex': 1}),
 
+            html.Button(id=f'seq_start{suffix}', n_clicks=0, children='Submit'),
+
         ], style={'display': 'flex'}),
 
     ], style={'flex': 1} if style is None else dict(style, flex=1))

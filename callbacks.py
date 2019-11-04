@@ -3,7 +3,7 @@ import datetime as dt
 import gettext
 import math
 
-from dash.dependencies import Input, Output
+from dash.dependencies import Input, Output, State
 import geopy.distance
 import numpy as np
 import pandas as pd
@@ -124,6 +124,7 @@ def select_interv(all_interventions, condition, column, rate):
 
 
 def _compute_drone_time(
+        seq_start,
         drone_input,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
         input_jour_, detec_rate_home, no_witness_rate, detec_rate_vp, unavail_delta, lang):
@@ -166,6 +167,8 @@ def _compute_drone_time(
     # detec_rate_vp = '0.15'
     # unavail_delta = '6'
     # lang = 'fr'
+
+    print(seq_start)
 
     if lang:
         t11n = gettext.translation('messages', localedir='locales', languages=[lang], fallback=True)
@@ -300,7 +303,8 @@ def _compute_drone_time(
     df_density = copy.deepcopy(dfi)
     df_density = df_density.loc[df_density[res_col_a] > 0]
 
-    trace3 = go.Histogram(x=df_density[col_BLS_time], name=_('BLS team'))
+    trace3 = go.Histogram(x=df_density[col_BLS_time],
+                          name=_('BLS team'))
     trace4 = go.Histogram(x=df_density[res_col_a], name=_('Drone'))
 
     trace5 = go.Bar(
@@ -393,26 +397,29 @@ def _compute_drone_time(
     [Output('flows-graphic', 'flows'),
      Output('indicator-graphic3', 'figure'),
      Output('indicator-graphic4', 'figure')],
-    [Input('input_drone', 'value'),
-     Input('speed', 'value'),
-     Input('acc', 'value'),
-     Input('vert-acc', 'value'),
-     Input('alt', 'value'),
-     Input('dep_delay', 'value'),
-     Input('arr_delay', 'value'),
-     Input('detec_delay', 'value'),
-     Input('day', 'value'),
-     Input('detec_rate_home', 'value'),
-     Input('wit_detec', 'value'),
-     Input('detec_rate_vp', 'value'),
-     Input('unavail_delta', 'value'),
-     Input('lang', 'value')])
+    [Input('seq_start', 'n_clicks')],
+    [State('input_drone', 'value'),
+     State('speed', 'value'),
+     State('acc', 'value'),
+     State('vert-acc', 'value'),
+     State('alt', 'value'),
+     State('dep_delay', 'value'),
+     State('arr_delay', 'value'),
+     State('detec_delay', 'value'),
+     State('day', 'value'),
+     State('detec_rate_home', 'value'),
+     State('wit_detec', 'value'),
+     State('detec_rate_vp', 'value'),
+     State('unavail_delta', 'value'),
+     State('lang', 'value')])
 def drone_time(
+        seq_start,
         drone_input,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
         input_jour_, detec_rate_home, no_witness_rate, detec_rate_vp, unavail_delta, lang):
 
     return _compute_drone_time(
+        seq_start,
         drone_input,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
         input_jour_, detec_rate_home, no_witness_rate, detec_rate_vp, unavail_delta, lang)
@@ -422,26 +429,29 @@ def drone_time(
     [Output('flows-graphic_b', 'flows'),
      Output('indicator-graphic3_b', 'figure'),
      Output('indicator-graphic4_b', 'figure')],
-    [Input('input_drone_b', 'value'),
-     Input('speed_b', 'value'),
-     Input('acc_b', 'value'),
-     Input('vert-acc_b', 'value'),
-     Input('alt_b', 'value'),
-     Input('dep_delay_b', 'value'),
-     Input('arr_delay_b', 'value'),
-     Input('detec_delay_b', 'value'),
-     Input('day_b', 'value'),
-     Input('detec_rate_home_b', 'value'),
-     Input('wit_detec_b', 'value'),
-     Input('detec_rate_vp_b', 'value'),
-     Input('unavail_delta_b', 'value'),
-     Input('lang', 'value')])
+    [Input('seq_start_b', 'n_clicks')],
+    [State('input_drone_b', 'value'),
+     State('speed_b', 'value'),
+     State('acc_b', 'value'),
+     State('vert-acc_b', 'value'),
+     State('alt_b', 'value'),
+     State('dep_delay_b', 'value'),
+     State('arr_delay_b', 'value'),
+     State('detec_delay_b', 'value'),
+     State('day_b', 'value'),
+     State('detec_rate_home_b', 'value'),
+     State('wit_detec_b', 'value'),
+     State('detec_rate_vp_b', 'value'),
+     State('unavail_delta_b', 'value'),
+     State('lang', 'value')])
 def drone_time_b(
+        seq_start,
         drone_input,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
         input_jour_, detec_rate_home, no_witness_rate, detec_rate_vp, unavail_delta, lang):
 
     return _compute_drone_time(
+        seq_start,
         drone_input,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
         input_jour_, detec_rate_home, no_witness_rate, detec_rate_vp, unavail_delta, lang)
