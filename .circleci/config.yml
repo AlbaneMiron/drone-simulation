@@ -1,5 +1,8 @@
 version: 2
+
+
 jobs:
+
   build:
     docker:
       # Launch in a container that can run docker and docker-compose easily.
@@ -13,3 +16,42 @@ jobs:
           name: Check for lints.
           command: |
             docker-compose build test
+
+  deploy:
+    docker:
+      - image: bayesimpact/circleci
+    steps:
+      - checkout
+      - setup_remote_docker:
+          # Allows to use previous cached version of the built Docker services.
+          reusable: true
+      - run:
+          name: Setup Google SDK
+          command: |
+            gcloud --quiet components update
+            echo $GCLOUD_SERVICE_KEY | base64 --decode | gcloud auth activate-service-account --key-file=-
+      - run:
+          name: Build and publish the prod version.
+          command: |
+            docker build --target prod -t eu.gcr.io/drone-simulation/server .
+            gcloud auth configure-docker
+            docker push eu.gcr.io/drone-simulation/server
+      - run:
+          name: Deploy the version we just created.
+          command: |
+            gcloud beta run deploy drone-simulation --image eu.gcr.io/drone-simulation/server --platform managed --project drone-simulation --region europe-west1 --allow-unauthenticated
+
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - master
+                - deploy-on-success
