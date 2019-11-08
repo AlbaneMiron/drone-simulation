@@ -31,6 +31,11 @@ col_lat_inter = 'new_lat'
 # Longitude WGS84
 col_lon_inter = 'new_lon'
 
+# indicator: 1 if wind is low enough to fly (less than 50 km/h)
+col_indic_wind = 'rafales < 50 km/h'
+# indicator: 1 if sight is clear enough to fly
+col_indic_sight = 'visibilite > 200m'
+
 col_drone_delay = 'col_res'
 
 avail_ini_pc = np.genfromtxt('data/coords_pc.csv', delimiter=',', dtype=str)
@@ -40,6 +45,8 @@ df_initial = pd.read_csv('data/dataACRtime_GPSCSPCpostime_v7.csv', encoding='lat
 df_initial[col_time_em_call] = pd.to_datetime(df_initial[col_time_em_call])
 df_initial = df_initial.loc[df_initial[col_BLS_time] >= 0]
 df_initial = df_initial.loc[df_initial[col_BLS_time] <= 25 * 60]
+df_initial = df_initial.loc[df_initial[col_indic_wind] == 1]
+df_initial = df_initial.loc[df_initial[col_indic_sight] == 1]
 
 
 def update_avail(time_dec, avail, unavail):
