@@ -317,7 +317,7 @@ def _compute_drone_time(
     trace5 = go.Bar(
         x=[i for i in range(0, len(dfi))],
         y=ynew[res_col_b],
-        name=_('Time saved with a drone'),
+        name='',
         marker=dict(color=list_col),
         text=list_text,
         hovertemplate='%{text}%{y} seconds',
