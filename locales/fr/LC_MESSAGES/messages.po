@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-10-16 13:48+0000\n"
+"POT-Creation-Date: 2019-11-10 17:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -18,137 +18,269 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.7.0\n"
 
-#: callbacks.py:266
-msgid "Test"
-msgstr "Test"
+#: callbacks.py:265
+msgid "<b>BLS team faster</b> <br> by: "
+msgstr "<b>VSAV plus rapide</b> <br> de : "
 
-#: callbacks.py:298
+#: callbacks.py:268
+msgid "<b>Drone faster</b> <br> by: "
+msgstr "<b>Drone plus rapide</b> <br> de : "
+
+#: callbacks.py:269
+msgid "<b>No drone</b> <br> BLS team time to arrival: "
+msgstr "<b>Pas de drone</b> <br> temps de présentation du VSAV : "
+
+#: callbacks.py:314
 msgid "BLS team"
 msgstr "VSAV"
 
-#: callbacks.py:299
+#: callbacks.py:315
 msgid "Drone"
 msgstr "Drone"
 
-#: callbacks.py:303
-msgid "Time saved with a drone"
-msgstr "Temps gagné avec le drone"
-
-#: callbacks.py:311
-msgid "Intervention distribution"
-msgstr "Répartition des interventions"
-
-#: callbacks.py:316
-msgid "Percentage of interventions"
-msgstr "Pourcentage d'interventions"
-
-#: callbacks.py:330
+#: callbacks.py:349
 msgid "Not detected"
 msgstr "ACR non détecté"
 
-#: callbacks.py:335
+#: callbacks.py:354
 msgid "Not enough witnesses"
 msgstr "Un seul témoin à domicile"
 
-#: callbacks.py:340
+#: callbacks.py:359
 msgid "BLS team faster than drone"
 msgstr "VSAV plus rapide que le drone"
 
-#: callbacks.py:345
+#: callbacks.py:364
 msgid "Drone faster"
 msgstr "Drone plus rapide"
 
-#: callbacks.py:353
+#: callbacks.py:372
 msgid "Time to arrival when a drone is sent (in seconds)"
 msgstr "Temps de présentation quand un drone est envoyé (en secondes)"
 
-#: callbacks.py:357
+#: callbacks.py:376
 msgid "Number of interventions"
 msgstr "Nombre d'interventions"
 
-#: callbacks.py:374
-msgid "Time difference (in seconds)"
-msgstr "Différence de temps (en secondes)"
+#: callbacks.py:393
+msgid "Time difference drone - BLS team (in seconds)"
+msgstr "Différence de temps entre le drone et le VSAV (en secondes)"
 
-#: layouts.py:15
-msgid "Simulation "
-msgstr "Simulation"
-
-#: layouts.py:19
-msgid "Drone parameters"
-msgstr "Paramètres du drone"
-
-#: layouts.py:21
-msgid "Initial drone location"
-msgstr "Position initiale du drone"
-
-#: layouts.py:29
-msgid "Max drone speed (in km/h)"
-msgstr "Vitesse max du drone (en km/h)"
-
-#: layouts.py:32
-msgid "Drone's acceleration time (in sec):"
-msgstr "Durée d'accélération du drone (en sec) :"
-
-#: layouts.py:35
-msgid "Drone's vertical speed (in m/s):"
-msgstr "Vitesse verticale du drone (en m/s) :"
-
-#: layouts.py:38
-msgid "Drone's cruise altitude (in m):"
-msgstr "Altitude de croisière du drone (en m) :"
-
-#: layouts.py:41
-msgid "Unavailability of the drone after a run (in h):"
-msgstr "Indisponibilité du drone après un lancer (en h) :"
-
-#: layouts.py:44
-msgid "Flying restricted to aeronautical day"
-msgstr "Vol uniquement pendant le jour aéronautique"
-
-#: layouts.py:48
-msgid "Yes"
-msgstr "Oui"
-
-#: layouts.py:49
-msgid "No"
-msgstr "Non"
-
-#: layouts.py:58
+#: layouts.py:60 layouts.py:145
 msgid "Operational parameters"
 msgstr "Paramètres opérationnels"
 
-#: layouts.py:60
+#: layouts.py:61
+msgid ""
+"\n"
+"                            - Delay at departure: delay at departure "
+"needed for the operator to set up\n"
+"                            flight information for the drone then for the"
+" fire station where the drone is stationed\n"
+"                            to launch it.\n"
+"                            - Delay on arrival: delay on arrival needed "
+"for the drone to narrow its landing and for\n"
+"                            the bystander to catch the AED.\n"
+"                            - Delay between detection of unconsciousness "
+"and OHCA detection:  mean time spent between\n"
+"                            unconsciousness and OHCA detection by "
+"emergency call dispatchers. Unconsciousness detection\n"
+"                            activates BLS teams whereas drones are "
+"activated only at OHCA detection.\n"
+"                            - Rate of OHCA at home, which are detected by"
+" call center operators: when the OHCA is not\n"
+"                            detected by the emergency dispatchers no "
+"drone is sent.\n"
+"                            - Rate of OHCA in the streets, which are "
+"detected by call center operators: when the OHCA is\n"
+"                            not detected by the emergency dispatchers no "
+"drone is sent.\n"
+"                            - Rate of OHCA at home, which only have one "
+"witness alone: The simulation requires at least\n"
+"                            two witnesses for OHCA at home : one to stay "
+"near the victim, the other to go out in the\n"
+"                            street to get the AED brought by drone.\n"
+"                            "
+msgstr ""
+"\n"
+"                            - Retard au départ : durée nécessaire à l'opérateur "
+"pour entrer les informations de vol\n"
+"                            pour le drone et à la caserne du drone selectionné de "
+"le faire décoller.\n"
+"                            - Retard à l'arrivée : durée à l'arrivée "
+"durant laquelle le drone précise sa position \n"
+"                            d'arrivée et le témoin récupère le DSA.\n"
+"                            - Décalage de détection inconscience/ACR : "
+"durée moyenne entre \n"
+"                            la détection d'inconscience et la détection d'un ACR "
+"par l'opérateur 18/112. Les VSAV sont déclenchés au diagnostic\n"
+"                            d'inconscience, les drones sont activés quand "
+"l'ACR est détecté.\n"
+"                            - Taux d'ACR à domicile détectés par l'opérateur :"
+"les drones ne sont pas activés\n"
+"si l'ACR n'est pas détecté au téléphone\n"
+
+"                            - Taux d'ACR en lieu public détectés par l'opérateur : "
+" les drones ne sont \n"
+" pas activés si l'ACR n'est pas détecté au téléphone.\n"
+"                            - Taux de témoins seuls ACR lieu privé :
+" la simulation demande au moins \n"
+"deux témoins pour les ACR à domicile : le premier pour rester auprès de la victime, \n"
+"et le second pour descendre dans la rue chercher le DSA apporté par drone.\n"
+"                            "
+
+#: layouts.py:78 layouts.py:106
+msgid "Drone parameters"
+msgstr "Paramètres du drone"
+
+#: layouts.py:79
+msgid ""
+"\n"
+"                            - Initial drone location : where drones are "
+"stationed. The simulator selects\n"
+"                             the closest available drone (as the crow "
+"flies).\n"
+"                             - Max drone speed: maximum horizontal speed."
+"\n"
+"                             - Drone's acceleration time: time needed for"
+" the drone to reach its\n"
+"                                  maximum horizontal speed.\n"
+"                             - Drone's vertical speed: maximum vertical "
+"speed. It is assumed that the time\n"
+"                                   needed for the drone to reach this "
+"speed is negligible.\n"
+"                            - Drone's cruise altitude: horizontal cruise "
+"altitude.\n"
+"                            - Unavailability of the drone after a run: "
+"time needed after a run for the\n"
+"                                  drone to be available again. It "
+"accounts for the time spent on the OHCA\n"
+"                                  location and the time of refurbishment "
+"and rehabilitation of equipment.\n"
+"                            - Flying restricted to aeronautical day: "
+"whether the drone can only fly\n"
+"                                  during the aeronautical day or not.\n"
+"                             "
+msgstr ""
+"\n"
+"                            - Position initiale du drone : position des drones "
+"avant envoi. Le simulateur selectionne\n"
+"                             le drone disponible le plus proche à vol d'"
+"oiseau.\n"
+"                             - Vitesse max du drone : vitesse maximale horizontale."
+"\n"
+"                             - Durée d'accélération du drone :  temps mis par le drone "
+"pour atteindre\n"
+"                                  sa vitesse horizontale maximale.\n"
+"                             - Vitesse verticale du drone : vitesse verticale maximale. "
+" On considère que le temps\n"
+"                                  mis par le drone pour atteindre cette  "
+"vitesse est négligeable.\n"
+"                            - Altitude de croisière du drone : altitude de "
+"croisière.\n"
+"                            - Indisponibilité du drone après un lancer : "
+"durée nécessaire après l'envoi \n"
+"                                  du drone avant qu'il redevienne disponible. Cela "
+"comprend le temps passé sur les lieux de l'intervention\n"
+"et la durée nécessaire à la remise en condition du matériel.\n"
+"                            - Vol uniquement pendant le jour aéronautique : "
+"détermine si le drone peut voler uniquement \n"
+"                                  durant le jour aéronautique ou pas.\n"
+"                             "
+
+#: layouts.py:102 layouts.py:182
+msgid "Simulation "
+msgstr "Simulation"
+
+#: layouts.py:108
+msgid "Initial drone location"
+msgstr "Position initiale du drone"
+
+#: layouts.py:116
+msgid "Max drone speed (in km/h)"
+msgstr "Vitesse max du drone (en km/h)"
+
+#: layouts.py:119
+msgid "Drone's acceleration time (in sec):"
+msgstr "Durée d'accélération du drone (en sec) :"
+
+#: layouts.py:122
+msgid "Drone's vertical speed (in m/s):"
+msgstr "Vitesse verticale du drone (en m/s) :"
+
+#: layouts.py:125
+msgid "Drone's cruise altitude (in m):"
+msgstr "Altitude de croisière du drone (en m) :"
+
+#: layouts.py:128
+msgid "Unavailability of the drone after a run (in h):"
+msgstr "Indisponibilité du drone après un lancer (en h) :"
+
+#: layouts.py:131
+msgid "Flying restricted to aeronautical day"
+msgstr "Vol uniquement pendant le jour aéronautique"
+
+#: layouts.py:135
+msgid "Yes"
+msgstr "Oui"
+
+#: layouts.py:136
+msgid "No"
+msgstr "Non"
+
+#: layouts.py:147
 msgid "Delay at departure (in s):"
 msgstr "Retard au départ (en s) :"
 
-#: layouts.py:63
+#: layouts.py:150
 msgid "Delay on arrival (in s):"
 msgstr "Retard à l'arrivée (en s) :"
 
-#: layouts.py:66
+#: layouts.py:153
 msgid "Delay between detection of unconsciousness and OHCA detection (in s):"
 msgstr "Décalage de détection inconscience/ACR (en s) :"
 
-#: layouts.py:70
-msgid "Rate of OHCA detection by call center operators (between 0 and 1):"
-msgstr "Taux de détection des ACR à la prise d'appel (entre 0 et 1) :"
-
-#: layouts.py:74
+#: layouts.py:157
 msgid ""
-"Odd ratio of OHCA in the streets vs OHCA at home or in a public place "
-"detection by call center operators (between 0 and 1):"
-msgstr ""
-"Odd ratio de la détection ACR voie publique à la prise d'appel (entre 0 "
-"et 1) :"
+"Rate of OHCA at home, which are detected by call center operators "
+"(between 0 and 1):"
+msgstr "Taux d'ACR à domicile détectés par l'opérateur (entre 0 et 1) : "
 
-#: layouts.py:79
+#: layouts.py:162
+msgid ""
+"Rate of OHCA in the streets, which are detected by call center operators "
+"(between 0 and 1):"
+msgstr "Taux d'ACR en lieu public détectés par l'opérateur (entre 0 et 1) : "
+
+#: layouts.py:167
 msgid "Rate of OHCA at home, which only have one witness alone (between 0 and 1):"
 msgstr "Taux de témoins seuls ACR lieu privé (entre 0 et 1) :"
 
-#: layouts.py:87
+#: layouts.py:173
+msgid "Update simulation"
+msgstr "Lancer la simulation"
+
+#: layouts.py:183
 msgid "Results"
 msgstr "Résultats"
+
+#: layouts.py:208
+msgid ""
+"This graph shows the time difference between the simulated time to "
+"arrival of a drone and the actual time of arrival of the BLS team sent "
+"for every intervention. On the right hand side (positive values) a drone "
+"would have been faster by the number of seconds shown by the vertical "
+"bar. On the left hand side (negative values) the BLS team would have been"
+" faster again by the number of seconds shown by the vertical bar. Grey "
+"bars correspond to interventions for which a drone would not be sent, "
+"vertical values are the actual BLS team time to arrival."
+msgstr "Ce graphique montre la différence entre le temps de présentation simulé du drone "
+" et le temps de présentation réél du VSAV qui avait été envoyé sur l'intervention. "
+" Du côté droit (valeurs positives), le drone aurait été plus rapide que le drone du nombre de secondes "
+"indiqué sur la barre verticale. Du côté gauche (valeurs négatives) le VSAV aurait été plus "
+"rapide que le drone du nombre de secondes indiqué par la barre verticale. "
+"Les barres grises représentent des interventions pour lesquelles un drone n'aurait "
+"pas été envoyé, et les barres indiquent le temps de présentation du VSAV."
 
 #~ msgid "A gauche, VSAV plus rapide. A droite drone plus rapide"
 #~ msgstr ""
@@ -164,4 +296,32 @@ msgstr "Résultats"
 
 #~ msgid "Time difference"
 #~ msgstr "Différence de temps"
+
+#~ msgid "Test"
+#~ msgstr "Test"
+
+#~ msgid "Intervention distribution"
+#~ msgstr "Répartition des interventions"
+
+#~ msgid "Percentage of interventions"
+#~ msgstr "Pourcentage d'interventions"
+
+#~ msgid "Time difference (in seconds)"
+#~ msgstr "Différence de temps (en secondes)"
+
+#~ msgid "Rate of OHCA detection by call center operators (between 0 and 1):"
+#~ msgstr "Taux de détection des ACR à la prise d'appel (entre 0 et 1) :"
+
+#~ msgid ""
+#~ "Odd ratio of OHCA in the streets"
+#~ " vs OHCA at home or in a "
+#~ "public place detection by call center"
+#~ " operators (between 0 and 1):"
+#~ msgstr ""
+#~ "Odd ratio de la détection ACR voie"
+#~ " publique à la prise d'appel (entre"
+#~ " 0 et 1) :"
+
+#~ msgid "Time saved with a drone"
+#~ msgstr "Temps gagné avec le drone"
 
