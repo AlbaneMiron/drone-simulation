@@ -45,8 +45,6 @@ df_initial = pd.read_csv('data/dataACRtime_GPSCSPCpostime_v7.csv', encoding='lat
 df_initial[col_time_em_call] = pd.to_datetime(df_initial[col_time_em_call])
 df_initial = df_initial.loc[df_initial[col_BLS_time] >= 0]
 df_initial = df_initial.loc[df_initial[col_BLS_time] <= 25 * 60]
-df_initial = df_initial.loc[df_initial[col_indic_wind] == 1]
-df_initial = df_initial.loc[df_initial[col_indic_sight] == 1]
 
 
 def update_avail(time_dec, avail, unavail):
@@ -209,6 +207,9 @@ def _compute_drone_time(
         no_drone['night'] = index_nuit
         df_res.loc[index_nuit, col_drone_delay] = 0
 
+    df_res.loc[df_res[col_indic_wind] == 1, col_drone_delay] = 0
+    df_res.loc[df_res[col_indic_sight] == 1, col_drone_delay] = 0
+
     in_a_public_place = df_res[col_indic_home] == 0
     # detection rate of OHCA in a public place
     df_res, index_detec_rate_vp = \
@@ -262,6 +263,7 @@ def _compute_drone_time(
     #     # per_bls = 100 * n_bls / n_tot
     #     # per_nodrone = 100 * n_nodrone / n_tot
 
+    dfi['res_col_c'] = np.abs(dfi[res_col_b])
     dfi['text'] = [_('<b>BLS team faster</b> <br> by: ')] * len(dfi)
     dfi['col_bar'] = ['rgba(222,45,38,0.8)'] * len(dfi)
     dfi.loc[dfi[res_col_b] < 0, 'col_bar'] = 'rgba(0,128,0,0.8)'
