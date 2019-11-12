@@ -207,8 +207,8 @@ def _compute_drone_time(
         no_drone['night'] = index_nuit
         df_res.loc[index_nuit, col_drone_delay] = 0
 
-    df_res.loc[df_res[col_indic_wind] == 1, col_drone_delay] = 0
-    df_res.loc[df_res[col_indic_sight] == 1, col_drone_delay] = 0
+    df_res.loc[df_res[col_indic_wind] == 0, col_drone_delay] = 0
+    df_res.loc[df_res[col_indic_sight] == 0, col_drone_delay] = 0
 
     in_a_public_place = df_res[col_indic_home] == 0
     # detection rate of OHCA in a public place
