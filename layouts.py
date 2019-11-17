@@ -12,31 +12,33 @@ def create_tabs_layout():
         html.Div(id='app-control-tabs', className='control-tabs', children=[
             dcc.Tabs(id='app-tabs', value='what-is', children=[
                 dcc.Tab(
-                    label='About',
+                    label=_('About'),
                     value='what-is',
                     children=html.Div(className='control-tab', children=[
                         html.H4(className='what-is', children="App presentation"),
                         html.P(
-                            'This app simulates drones sent with Automatic External Defibrillators '
-                            '(AEDs) to Out-of-Hospital Cardiac Arrest (OHCA) interventions. '
-                            "Simulation is based on real life data, gathered in 2017 by Paris' "
-                            'Firefighters, who intervened on more than 3000 OHCA in Paris and '
-                            'Paris suburbs.'
+                            _('This app simulates drones sent with Automatic External '
+                              'Defibrillators '
+                              '(AEDs) to Out-of-Hospital Cardiac Arrest (OHCA) interventions. '
+                              "Simulation is based on real life data, gathered in 2017 by Paris' "
+                              'Firefighters, who intervened on more than 3000 OHCA in Paris and '
+                              'Paris suburbs.')
                         ),
                         html.P(
-                            'The aim is to compare the hypothetical time to arrival of drones to '
-                            'the actual time to arrival of BLS teams, and to estimate to what '
-                            'extent drones could improve the chain of survival.'
+                            _('The aim is to compare the hypothetical time to arrival of drones to '
+                              'the actual time to arrival of BLS teams, and to estimate to what '
+                              'extent drones could improve the chain of survival.')
                         ),
                         html.P(
-                            'This app allows the user to compute their own simulation, by changing '
-                            'both operational and drone flight parameters.'
+                            _('This app allows the user to compute their own simulation, '
+                              'by changing '
+                              'both operational and drone flight parameters.')
                         ),
                     ])
                 ),
 
                 dcc.Tab(
-                    label='Parameters simulation A',
+                    label=_('Parameters simulation A'),
                     value='simA',
                     children=html.Div(create_parameters_layout('A', style={
                         'border-right': 'solid 1px #ddd',
@@ -45,7 +47,7 @@ def create_tabs_layout():
                     })),
                 ),
                 dcc.Tab(
-                    label='Parameters simulation B',
+                    label=_('Parameters simulation B'),
                     value='simB',
                     children=html.Div(create_parameters_layout(
                         'B', suffix='_b', input_drone='Centres de secours',
@@ -53,7 +55,7 @@ def create_tabs_layout():
                 ),
 
                 dcc.Tab(
-                    label='Parameters description',
+                    label=_('Parameters description'),
                     value='datasets',
                     children=html.Div(className='control-tab', children=[
                         html.H4(className='datasets', children="Parameters description"),

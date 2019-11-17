@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-11-10 17:36+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2019-11-17 22:13+0000\n"
+"PO-Revision-Date: 2019-11-17 23:11+0100\n"
+"Last-Translator: \n"
 "Language: fr\n"
 "Language-Team: fr <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
@@ -18,59 +18,110 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.7.0\n"
 
-#: callbacks.py:265
-msgid "<b>BLS team faster</b> <br> by: "
-msgstr "<b>VSAV plus rapide</b> <br> de : "
-
-#: callbacks.py:268
+#: callbacks.py:273
 msgid "<b>Drone faster</b> <br> by: "
 msgstr "<b>Drone plus rapide</b> <br> de : "
 
-#: callbacks.py:269
+#: callbacks.py:276
+msgid "<b>BLS team faster</b> <br> by: "
+msgstr "<b>VSAV plus rapide</b> <br> de : "
+
+#: callbacks.py:279
 msgid "<b>No drone</b> <br> BLS team time to arrival: "
 msgstr "<b>Pas de drone</b> <br> temps de présentation du VSAV : "
 
-#: callbacks.py:314
+#: callbacks.py:329
 msgid "BLS team"
 msgstr "VSAV"
 
-#: callbacks.py:315
+#: callbacks.py:330
 msgid "Drone"
 msgstr "Drone"
 
-#: callbacks.py:349
+#: callbacks.py:364
 msgid "Not detected"
 msgstr "ACR non détecté"
 
-#: callbacks.py:354
+#: callbacks.py:369
 msgid "Not enough witnesses"
 msgstr "Un seul témoin à domicile"
 
-#: callbacks.py:359
+#: callbacks.py:374
 msgid "BLS team faster than drone"
 msgstr "VSAV plus rapide que le drone"
 
-#: callbacks.py:364
+#: callbacks.py:379
 msgid "Drone faster"
 msgstr "Drone plus rapide"
 
-#: callbacks.py:372
+#: callbacks.py:387
 msgid "Time to arrival when a drone is sent (in seconds)"
 msgstr "Temps de présentation quand un drone est envoyé (en secondes)"
 
-#: callbacks.py:376
+#: callbacks.py:391
 msgid "Number of interventions"
 msgstr "Nombre d'interventions"
 
-#: callbacks.py:393
+#: callbacks.py:408
 msgid "Time difference drone - BLS team (in seconds)"
 msgstr "Différence de temps entre le drone et le VSAV (en secondes)"
 
-#: layouts.py:60 layouts.py:145
+#: layouts.py:15
+msgid "About"
+msgstr "Présentation"
+
+#: layouts.py:20
+msgid ""
+"This app simulates drones sent with Automatic External Defibrillators "
+"(AEDs) to Out-of-Hospital Cardiac Arrest (OHCA) interventions. Simulation"
+" is based on real life data, gathered in 2017 by Paris' Firefighters, who"
+" intervened on more than 3000 OHCA in Paris and Paris suburbs."
+msgstr ""
+"Cette application simule l’envoi de drones porteurs de défibrillateurs "
+"automatiques externes (DAE) sur les interventions pour arrêt cardio-"
+"respiratoire (ACR) hors milieu hospitalier. La simulation est basée sur "
+"les données des interventions effectuées par la Brigade de Sapeurs "
+"Pompiers de Paris (BSPP) en 2017, qui sont intervenus sur plus de 3000 "
+"ACR à Paris et en petite couronne."
+
+#: layouts.py:28
+msgid ""
+"The aim is to compare the hypothetical time to arrival of drones to the "
+"actual time to arrival of BLS teams, and to estimate to what extent "
+"drones could improve the chain of survival."
+msgstr ""
+"La simulation permet de comparer le temps de présentation hypothétique "
+"mis par un drone avec le temps réel de présentation du Véhicule de "
+"Secours et d’Assistance aux Victimes (VSAV). Cela permet d’estimer quel "
+"pourrait être l’impact des drones sur l’amélioration de la chaîne de "
+"survie."
+
+#: layouts.py:33
+msgid ""
+"This app allows the user to compute their own simulation, by changing "
+"both operational and drone flight parameters."
+msgstr ""
+"L’application permet de faire varier différents paramètres à la fois "
+"opérationnels et relatifs aux caractéristiques des drones, et de "
+"visualiser leurs impacts sur les temps de présentation."
+
+#: layouts.py:41
+msgid "Parameters simulation A"
+msgstr "Paramètres simulation A"
+
+#: layouts.py:50
+msgid "Parameters simulation B"
+msgstr "Paramètres simulation B"
+
+#: layouts.py:58
+msgid "Parameters description"
+msgstr "Description des paramètres"
+
+#: layouts.py:62 layouts.py:147
 msgid "Operational parameters"
 msgstr "Paramètres opérationnels"
 
-#: layouts.py:61
+#: layouts.py:63
 msgid ""
 "\n"
 "                            - Delay at departure: delay at departure "
@@ -103,37 +154,39 @@ msgid ""
 "                            "
 msgstr ""
 "\n"
-"                            - Retard au départ : durée nécessaire à l'opérateur "
-"pour entrer les informations de vol\n"
-"                            pour le drone et à la caserne du drone selectionné de "
-"le faire décoller.\n"
+"                            - Retard au départ : durée nécessaire à "
+"l'opérateur pour entrer les informations de vol\n"
+"                            pour le drone et à la caserne du drone "
+"sélectionné de le faire décoller.\n"
 "                            - Retard à l'arrivée : durée à l'arrivée "
 "durant laquelle le drone précise sa position \n"
 "                            d'arrivée et le témoin récupère le DSA.\n"
 "                            - Décalage de détection inconscience/ACR : "
 "durée moyenne entre \n"
-"                            la détection d'inconscience et la détection d'un ACR "
-"par l'opérateur 18/112. Les VSAV sont déclenchés au diagnostic\n"
-"                            d'inconscience, les drones sont activés quand "
-"l'ACR est détecté.\n"
-"                            - Taux d'ACR à domicile détectés par l'opérateur :"
-"les drones ne sont pas activés\n"
-"si l'ACR n'est pas détecté au téléphone\n"
-
-"                            - Taux d'ACR en lieu public détectés par l'opérateur : "
-" les drones ne sont \n"
-" pas activés si l'ACR n'est pas détecté au téléphone.\n"
-"                            - Taux de témoins seuls ACR lieu privé :
-" la simulation demande au moins \n"
-"deux témoins pour les ACR à domicile : le premier pour rester auprès de la victime, \n"
-"et le second pour descendre dans la rue chercher le DSA apporté par drone.\n"
+"                            la détection d'inconscience et la détection "
+"d'un ACR par l'opérateur 18/112. Les VSAV sont déclenchés au diagnostic\n"
+"                            d'inconscience, les drones sont activés quand"
+" l'ACR est détecté.\n"
+"                            - Taux d'ACR à domicile détectés par "
+"l'opérateur :les drones ne sont pas activés\n"
+"                            si l'ACR n'est pas détecté au téléphone.\n"
+"                            - Taux d'ACR en lieu public détectés par "
+"l'opérateur :  les drones ne sont \n"
+"                            pas activés si l'ACR n'est pas détecté au "
+"téléphone.\n"
+"                            - Taux de témoins seuls ACR lieu privé  la "
+"simulation demande au moins \n"
+"                            deux témoins pour les ACR à domicile : le "
+"premier pour rester auprès de la victime, \n"
+"                            et le second pour descendre dans la rue "
+"chercher le DSA apporté par drone.\n"
 "                            "
 
-#: layouts.py:78 layouts.py:106
+#: layouts.py:80 layouts.py:108
 msgid "Drone parameters"
 msgstr "Paramètres du drone"
 
-#: layouts.py:79
+#: layouts.py:81
 msgid ""
 "\n"
 "                            - Initial drone location : where drones are "
@@ -163,108 +216,110 @@ msgid ""
 "                             "
 msgstr ""
 "\n"
-"                            - Position initiale du drone : position des drones "
-"avant envoi. Le simulateur selectionne\n"
-"                             le drone disponible le plus proche à vol d'"
-"oiseau.\n"
-"                             - Vitesse max du drone : vitesse maximale horizontale."
-"\n"
-"                             - Durée d'accélération du drone :  temps mis par le drone "
-"pour atteindre\n"
+"                            - Position initiale du drone : position des "
+"drones avant envoi. Le simulateur sélectionne\n"
+"                             le drone disponible le plus proche à vol "
+"d'oiseau.\n"
+"                             - Vitesse max du drone : vitesse maximale "
+"horizontale.\n"
+"                             - Durée d'accélération du drone :  temps mis"
+" par le drone pour atteindre\n"
 "                                  sa vitesse horizontale maximale.\n"
-"                             - Vitesse verticale du drone : vitesse verticale maximale. "
-" On considère que le temps\n"
+"                             - Vitesse verticale du drone : vitesse "
+"verticale maximale.  On considère que le temps\n"
 "                                  mis par le drone pour atteindre cette  "
 "vitesse est négligeable.\n"
-"                            - Altitude de croisière du drone : altitude de "
-"croisière.\n"
+"                            - Altitude de croisière du drone : altitude "
+"de croisière.\n"
 "                            - Indisponibilité du drone après un lancer : "
 "durée nécessaire après l'envoi \n"
-"                                  du drone avant qu'il redevienne disponible. Cela "
-"comprend le temps passé sur les lieux de l'intervention\n"
-"et la durée nécessaire à la remise en condition du matériel.\n"
-"                            - Vol uniquement pendant le jour aéronautique : "
-"détermine si le drone peut voler uniquement \n"
+"                                  du drone avant qu'il redevienne "
+"disponible. Cela comprend le temps passé sur les lieux de l'intervention"
+"\n"
+"                                  et la durée nécessaire à la remise en "
+"condition du matériel.\n"
+"                            - Vol uniquement pendant le jour aéronautique"
+" : détermine si le drone peut voler uniquement \n"
 "                                  durant le jour aéronautique ou pas.\n"
 "                             "
 
-#: layouts.py:102 layouts.py:182
+#: layouts.py:104 layouts.py:184
 msgid "Simulation "
-msgstr "Simulation"
+msgstr "Simulation "
 
-#: layouts.py:108
+#: layouts.py:110
 msgid "Initial drone location"
 msgstr "Position initiale du drone"
 
-#: layouts.py:116
+#: layouts.py:118
 msgid "Max drone speed (in km/h)"
 msgstr "Vitesse max du drone (en km/h)"
 
-#: layouts.py:119
+#: layouts.py:121
 msgid "Drone's acceleration time (in sec):"
 msgstr "Durée d'accélération du drone (en sec) :"
 
-#: layouts.py:122
+#: layouts.py:124
 msgid "Drone's vertical speed (in m/s):"
 msgstr "Vitesse verticale du drone (en m/s) :"
 
-#: layouts.py:125
+#: layouts.py:127
 msgid "Drone's cruise altitude (in m):"
 msgstr "Altitude de croisière du drone (en m) :"
 
-#: layouts.py:128
+#: layouts.py:130
 msgid "Unavailability of the drone after a run (in h):"
 msgstr "Indisponibilité du drone après un lancer (en h) :"
 
-#: layouts.py:131
+#: layouts.py:133
 msgid "Flying restricted to aeronautical day"
 msgstr "Vol uniquement pendant le jour aéronautique"
 
-#: layouts.py:135
+#: layouts.py:137
 msgid "Yes"
 msgstr "Oui"
 
-#: layouts.py:136
+#: layouts.py:138
 msgid "No"
 msgstr "Non"
 
-#: layouts.py:147
+#: layouts.py:149
 msgid "Delay at departure (in s):"
 msgstr "Retard au départ (en s) :"
 
-#: layouts.py:150
+#: layouts.py:152
 msgid "Delay on arrival (in s):"
 msgstr "Retard à l'arrivée (en s) :"
 
-#: layouts.py:153
+#: layouts.py:155
 msgid "Delay between detection of unconsciousness and OHCA detection (in s):"
 msgstr "Décalage de détection inconscience/ACR (en s) :"
 
-#: layouts.py:157
+#: layouts.py:159
 msgid ""
 "Rate of OHCA at home, which are detected by call center operators "
 "(between 0 and 1):"
-msgstr "Taux d'ACR à domicile détectés par l'opérateur (entre 0 et 1) : "
+msgstr "Taux d'ACR à domicile détectés par l'opérateur (entre 0 et 1) :"
 
-#: layouts.py:162
+#: layouts.py:164
 msgid ""
 "Rate of OHCA in the streets, which are detected by call center operators "
 "(between 0 and 1):"
-msgstr "Taux d'ACR en lieu public détectés par l'opérateur (entre 0 et 1) : "
+msgstr "Taux d'ACR en lieu public détectés par l'opérateur (entre 0 et 1) :"
 
-#: layouts.py:167
+#: layouts.py:169
 msgid "Rate of OHCA at home, which only have one witness alone (between 0 and 1):"
 msgstr "Taux de témoins seuls ACR lieu privé (entre 0 et 1) :"
 
-#: layouts.py:173
+#: layouts.py:175
 msgid "Update simulation"
 msgstr "Lancer la simulation"
 
-#: layouts.py:183
+#: layouts.py:185
 msgid "Results"
 msgstr "Résultats"
 
-#: layouts.py:208
+#: layouts.py:210
 msgid ""
 "This graph shows the time difference between the simulated time to "
 "arrival of a drone and the actual time of arrival of the BLS team sent "
@@ -274,19 +329,19 @@ msgid ""
 " faster again by the number of seconds shown by the vertical bar. Grey "
 "bars correspond to interventions for which a drone would not be sent, "
 "vertical values are the actual BLS team time to arrival."
-msgstr "Ce graphique montre la différence entre le temps de présentation simulé du drone "
-" et le temps de présentation réél du VSAV qui avait été envoyé sur l'intervention. "
-" Du côté droit (valeurs positives), le drone aurait été plus rapide que le drone du nombre de secondes "
-"indiqué sur la barre verticale. Du côté gauche (valeurs négatives) le VSAV aurait été plus "
-"rapide que le drone du nombre de secondes indiqué par la barre verticale. "
-"Les barres grises représentent des interventions pour lesquelles un drone n'aurait "
-"pas été envoyé, et les barres indiquent le temps de présentation du VSAV."
+msgstr ""
+"Ce graphique montre la différence entre le temps de présentation simulé "
+"du drone  et le temps de présentation réél du VSAV qui avait été envoyé "
+"sur l'intervention.  Du côté droit (valeurs positives), le drone aurait "
+"été plus rapide que le drone du nombre de secondes indiqué sur la barre "
+"verticale. Du côté gauche (valeurs négatives) le VSAV aurait été plus "
+"rapide que le drone du nombre de secondes indiqué par la barre verticale."
+" Les barres grises représentent des interventions pour lesquelles un "
+"drone n'aurait pas été envoyé, et les barres indiquent le temps de "
+"présentation du VSAV."
 
-#~ msgid "A gauche, VSAV plus rapide. A droite drone plus rapide"
-#~ msgstr ""
-
-#~ msgid "Temps présentation VSAV vs temps drone"
-#~ msgstr ""
+#~ msgid "BLS team time to arrival vs drone time to arrival"
+#~ msgstr "Temps présentation VSAV vs temps drone"
 
 #~ msgid "Rate of faster drones among all interventions: "
 #~ msgstr "Taux de drones plus rapides, sur toutes les interventions : "
