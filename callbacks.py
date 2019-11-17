@@ -263,13 +263,26 @@ def _compute_drone_time(
     #     # per_bls = 100 * n_bls / n_tot
     #     # per_nodrone = 100 * n_nodrone / n_tot
 
-    dfi['res_col_c'] = np.abs(dfi[res_col_b])
-    dfi['text'] = [_('<b>BLS team faster</b> <br> by: ')] * len(dfi)
-    dfi['col_bar'] = ['rgba(222,45,38,0.8)'] * len(dfi)
-    dfi.loc[dfi[res_col_b] < 0, 'col_bar'] = 'rgba(0,128,0,0.8)'
-    dfi.loc[dfi[res_col_b] < 0, 'text'] = _('<b>Drone faster</b> <br> by: ')
-    dfi.loc[dfi[res_col_a] == 0, 'text'] = _('<b>No drone</b> <br> BLS team time to arrival: ')
-    dfi.loc[dfi[res_col_a] == 0, 'col_bar'] = 'rgba(204,204,204,1)'
+    dfi['res_col_c'] = np.around(np.abs(dfi[res_col_b]), 0)
+
+    dfi['wins'] = 'B'  # BLS team faster
+    dfi.loc[dfi[res_col_b] < 0, 'wins'] = 'D'  # drone faster
+    dfi.loc[dfi[res_col_a] == 0, 'wins'] = 'N'  # no drone
+
+    dfi.loc[dfi['wins'] == 'D', 'text'] = \
+        _('<b>Drone faster</b> <br> by: ') + \
+        dfi.loc[dfi['wins'] == 'D', 'res_col_c'].map(str)
+    dfi.loc[dfi['wins'] == 'B', 'text'] = \
+        _('<b>BLS team faster</b> <br> by: ') + \
+        dfi.loc[dfi['wins'] == 'B', 'res_col_c'].map(str)
+    dfi.loc[dfi['wins'] == 'N', 'text'] = \
+        _('<b>No drone</b> <br> BLS team time to arrival: ') + \
+        dfi.loc[dfi['wins'] == 'N', 'res_col_c'].map(str)
+
+    dfi.loc[dfi['wins'] == 'D', 'col_bar'] = 'rgba(0,128,0,0.8)'
+    dfi.loc[dfi['wins'] == 'B', 'col_bar'] = 'rgba(222,45,38,0.8)'
+    dfi.loc[dfi['wins'] == 'N', 'col_bar'] = 'rgba(204,204,204,1)'
+
     dfi[res_col_b] = - dfi[res_col_b]
     ynew = dfi.sort_values(res_col_b)
     list_col = list(ynew['col_bar'])
@@ -322,7 +335,7 @@ def _compute_drone_time(
         name='',
         marker=dict(color=list_col),
         text=list_text,
-        hovertemplate='%{text}%{y} seconds',
+        hovertemplate='%{text} seconds',  # %{y} seconds',
     )
 
     # indicator_graphic_1 = {
