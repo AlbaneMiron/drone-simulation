@@ -393,6 +393,7 @@ def _compute_drone_time(
             },
             margin={'l': 40, 'b': 40, 't': 10, 'r': 0},
             hovermode='closest',
+            title=_('Time to arrival histogram when a drone is sent'),
         ),
     }
 
@@ -410,6 +411,7 @@ def _compute_drone_time(
             },
             margin={'l': 40, 'b': 40, 't': 10, 'r': 0},
             hovermode='closest',
+            title=_('Comparison of times to arrival for all interventions'),
         )}
 
     return flows, indicator_graphic_3, indicator_graphic_4
