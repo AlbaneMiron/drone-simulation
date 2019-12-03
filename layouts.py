@@ -36,7 +36,7 @@ def create_tabs_layout():
                               'both operational and drone flight parameters.')
                         ),
 
-                    ])
+                        dbc.CardLink(_('Link to Github'), href="https://github.com/AlbaneMiron/drone-simulation")])
                 ),
 
 
@@ -48,31 +48,31 @@ def create_tabs_layout():
                     #value='simA',
                     children=dbc.Container(
                         create_parameters_layout('A', style={
-                        'border-right': 'solid 1px #ddd',
-                        'margin-right': '15px',
-                        'padding-right': '15px',
-                    })),
+                            'border-right': 'solid 1px #ddd',
+                            'margin-right': '15px',
+                            'padding-right': '15px',
+                        })),
                 ),
                 dbc.Tab(
                     label=_('Parameters simulation B'),
                     tab_id='simB',
                     children=dbc.Container(
                         create_parameters_layout(
-                        'B', suffix='_b', input_drone='Centres de secours',
-                    )),
+                            'B', suffix='_b', input_drone='Centres de secours',
+                        )),
                 ),
 
                 dbc.Tab(
                     label=_('Comparison of both simulations'),
                     tab_id='sims',
                     children=dbc.Col([
-                          create_graphs_layout('A', style={
-                              'border-right': 'solid 1px #ddd',
-                              'margin-right': '15px',
-                              'padding-right': '15px',
-                          }),
-                          create_graphs_layout('B', suffix='_b'),
-                      ], style={'display': 'flex'}),
+                        create_graphs_layout('A', style={
+                            'border-right': 'solid 1px #ddd',
+                            'margin-right': '15px',
+                            'padding-right': '15px',
+                        }),
+                        create_graphs_layout('B', suffix='_b'),
+                    ], style={'display': 'flex'}),
                 ),
 
 
