@@ -46,6 +46,7 @@ df_initial[col_time_em_call] = pd.to_datetime(df_initial[col_time_em_call])
 df_initial = df_initial.loc[df_initial[col_BLS_time] >= 0]
 df_initial = df_initial.loc[df_initial[col_BLS_time] <= 25 * 60]
 
+df_initial = df_initial.head(100)
 
 def update_avail(time_dec, avail, unavail):
     """
@@ -391,28 +392,35 @@ def _compute_drone_time(
                 'title': _('Number of interventions'),
                 'type': 'linear',
             },
-            margin={'l': 40, 'b': 40, 't': 10, 'r': 0},
+            margin={'l': 40, 'b': 100, 't': 100, 'r': 40},
             hovermode='closest',
             title=_('Time to arrival histogram when a drone is sent'),
+            autosize=True,
         ),
     }
 
     indicator_graphic_4 = {
         'data': [trace5],
-        'layout': go.Layout(
-            xaxis={
-                'title': u'Interventions',  # , quand le drone se présente avant le VSAV',
-                'type': 'linear',
-                'showgrid': False,
-            },
-            yaxis={
-                'title': _("Time difference drone - BLS team (in seconds)"),
-                'type': 'linear',
-            },
-            margin={'l': 40, 'b': 40, 't': 10, 'r': 0},
-            hovermode='closest',
-            title=_('Comparison of times to arrival for all interventions'),
-        )}
+        'layout': #go.Layout(
+            {
+                'xaxis': {
+                    'title': {'text': u'Interventions', 'standoff': 100},  # , quand le drone se présente avant le VSAV',
+                    'type': 'linear',
+                    'showgrid': False,
+                    'showticklabels': False,
+                },
+                'yaxis': {
+                    'title': _("Time difference drone - BLS team (in seconds)"),
+                    'type': 'linear',
+                    'showticklabels': False,
+                },
+                'margin': {'l': 40, 'b': 100, 't': 100, 'r': 40},
+                'hovermode': 'closest',
+                'title': _('Comparison of times to arrival for all interventions'),
+                'autosize': True
+            }
+        #)
+    }
 
     return flows, indicator_graphic_3, indicator_graphic_4
 
