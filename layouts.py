@@ -40,6 +40,7 @@ def create_tabs_layout():
                 ),
 
                 dbc.Tab(
+                    # TODO : insert graph I did for Pascal here on how the simulation works
                     label=_('Simulation description'),
                     tab_id='datasets',
                     children=dbc.Container(className='control-tab', children=[
@@ -108,12 +109,12 @@ def create_tabs_layout():
                     label=_('Comparison of both simulations'),
                     tab_id='sims',
                     children=dbc.Col([
-                        create_graphs_layout('A', style={
+                        create_both_graphs('A', style={
                             'border-right': 'solid 1px #ddd',
                             'margin-right': '15px',
                             'padding-right': '15px',
                         }),
-                        create_graphs_layout('B', suffix='_b'),
+                        create_both_graphs('B', suffix='_b'),
                     ], style={'display': 'flex'}),
                 ),
 
@@ -136,15 +137,28 @@ def create_tabs_layout():
     )
 
 
-def create_graphs_layout(name, suffix='', style=None):
+def create_graphs_layout(suffix='', style=None):
     return dbc.Container([
-        html.H3(_('Simulation ') + name),
+        # html.H3(_('Simulation ') + name),
         html.H6(_('Results')),
         dcc.Loading(children=[
             # dcc.Graph(id=f'indicator-graphic1{suffix}'),
             dbc.Container(sankey.Sankey(id=f'flows-graphic{suffix}'), className='row'),
             dbc.Col(children=[dcc.Graph(id=f'indicator-graphic3{suffix}', className='row')]),
             dbc.Container(dcc.Graph(id=f'indicator-graphic4{suffix}'), className='row'),
+        ]),
+    ], style={'flex': 1} if style is None else dict(style, flex=1))
+
+
+def create_both_graphs(name, suffix='', style=None):
+    return dbc.Container([
+        html.H3(_('Simulation ') + name),
+        html.H6(_('Results')),
+        dcc.Loading(children=[
+            # dcc.Graph(id=f'indicator-graphic1{suffix}'),
+            dbc.Container(sankey.Sankey(id=f'flows-graphicu{suffix}'), className='row'),
+            dbc.Col(children=[dcc.Graph(id=f'indicator-graphic3u{suffix}', className='row')]),
+            dbc.Container(dcc.Graph(id=f'indicator-graphic4u{suffix}'), className='row'),
         ]),
     ], style={'flex': 1} if style is None else dict(style, flex=1))
 
@@ -158,10 +172,10 @@ def create_parameters_layout(name, suffix='', input_drone=_POSITIONS[0], style=N
                 html.H6(_('Drone parameters')),
 
                 html.Div([html.Label(_('Initial drone location'), id="ini_pos"),
-                         dbc.Tooltip(_('Where drones are stationed. The simulator selects '
-                                       'the closest available drone (as the crow flies)'),
-                                     target="ini_pos",
-                                     placement="left")]),
+                          dbc.Tooltip(_('Where drones are stationed. The simulator selects '
+                                        'the closest available drone (as the crow flies)'),
+                                      target="ini_pos",
+                                      placement="left")]),
                 dcc.Dropdown(
                     id=f'input_drone{suffix}',
                     # TODO(pascal): Translate labels here.
@@ -276,7 +290,7 @@ def create_parameters_layout(name, suffix='', input_drone=_POSITIONS[0], style=N
 
         ], style={'flex': 1} if style is None else dict(style, flex=1)),
         dbc.Col(children=
-                create_graphs_layout('A', style={
+                create_graphs_layout(suffix=suffix, style={
                     'border-right': 'solid 1px #ddd',
                     'margin-right': '15px',
                     'padding-right': '15px',
@@ -284,7 +298,6 @@ def create_parameters_layout(name, suffix='', input_drone=_POSITIONS[0], style=N
                 )
     ], style={'display': 'flex'}
     )
-
 
 
 def create(lang):
@@ -304,14 +317,14 @@ def create(lang):
                   #         create_graphs_layout('B', suffix='_b'),
                   #     ], style={'display': 'flex'}),
                   #
-                  #     dbc.Col(children=_(
-                  #         'This graph shows the time difference between the simulated time to arrival of a '
-                  #         'drone and the actual time of arrival of the BLS team sent for every intervention. '
-                  #         'On the right hand side (positive values) a drone would have been faster by the '
-                  #         'number of seconds shown by the vertical bar. On the left hand side (negative '
-                  #         'values) the BLS team would have been faster again by the number of seconds shown '
-                  #         'by the vertical bar. Grey bars correspond to interventions for which a drone '
-                  #         'would not be sent, vertical values are the actual BLS team time to arrival.'
-                  #     )),
+                  # dbc.Col(children=_(
+                  #     'This graph shows the time difference between the simulated time to arrival of a '
+                  #     'drone and the actual time of arrival of the BLS team sent for every intervention. '
+                  #     'On the right hand side (positive values) a drone would have been faster by the '
+                  #     'number of seconds shown by the vertical bar. On the left hand side (negative '
+                  #     'values) the BLS team would have been faster again by the number of seconds shown '
+                  #     'by the vertical bar. Grey bars correspond to interventions for which a drone '
+                  #     'would not be sent, vertical values are the actual BLS team time to arrival.'
+                  # )),
                   # ])
                   ], )

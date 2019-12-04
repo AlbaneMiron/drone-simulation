@@ -422,13 +422,19 @@ def _compute_drone_time(
         #)
     }
 
-    return flows, indicator_graphic_3, indicator_graphic_4
+    return flows, indicator_graphic_3, indicator_graphic_4, flows, indicator_graphic_3, indicator_graphic_4
+# TODO : duplicate graphs output
+# TODO : handle graph width
+# TODO : group graphs in tab with both simulations
 
 
 @app.callback(
     [Output('flows-graphic', 'flows'),
      Output('indicator-graphic3', 'figure'),
-     Output('indicator-graphic4', 'figure')],
+     Output('indicator-graphic4', 'figure'),
+     Output('flows-graphicu', 'flows'),
+     Output('indicator-graphic3u', 'figure'),
+     Output('indicator-graphic4u', 'figure')],
     [Input('seq_start', 'n_clicks')],
     [State('input_drone', 'value'),
      State('speed', 'value'),
@@ -460,7 +466,10 @@ def drone_time(
 @app.callback(
     [Output('flows-graphic_b', 'flows'),
      Output('indicator-graphic3_b', 'figure'),
-     Output('indicator-graphic4_b', 'figure')],
+     Output('indicator-graphic4_b', 'figure'),
+     Output('flows-graphicu_b', 'flows'),
+     Output('indicator-graphic3u_b', 'figure'),
+     Output('indicator-graphic4u_b', 'figure')],
     [Input('seq_start_b', 'n_clicks')],
     [State('input_drone_b', 'value'),
      State('speed_b', 'value'),
