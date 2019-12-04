@@ -2,8 +2,8 @@ import gettext
 import dash_core_components as dcc
 import dash_html_components as html
 import sankey
-import drones
 import dash_bootstrap_components as dbc
+import drones
 
 _POSITIONS = list(drones.STARTING_POINTS.keys())
 
@@ -26,8 +26,8 @@ def create_tabs_layout():
                               'Paris suburbs.')
                         ),
                         html.P(
-                            _('The aim is to compare the hypothetical time to arrival of drones to '
-                              'the actual time to arrival of BLS teams, and to estimate to what '
+                            _('The aim is to compare the hypothetical time to arrival of drones to'
+                              ' the actual time to arrival of BLS teams, and to estimate to what '
                               'extent drones could improve the chain of survival.')
                         ),
                         html.P(
@@ -36,7 +36,8 @@ def create_tabs_layout():
                               'both operational and drone flight parameters.')
                         ),
 
-                        dbc.CardLink(_('Link to Github'), href="https://github.com/AlbaneMiron/drone-simulation")])
+                        dbc.CardLink(_('Link to Github'),
+                                     href="https://github.com/AlbaneMiron/drone-simulation")])
                 ),
 
                 dbc.Tab(
@@ -44,51 +45,15 @@ def create_tabs_layout():
                     label=_('Simulation description'),
                     tab_id='datasets',
                     children=dbc.Container(className='control-tab', children=[
-                        html.H4(className='datasets', children=_('Parameters description')),
-                        html.H6(_("Operational parameters")),
-                        dcc.Markdown(_('''
-                - Delay at departure: delay at departure needed for the operator to set up
-                flight information for the drone then for the fire station where the drone is stationed
-                to launch it.
-                - Delay on arrival: delay on arrival needed for the drone to narrow its landing and for
-                the bystander to catch the AED.
-                - Delay between detection of unconsciousness and OHCA detection:  mean time spent between
-                unconsciousness and OHCA detection by emergency call dispatchers. Unconsciousness detection
-                activates BLS teams whereas drones are activated only at OHCA detection.
-                - Rate of OHCA at home, which are detected by call center operators: when the OHCA is not
-                detected by the emergency dispatchers no drone is sent.
-                - Rate of OHCA in the streets, which are detected by call center operators: when the OHCA is
-                not detected by the emergency dispatchers no drone is sent.
-                - Rate of OHCA at home, which only have one witness alone: The simulation requires at least
-                two witnesses for OHCA at home : one to stay near the victim, the other to go out in the
-                street to get the AED brought by drone.
-                ''')),
-                        html.H6(_("Drone parameters")),
-                        dcc.Markdown(_('''
-                - Initial drone location : where drones are stationed. The simulator selects
-                 the closest available drone (as the crow flies).
-                 - Max drone speed: maximum horizontal speed.
-                 - Drone's acceleration time: time needed for the drone to reach its
-                      maximum horizontal speed.
-                 - Drone's vertical speed: maximum vertical speed. It is assumed that the time
-                       needed for the drone to reach this speed is negligible.
-                - Drone's cruise altitude: horizontal cruise altitude.
-                - Unavailability of the drone after a run: time needed after a run for the
-                      drone to be available again. It accounts for the time spent on the OHCA
-                      location and the time of refurbishment and rehabilitation of equipment.
-                - Flying restricted to aeronautical day: whether the drone can only fly
-                      during the aeronautical day or not.
-                 ''')),
+                        html.H4(className='datasets',
+                                children=_('Rescue chain: BLS teams vs drones')),
+                        html.Img(src='../../assets/tab-layout1.png', width='1000px'),
                     ]),
                 ),
 
-
-
                 dbc.Tab(
-                    #dcc.Tab(
                     label=_('Parameters simulation A'),
                     tab_id='simA',
-                    #value='simA',
                     children=dbc.Container(
                         create_parameters_layout('A', style={
                             'border-right': 'solid 1px #ddd',
@@ -101,66 +66,32 @@ def create_tabs_layout():
                     tab_id='simB',
                     children=dbc.Container(
                         create_parameters_layout(
-                            'B', suffix='_b', input_drone='Centres de secours',
+                            'B', suffix='_b', style={
+                                'border-right': 'solid 1px #ddd',
+                                'margin-right': '15px',
+                                'padding-right': '15px',
+                            },
+                            input_drone='Centres de secours',
                         )),
                 ),
 
                 dbc.Tab(
                     label=_('Comparison of both simulations'),
                     tab_id='sims',
-                    children=dbc.Col([
-                        create_both_graphs('A', style={
-                            'border-right': 'solid 1px #ddd',
-                            'margin-right': '15px',
-                            'padding-right': '15px',
-                        }),
-                        create_both_graphs('B', suffix='_b'),
-                    ], style={'display': 'flex'}),
+                    children=dbc.Col(
+                        [
+                            create_both_graphs('A', style={
+                                'border-right': 'solid 1px #ddd',
+                                'margin-right': '15px',
+                                'padding-right': '15px',
+                            }),
+                            create_both_graphs('B', suffix='_b'),
+                        ],
+                        style={'display': 'flex'}),
                 ),
-
-
-
             ]),
-        ],
-                      #  style={'flex': 1}
-                      ),
-
-        #  dbc.Container(children=[html.A(
-        #     id="gh-link",
-        #     children=list(_('View on GitHub')),
-        #     href="https://github.com/AlbaneMiron/drone-simulation",
-        #     style={'color': "black", 'border': "solid 1px black"},
-        # ),
-        #     html.Img(src="../../assets/GitHub-Mark-64px.png"
-        #              ),
-        # ], style={'flex': 1})
+        ]),
     )
-
-
-def create_graphs_layout(suffix='', style=None):
-    return dbc.Container([
-        # html.H3(_('Simulation ') + name),
-        html.H6(_('Results')),
-        dcc.Loading(children=[
-            # dcc.Graph(id=f'indicator-graphic1{suffix}'),
-            dbc.Container(sankey.Sankey(id=f'flows-graphic{suffix}'), className='row'),
-            dbc.Col(children=[dcc.Graph(id=f'indicator-graphic3{suffix}', className='row')]),
-            dbc.Container(dcc.Graph(id=f'indicator-graphic4{suffix}'), className='row'),
-        ]),
-    ], style={'flex': 1} if style is None else dict(style, flex=1))
-
-
-def create_both_graphs(name, suffix='', style=None):
-    return dbc.Container([
-        html.H3(_('Simulation ') + name),
-        html.H6(_('Results')),
-        dcc.Loading(children=[
-            # dcc.Graph(id=f'indicator-graphic1{suffix}'),
-            dbc.Container(sankey.Sankey(id=f'flows-graphicu{suffix}'), className='row'),
-            dbc.Col(children=[dcc.Graph(id=f'indicator-graphic3u{suffix}', className='row')]),
-            dbc.Container(dcc.Graph(id=f'indicator-graphic4u{suffix}'), className='row'),
-        ]),
-    ], style={'flex': 1} if style is None else dict(style, flex=1))
 
 
 def create_parameters_layout(name, suffix='', input_drone=_POSITIONS[0], style=None):
@@ -168,6 +99,9 @@ def create_parameters_layout(name, suffix='', input_drone=_POSITIONS[0], style=N
 
         dbc.Container([
             html.H3(_('Simulation ') + name),
+            html.P(html.Small(html.I(_('You can get additional info on parameters '
+                                       'descriptions by running your mouse '
+                                       'over each of them.')))),
             dbc.Col([
                 html.H6(_('Drone parameters')),
 
@@ -209,15 +143,18 @@ def create_parameters_layout(name, suffix='', input_drone=_POSITIONS[0], style=N
                                       placement="left")]),
                 dbc.Input(id=f'alt{suffix}', value='100', type='text'),
 
-                html.Div([html.Label(_('Unavailability of the drone after a run (in h):'), id="unav_e"),
+                html.Div([html.Label(_('Unavailability of the drone after a run (in h):'),
+                                     id="unav_e"),
                           dbc.Tooltip(_('time needed after a run for the '
-                                        'drone to be available again. It accounts for the time spent on the OHCA '
-                                        'location and the time of refurbishment and rehabilitation of equipment.'),
+                                        'drone to be available again. It accounts for the '
+                                        'time spent on the OHCA '
+                                        'location and the time of refurbishment and '
+                                        'rehabilitation of equipment.'),
                                       target="unav_e",
                                       placement="left")]),
                 dbc.Input(id=f'unavail_delta{suffix}', value='6', type='text'),
 
-                html.Div([html.Label(_('Flying restricted to aeronautical day'), id="day_e"),
+                html.Div([html.Label(_('Drone can fly during aeronautical night'), id="day_e"),
                           dbc.Tooltip(_('Whether the drone can only fly '
                                         'during the aeronautical day or not'),
                                       target="day_e",
@@ -236,68 +173,104 @@ def create_parameters_layout(name, suffix='', input_drone=_POSITIONS[0], style=N
 
                 html.Div([html.Label(_("Delay at departure (in s):"), id="dep_e"),
                           dbc.Tooltip(_('Delay at departure needed for the operator to set up '
-                                        'flight information for the drone then for the fire station where the drone '
+                                        'flight information for the drone then for the fire '
+                                        'station where the drone '
                                         'is stationed to launch it.'),
                                       target="dep_e",
                                       placement="left")]),
                 dbc.Input(id=f'dep_delay{suffix}', value='15', type='text'),
 
                 html.Div([html.Label(_("Delay on arrival (in s):"), id="arr_e"),
-                          dbc.Tooltip(_('Delay on arrival needed for the drone to narrow its landing and for '
+                          dbc.Tooltip(_('Delay on arrival needed for the drone to narrow '
+                                        'its landing and for '
                                         'the bystander to catch the AED.'),
                                       target="arr_e",
                                       placement="left")]),
                 dbc.Input(id=f'arr_delay{suffix}', value='15', type='text'),
 
-                html.Div([html.Label(_("Delay between detection of unconsciousness and OHCA detection (in s):"),
+                html.Div([html.Label(_("Delay between detection of unconsciousness"
+                                       " and OHCA detection (in s):"),
                                      id="del_e"),
-                          dbc.Tooltip(_('Mean time spent between unconsciousness and OHCA detection by '
+                          dbc.Tooltip(_('Mean time spent between unconsciousness '
+                                        'and OHCA detection by '
                                         'emergency call dispatchers. Unconsciousness detection '
-                                        'activates BLS teams whereas drones are activated only at OHCA detection.'),
+                                        'activates BLS teams whereas drones are activated '
+                                        'only at OHCA detection.'),
                                       target="del_e",
                                       placement="left")]),
                 dbc.Input(id=f'detec_delay{suffix}', value='104', type='text'),
 
-                html.Div([html.Label(_('Rate of OHCA at home, which are detected by call center operators '
+                html.Div([html.Label(_('Rate of OHCA at home, which are detected by call '
+                                       'center operators '
                                        '(between 0 and 1):'),
                                      id="deth_e"),
-                          dbc.Tooltip(_('When the OHCA is not detected by the emergency dispatchers no drone is sent.'),
+                          dbc.Tooltip(_('When the OHCA is not detected by the '
+                                        'emergency dispatchers no drone is sent.'),
                                       target="deth_e",
                                       placement="left")]),
                 dbc.Input(id=f'detec_rate_home{suffix}', value='0.8', type='text'),
 
-                html.Div([html.Label(_('Rate of OHCA in the streets, which are detected by call center operators '
+                html.Div([html.Label(_('Rate of OHCA in the streets, which are '
+                                       'detected by call center operators '
                                        '(between 0 and 1):'),
                                      id="dets_e"),
-                          dbc.Tooltip(_('When the OHCA is not detected by the emergency dispatchers no drone is sent.'),
+                          dbc.Tooltip(_('When the OHCA is not detected by the '
+                                        'emergency dispatchers no drone is sent.'),
                                       target="dets_e",
                                       placement="left")]),
                 dbc.Input(id=f'detec_rate_vp{suffix}', value='0.12', type='text'),
 
-                html.Div([html.Label(_("Rate of OHCA at home, which only have one witness alone (between 0 and 1):"),
+                html.Div([html.Label(_("Rate of OHCA at home, which only have one "
+                                       "witness alone (between 0 and 1):"),
                                      id="wit_e"),
                           dbc.Tooltip(_('The simulation requires at least '
-                                        'two witnesses for OHCA at home : one to stay near the victim, the other to '
+                                        'two witnesses for OHCA at home : '
+                                        'one to stay near the victim, the other to '
                                         'go out in the street to get the AED brought by drone.'),
                                       target="wit_e",
                                       placement="left")]),
                 dbc.Input(id=f'wit_detec{suffix}', value='0.58', type='text'),
 
-            ],
-                style={'flex': 1}),
-            dbc.Button(id=f'seq_start{suffix}', n_clicks=0, children=_('Update simulation'), block='center',
+            ], style={'flex': 1}),
+
+            dbc.Button(id=f'seq_start{suffix}', n_clicks=0,
+                       children=_('Update simulation'), block='center',
                        style={'flex': 1}),
 
         ], style={'flex': 1} if style is None else dict(style, flex=1)),
-        dbc.Col(children=
-                create_graphs_layout(suffix=suffix, style={
-                    'border-right': 'solid 1px #ddd',
-                    'margin-right': '15px',
-                    'padding-right': '15px',
-                }),
+        dbc.Col(children=create_graphs_layout(suffix=suffix,
+                                              style={'display': 'flex', 'flex': 'initial'}),
                 )
-    ], style={'display': 'flex'}
-    )
+    ], style={'display': 'flex', 'flex': 'auto'})
+
+
+def create_graphs_layout(suffix='', style=None):
+    return dbc.Container([
+        # html.H3(_('Simulation ') + name),
+        # html.H3(_('Results')),
+        dcc.Loading(children=[
+            html.H6(_('Intervention distribution')),
+            dbc.Container(sankey.Sankey(id=f'flows-graphic{suffix}'), className='row'),
+            html.H6(_('Time to arrival histogram when a drone is sent')),
+            dbc.Col(children=[dcc.Graph(id=f'indicator-graphic3{suffix}', className='row')]),
+            html.H6(_('Comparison of times to arrival for all interventions')),
+            dbc.Container(dcc.Graph(id=f'indicator-graphic4{suffix}'), className='row'),
+        ]),
+    ], style={'flex': 1} if style is None else dict(style, flex=1))
+
+
+def create_both_graphs(name, suffix='', style=None):
+    return dbc.Container([
+        html.H3(_('Simulation ') + name),
+        dcc.Loading(children=[
+            html.H6(_('Intervention distribution')),
+            dbc.Container(sankey.Sankey(id=f'flows-graphicu{suffix}'), className='row'),
+            html.H6(_('Time to arrival histogram when a drone is sent')),
+            dbc.Col(children=[dcc.Graph(id=f'indicator-graphic3u{suffix}', className='row')]),
+            html.H6(_('Comparison of times to arrival for all interventions')),
+            dbc.Container(dcc.Graph(id=f'indicator-graphic4u{suffix}'), className='row'),
+        ]),
+    ], style={'flex': 1} if style is None else dict(style, flex=1))
 
 
 def create(lang):
@@ -306,25 +279,6 @@ def create(lang):
     return dbc.Container(
         children=[dbc.Container(className='title',
                                 children=[html.H1(_('Airborne AED simulation'))]),
-                  dbc.Container(id='vp-control-tabs', className='control-tabs', children=[create_tabs_layout()],),
-                  # dbc.Container(id='vp-page-content', className='app-body', children=[
-                  #     dbc.Col([
-                  #         create_graphs_layout('A', style={
-                  #             'border-right': 'solid 1px #ddd',
-                  #             'margin-right': '15px',
-                  #             'padding-right': '15px',
-                  #         }),
-                  #         create_graphs_layout('B', suffix='_b'),
-                  #     ], style={'display': 'flex'}),
-                  #
-                  # dbc.Col(children=_(
-                  #     'This graph shows the time difference between the simulated time to arrival of a '
-                  #     'drone and the actual time of arrival of the BLS team sent for every intervention. '
-                  #     'On the right hand side (positive values) a drone would have been faster by the '
-                  #     'number of seconds shown by the vertical bar. On the left hand side (negative '
-                  #     'values) the BLS team would have been faster again by the number of seconds shown '
-                  #     'by the vertical bar. Grey bars correspond to interventions for which a drone '
-                  #     'would not be sent, vertical values are the actual BLS team time to arrival.'
-                  # )),
-                  # ])
+                  dbc.Container(id='vp-control-tabs', className='control-tabs',
+                                children=[create_tabs_layout()],),
                   ], )

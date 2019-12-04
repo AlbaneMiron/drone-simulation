@@ -48,6 +48,7 @@ df_initial = df_initial.loc[df_initial[col_BLS_time] <= 25 * 60]
 
 df_initial = df_initial.head(100)
 
+
 def update_avail(time_dec, avail, unavail):
     """
     Update of the available fleet of drones after each launch.
@@ -391,41 +392,40 @@ def _compute_drone_time(
             yaxis={
                 'title': _('Number of interventions'),
                 'type': 'linear',
+                'showticklabels': False,
             },
-            margin={'l': 40, 'b': 100, 't': 100, 'r': 40},
+            width=500,
+            height=400,
+            margin={'l': 30, 'b': 100, 't': 50, 'r': 30},
             hovermode='closest',
-            title=_('Time to arrival histogram when a drone is sent'),
             autosize=True,
         ),
     }
 
     indicator_graphic_4 = {
         'data': [trace5],
-        'layout': #go.Layout(
-            {
-                'xaxis': {
-                    'title': {'text': u'Interventions', 'standoff': 100},  # , quand le drone se présente avant le VSAV',
-                    'type': 'linear',
-                    'showgrid': False,
-                    'showticklabels': False,
-                },
-                'yaxis': {
-                    'title': _("Time difference drone - BLS team (in seconds)"),
-                    'type': 'linear',
-                    'showticklabels': False,
-                },
-                'margin': {'l': 40, 'b': 100, 't': 100, 'r': 40},
-                'hovermode': 'closest',
-                'title': _('Comparison of times to arrival for all interventions'),
-                'autosize': True
-            }
-        #)
+        'layout': {
+            'xaxis': {
+                'title': {'text': u'Interventions', 'standoff': 100},
+                'type': 'linear',
+                'showgrid': False,
+                'showticklabels': False,
+            },
+            'yaxis': {
+                'title': _("Time difference drone - BLS team (in seconds)"),
+                'type': 'linear',
+                'showticklabels': False,
+            },
+            'width': 500,
+            'height': 400,
+            'margin': {'l': 30, 'b': 100, 't': 50, 'r': 30},
+            'hovermode': 'closest',
+            'autosize': True
+        }
     }
 
-    return flows, indicator_graphic_3, indicator_graphic_4, flows, indicator_graphic_3, indicator_graphic_4
-# TODO : duplicate graphs output
-# TODO : handle graph width
-# TODO : group graphs in tab with both simulations
+    return flows, indicator_graphic_3, indicator_graphic_4, flows, \
+        indicator_graphic_3, indicator_graphic_4
 
 
 @app.callback(
