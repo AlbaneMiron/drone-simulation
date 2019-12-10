@@ -36,8 +36,8 @@ def create_tabs_layout():
                               'both operational and drone flight parameters. The source code is '
                               'available on '),
                             dbc.CardLink('Github',
-                                         href="https://github.com/AlbaneMiron/drone-simulation")])],
-                                           ),
+                                         href="https://github.com/AlbaneMiron/drone-simulation")
+                        ])],),
                 ),
 
                 dbc.Tab(

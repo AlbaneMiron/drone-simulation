@@ -46,7 +46,7 @@ df_initial[col_time_em_call] = pd.to_datetime(df_initial[col_time_em_call])
 df_initial = df_initial.loc[df_initial[col_BLS_time] >= 0]
 df_initial = df_initial.loc[df_initial[col_BLS_time] <= 25 * 60]
 
-df_initial = df_initial.head(100)
+#  df_initial = df_initial.head(100)
 
 
 def update_avail(time_dec, avail, unavail):
@@ -176,6 +176,7 @@ def _compute_drone_time(
     # lang = 'fr'
 
     print(seq_start)
+    np.random.seed(123)
 
     if lang:
         t11n = gettext.translation('messages', localedir='locales', languages=[lang], fallback=True)
