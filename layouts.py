@@ -30,18 +30,17 @@ def create_tabs_layout():
                               ' the actual time to arrival of BLS teams, and to estimate to what '
                               'extent drones could improve the chain of survival.')
                         ),
-                        html.P(
+                        html.P([
                             _('This app allows the user to compute their own simulation, '
                               'by changing '
-                              'both operational and drone flight parameters.')
-                        ),
-
-                        dbc.CardLink(_('Link to Github'),
-                                     href="https://github.com/AlbaneMiron/drone-simulation")])
+                              'both operational and drone flight parameters. The source code is '
+                              'available on '),
+                            dbc.CardLink('Github',
+                                         href="https://github.com/AlbaneMiron/drone-simulation")])],
+                                           ),
                 ),
 
                 dbc.Tab(
-                    # TODO : insert graph I did for Pascal here on how the simulation works
                     label=_('Simulation description'),
                     tab_id='datasets',
                     children=dbc.Container(className='control-tab', children=[
