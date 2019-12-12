@@ -368,7 +368,7 @@ def _compute_drone_time(
         ),
         dict(
             fill='blue',
-            size=fsize * n_no_detec,
+            size=fsize * n_detec_wit,
             text=_('Not enough witnesses') + f' {round(fsize * n_detec_wit)}%',
         ),
         dict(
