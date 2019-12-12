@@ -205,7 +205,7 @@ def _compute_drone_time(
     no_drone['night'] = np.full((len(df_res),), False)
 
     df_res[col_drone_delay] = np.nan
-    if input_jour:
+    if not input_jour:
         index_nuit = df_res[col_indic_day] == 0
         no_drone['night'] = index_nuit
         df_res.loc[index_nuit, col_drone_delay] = 0
@@ -364,22 +364,22 @@ def _compute_drone_time(
         dict(
             fill='red',
             size=fsize * n_no_detec,
-            text=_('Not detected') + f' {round(fsize * n_no_detec)}%',
+            text=_('Not detected') + f' {np.around(fsize * n_no_detec, decimals=0)}%',
         ),
         dict(
             fill='blue',
             size=fsize * n_detec_wit,
-            text=_('Not enough witnesses') + f' {round(fsize * n_detec_wit)}%',
+            text=_('Not enough witnesses') + f' {np.around(fsize * n_detec_wit, decimals=0)}%',
         ),
         dict(
             fill='orange',
             size=fsize * n_bls,
-            text=_('BLS team faster than drone') + f' {round(fsize * n_bls)}%',
+            text=_('BLS team faster than drone') + f' {np.around(fsize * n_bls, decimals=0)}%',
         ),
         dict(
             fill='green',
             size=fsize * n_drone,
-            text=_('Drone faster') + f' {round(fsize * n_drone)}%',
+            text=_('Drone faster') + f' {np.around(fsize * n_drone, decimals=0)}%',
         ),
     ]
 
