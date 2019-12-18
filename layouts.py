@@ -249,7 +249,10 @@ def create_graphs_layout(suffix='', style=None):
         # html.H3(_('Results')),
         dcc.Loading(children=[
             html.H6(_('Intervention distribution')),
-            dbc.Container(sankey.Sankey(id=f'flows-graphic{suffix}'), className='row'),
+            dbc.Container(sankey.Sankey(
+              id=f'flows-graphic{suffix}',
+              width=470, height=400,
+            ), className='row'),
             html.H6(_('Time to arrival histogram when a drone is sent')),
             dbc.Col(children=[dcc.Graph(id=f'indicator-graphic3{suffix}', className='row')]),
             html.H6(_('Comparison of times to arrival for all interventions')),
@@ -263,7 +266,10 @@ def create_both_graphs(name, suffix='', style=None):
         html.H3(_('Simulation ') + name),
         dcc.Loading(children=[
             html.H6(_('Intervention distribution')),
-            dbc.Container(sankey.Sankey(id=f'flows-graphicu{suffix}'), className='row'),
+            dbc.Container(sankey.Sankey(
+              id=f'flows-graphicu{suffix}',
+              width=470, height=400,
+            ), className='row'),
             html.H6(_('Time to arrival histogram when a drone is sent')),
             dbc.Col(children=[dcc.Graph(id=f'indicator-graphic3u{suffix}', className='row')]),
             html.H6(_('Comparison of times to arrival for all interventions')),
