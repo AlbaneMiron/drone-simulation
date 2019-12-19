@@ -172,7 +172,7 @@ def create_parameters_layout(name, suffix='', input_drone=_POSITIONS[0], style=N
 
             ], style={'flex': 1}),
 
-            html.Button(id=f'seq_start{suffix}', n_clicks=0, children=_('Update simulation')),
+            html.Button(id=f'seq_start{suffix}', n_clicks=0, children=_('Update simulation ') + name),
 
         ], style={'display': 'flex'}),
 

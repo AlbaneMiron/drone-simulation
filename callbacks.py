@@ -129,7 +129,7 @@ def select_interv(all_interventions, condition, column, rate):
 
 
 def _compute_drone_time(
-        seq_start,
+        seq_start_,
         drone_input,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
         input_jour_, detec_rate_home, no_witness_rate, detec_rate_vp, unavail_delta, lang):
@@ -173,7 +173,7 @@ def _compute_drone_time(
     # unavail_delta = '6'
     # lang = 'fr'
 
-    print(seq_start)
+    print(seq_start_)
 
     if lang:
         t11n = gettext.translation('messages', localedir='locales', languages=[lang], fallback=True)
@@ -469,13 +469,13 @@ def drone_time(
      State('unavail_delta_b', 'value'),
      State('lang', 'value')])
 def drone_time_b(
-        seq_start,
+        seq_start_b,
         drone_input,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
         input_jour_, detec_rate_home, no_witness_rate, detec_rate_vp, unavail_delta, lang):
 
     return _compute_drone_time(
-        seq_start,
+        seq_start_b,
         drone_input,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
         input_jour_, detec_rate_home, no_witness_rate, detec_rate_vp, unavail_delta, lang)
