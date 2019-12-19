@@ -1,7 +1,9 @@
 dash
+dash-bootstrap-components
 geopy
 pandas
 sankey
 scikit-learn
 numpy
 plotly
+dash_bootstrap_components

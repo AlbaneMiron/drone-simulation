@@ -46,6 +46,8 @@ df_initial[col_time_em_call] = pd.to_datetime(df_initial[col_time_em_call])
 df_initial = df_initial.loc[df_initial[col_BLS_time] >= 0]
 df_initial = df_initial.loc[df_initial[col_BLS_time] <= 25 * 60]
 
+#  df_initial = df_initial.head(100)
+
 
 def update_avail(time_dec, avail, unavail):
     """
@@ -174,6 +176,7 @@ def _compute_drone_time(
     # lang = 'fr'
 
     print(seq_start_)
+    np.random.seed(123)
 
     if lang:
         t11n = gettext.translation('messages', localedir='locales', languages=[lang], fallback=True)
@@ -202,7 +205,7 @@ def _compute_drone_time(
     no_drone['night'] = np.full((len(df_res),), False)
 
     df_res[col_drone_delay] = np.nan
-    if input_jour:
+    if not input_jour:
         index_nuit = df_res[col_indic_day] == 0
         no_drone['night'] = index_nuit
         df_res.loc[index_nuit, col_drone_delay] = 0
@@ -361,22 +364,22 @@ def _compute_drone_time(
         dict(
             fill='red',
             size=fsize * n_no_detec,
-            text=_('Not detected') + f' {round(fsize * n_no_detec)}%',
+            text=_('Not detected') + f' {np.around(fsize * n_no_detec, decimals=0)}%',
         ),
         dict(
             fill='blue',
-            size=fsize * n_no_detec,
-            text=_('Not enough witnesses') + f' {round(fsize * n_detec_wit)}%',
+            size=fsize * n_detec_wit,
+            text=_('Not enough witnesses') + f' {np.around(fsize * n_detec_wit, decimals=0)}%',
         ),
         dict(
             fill='orange',
             size=fsize * n_bls,
-            text=_('BLS team faster than drone') + f' {round(fsize * n_bls)}%',
+            text=_('BLS team faster than drone') + f' {np.around(fsize * n_bls, decimals=0)}%',
         ),
         dict(
             fill='green',
             size=fsize * n_drone,
-            text=_('Drone faster') + f' {round(fsize * n_drone)}%',
+            text=_('Drone faster') + f' {np.around(fsize * n_drone, decimals=0)}%',
         ),
     ]
 
@@ -390,37 +393,49 @@ def _compute_drone_time(
             yaxis={
                 'title': _('Number of interventions'),
                 'type': 'linear',
+                'showticklabels': False,
             },
-            margin={'l': 40, 'b': 40, 't': 10, 'r': 0},
+            width=500,
+            height=400,
+            margin={'l': 30, 'b': 100, 't': 50, 'r': 30},
             hovermode='closest',
-            title=_('Time to arrival histogram when a drone is sent'),
+            autosize=True,
         ),
     }
 
     indicator_graphic_4 = {
         'data': [trace5],
-        'layout': go.Layout(
-            xaxis={
-                'title': u'Interventions',  # , quand le drone se présente avant le VSAV',
+        'layout': {
+            'xaxis': {
+                'title': {'text': u'Interventions', 'standoff': 100},
                 'type': 'linear',
                 'showgrid': False,
+                'showticklabels': False,
             },
-            yaxis={
+            'yaxis': {
                 'title': _("Time difference drone - BLS team (in seconds)"),
                 'type': 'linear',
+                'showticklabels': False,
             },
-            margin={'l': 40, 'b': 40, 't': 10, 'r': 0},
-            hovermode='closest',
-            title=_('Comparison of times to arrival for all interventions'),
-        )}
+            'width': 500,
+            'height': 400,
+            'margin': {'l': 30, 'b': 100, 't': 50, 'r': 30},
+            'hovermode': 'closest',
+            'autosize': True
+        }
+    }
 
-    return flows, indicator_graphic_3, indicator_graphic_4
+    return flows, indicator_graphic_3, indicator_graphic_4, flows, \
+        indicator_graphic_3, indicator_graphic_4
 
 
 @app.callback(
     [Output('flows-graphic', 'flows'),
      Output('indicator-graphic3', 'figure'),
-     Output('indicator-graphic4', 'figure')],
+     Output('indicator-graphic4', 'figure'),
+     Output('flows-graphicu', 'flows'),
+     Output('indicator-graphic3u', 'figure'),
+     Output('indicator-graphic4u', 'figure')],
     [Input('seq_start', 'n_clicks')],
     [State('input_drone', 'value'),
      State('speed', 'value'),
@@ -452,7 +467,10 @@ def drone_time(
 @app.callback(
     [Output('flows-graphic_b', 'flows'),
      Output('indicator-graphic3_b', 'figure'),
-     Output('indicator-graphic4_b', 'figure')],
+     Output('indicator-graphic4_b', 'figure'),
+     Output('flows-graphicu_b', 'flows'),
+     Output('indicator-graphic3u_b', 'figure'),
+     Output('indicator-graphic4u_b', 'figure')],
     [Input('seq_start_b', 'n_clicks')],
     [State('input_drone_b', 'value'),
      State('speed_b', 'value'),

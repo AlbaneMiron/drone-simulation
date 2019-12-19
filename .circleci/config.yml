@@ -29,17 +29,17 @@ jobs:
           name: Setup Google SDK
           command: |
             gcloud --quiet components update
-            echo $GCLOUD_SERVICE_KEY | base64 --decode | gcloud auth activate-service-account --key-file=-
+            echo $GCLOUD_SERVICE_KEY | base64 --decode | gcloud --quiet auth activate-service-account --key-file=-
       - run:
           name: Build and publish the prod version.
           command: |
             docker build --target prod -t eu.gcr.io/drone-simulation/server .
-            gcloud auth configure-docker
+            gcloud --quiet auth configure-docker
             docker push eu.gcr.io/drone-simulation/server
       - run:
           name: Deploy the version we just created.
           command: |
-            gcloud beta run deploy drone-simulation --image eu.gcr.io/drone-simulation/server --platform managed --project drone-simulation --region europe-west1 --allow-unauthenticated
+            gcloud --quiet beta run deploy drone-simulation --image eu.gcr.io/drone-simulation/server --platform managed --project drone-simulation --region europe-west1 --allow-unauthenticated
 
 
 workflows:
