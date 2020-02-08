@@ -284,7 +284,7 @@ def _compute_drone_time(
 
     dfi.loc[dfi['wins'] == 'D', 'col_bar'] = 'rgba(0,128,0,0.8)'
     dfi.loc[dfi['wins'] == 'B', 'col_bar'] = 'rgba(222,45,38,0.8)'
-    dfi.loc[dfi['wins'] == 'N', 'col_bar'] = 'rgba(204,204,204,1)'
+    dfi.loc[dfi['wins'] == 'N', 'col_bar'] = 'rgba(186,190,222,1)'
 
     dfi[res_col_b] = - dfi[res_col_b]
     ynew = dfi.sort_values(res_col_b)
@@ -316,6 +316,7 @@ def _compute_drone_time(
     n_detec_wit = np.logical_and(no_drone['detection'], no_drone['not enough witnesses']).sum()
     n_detec_both = np.logical_and(np.logical_and(no_drone['detection'], no_drone['night']),
                                   no_drone['not enough witnesses']).sum()
+    n_detec_dw = n_detec_wit - n_detec_both
 
     y_waterf = np.array([n_pub_place, (n_tot - n_pub_place), n_tot,
                          - n_no_detec, - n_detec_wit, -(n_detec_night - n_detec_both),
@@ -329,8 +330,11 @@ def _compute_drone_time(
     df_density = df_density.loc[df_density[res_col_a] > 0]
 
     trace3 = go.Histogram(x=df_density[col_BLS_time],
-                          name=_('BLS team'))
-    trace4 = go.Histogram(x=df_density[res_col_a], name=_('Drone'))
+                          name=_('BLS team'),
+                          marker_color='#ff5959')
+    trace4 = go.Histogram(x=df_density[res_col_a],
+                          name=_('Drone'),
+                          marker_color='#49beb7')
 
     trace5 = go.Bar(
         x=[i for i in range(0, len(dfi))],
@@ -362,24 +366,29 @@ def _compute_drone_time(
     fsize = 100 / n_tot
     flows = [
         dict(
-            fill='red',
+            fill='#e7eaf6',
             size=fsize * n_no_detec,
-            text=_('Not detected') + f' {np.around(fsize * n_no_detec, decimals=0)}%',
+            text=_('Not detected') + f' {int(np.floor(fsize * n_no_detec))}%',
         ),
         dict(
-            fill='blue',
+            fill='#a2a8d3',
+            size=fsize * n_detec_night,
+            text=_('Detected but by night') + f' {int(np.floor(fsize * n_detec_night))}%',
+        ),
+        dict(
+            fill='#38598b',
             size=fsize * n_detec_wit,
-            text=_('Not enough witnesses') + f' {np.around(fsize * n_detec_wit, decimals=0)}%',
+            text=_('Detected but not enough witnesses') + f' {int(np.floor(fsize * n_detec_dw))}%',
         ),
         dict(
-            fill='orange',
+            fill='#ee4540',
             size=fsize * n_bls,
-            text=_('BLS team faster than drone') + f' {np.around(fsize * n_bls, decimals=0)}%',
+            text=_('BLS team faster than drone') + f' {int(np.floor(fsize * n_bls))}%',
         ),
         dict(
-            fill='green',
+            fill='#58b368',
             size=fsize * n_drone,
-            text=_('Drone faster') + f' {np.around(fsize * n_drone, decimals=0)}%',
+            text=_('Drone faster') + f' {int(np.floor(fsize * n_drone))}%',
         ),
     ]
 
