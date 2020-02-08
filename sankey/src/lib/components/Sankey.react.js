@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 export default class SankyArrow extends PureComponent {
   render() {
-    const {flows} = this.props
+    const {flows, height: svgHeight, width} = this.props
     if (!flows) {
       return null
     }
@@ -23,12 +23,14 @@ export default class SankyArrow extends PureComponent {
     const lastNotchHeight = (.5 + notchSize) * flows[flows.length - 1].size
     const textMarginLeft = 20
     const curve = cumSize
-    const height =
+    const totalHeight =
       cumSizes[flows.length - 1] / .414 + topMargin + curve + lastNotchHeight + straightHeight
+    const height = svgHeight || totalHeight
+    const translateX = flows[flows.length - 1].size * notchSize
     return <svg
-      width={leftMargin + cumSize + lastNotchWidth + rightMargin}
+      width={width || (leftMargin + cumSize + lastNotchWidth + rightMargin)}
       height={height}>
-      <g transform={`translate(${flows[flows.length - 1].size * notchSize}, 0)`}>
+      <g transform={`translate(${translateX}, ${height - totalHeight})`}>
         {flows.map(({fill, size}, index) => {
           if (index === flows.length - 1) {
             return <path
@@ -98,8 +100,18 @@ SankyArrow.propTypes = {
     }).isRequired),
 
     /**
+     * Height of the graph. If not set, it depends on the sum of the sizes of the flows.
+     */
+    height: PropTypes.number,
+
+    /**
      * Dash-assigned callback that should be called to report property changes
      * to Dash, to make them available for callbacks.
      */
-    setProps: PropTypes.func
+    setProps: PropTypes.func,
+
+    /**
+     * Width of the graph. If not set, it depends on the sum of the sizes of the flows.
+     */
+    width: PropTypes.number,
 };

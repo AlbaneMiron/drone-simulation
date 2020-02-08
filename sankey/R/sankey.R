@@ -1,8 +1,8 @@
 # AUTO GENERATED FILE - DO NOT EDIT
 
-sankey <- function(id=NULL, flows=NULL) {
+sankey <- function(id=NULL, flows=NULL, height=NULL, width=NULL) {
     
-    props <- list(id=id, flows=flows)
+    props <- list(id=id, flows=flows, height=height, width=width)
     if (length(props) > 0) {
         props <- props[!vapply(props, is.null, logical(1))]
     }
@@ -10,7 +10,7 @@ sankey <- function(id=NULL, flows=NULL) {
         props = props,
         type = 'Sankey',
         namespace = 'sankey',
-        propNames = c('id', 'flows'),
+        propNames = c('id', 'flows', 'height', 'width'),
         package = 'sankey'
         )
 

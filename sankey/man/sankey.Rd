@@ -10,7 +10,7 @@
 }
 
 \usage{
-sankey(id=NULL, flows=NULL)
+sankey(id=NULL, flows=NULL, height=NULL, width=NULL)
 }
 
 \arguments{
@@ -23,4 +23,8 @@ those elements have the following types:
   - fill (character; optional)
   - size (numeric; required)
   - text (character; optional)s. A list of flows to display as arrows.}
+
+\item{height}{Height of the graph. If not set, it depends on the sum of the sizes of the flows.}
+
+\item{width}{Width of the graph. If not set, it depends on the sum of the sizes of the flows.}
 }
