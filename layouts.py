@@ -18,9 +18,9 @@ def create_tabs_layout():
                     children=dbc.Container(className='control-tab', children=[
                         html.H4(className='what-is', children=_('App presentation')),
                         html.P(
-                            _('This app simulates drones sent with Automatic External '
+                            _('This website simulates drones sent with Automatic External '
                               'Defibrillators '
-                              '(AEDs) to Out-of-Hospital Cardiac Arrest (OHCA) interventions. '
+                              'to Out-of-Hospital Cardiac Arrest interventions. '
                               "Simulation is based on real life data, gathered in 2017 by Paris' "
                               'Firefighters, who intervened on more than 3000 OHCA in Paris and '
                               'Paris suburbs.')
@@ -33,11 +33,21 @@ def create_tabs_layout():
                         html.P([
                             _('This app allows the user to compute their own simulation, '
                               'by changing '
-                              'both operational and drone flight parameters. The source code is '
+                              'both dispatch center and drone flight parameters. '
+                              'The source code is '
                               'available on '),
                             dbc.CardLink('Github',
-                                         href="https://github.com/AlbaneMiron/drone-simulation")
-                        ])],),
+                                         href="https://github.com/AlbaneMiron/drone-simulation"),
+                            _(' to allow for expertise and replication.'),
+                        ]),
+                        html.P(
+                            _("Default parameters correspond to what is assumed to be the "
+                              'most likely set of drone characteristics and to the actual '
+                              'operational'
+                              "performance of Paris'firefighters medical dispatch center.")
+                        ),
+                    ],),
+
                 ),
 
                 dbc.Tab(
@@ -138,7 +148,7 @@ def create_parameters_layout(name, suffix='', input_drone=_POSITIONS[0], style=N
                     html.Label(_("Drone's vertical speed (in m/s):"), id="vert-acc_e"),
                     dbc.Tooltip(
                         _('Maximum vertical speed. It is assumed that the time needed for the '
-                          'drone to reach this speed is negligible'),
+                          'drone to reach this speed is negligible.'),
                         target="vert-acc_e",
                         placement="left")]),
                 dbc.Input(id=f'vert-acc{suffix}', value='9', type='text'),
@@ -154,7 +164,7 @@ def create_parameters_layout(name, suffix='', input_drone=_POSITIONS[0], style=N
                 html.Div([
                     html.Label(_('Unavailability of the drone after a run (in h):'), id="unav_e"),
                     dbc.Tooltip(
-                        _('time needed after a run for the drone to be available again. It '
+                        _('Time needed after a run for the drone to be available again. It '
                           'accounts for the time spent on the OHCA location and the time of '
                           'refurbishment and rehabilitation of equipment.'),
                         target="unav_e",
