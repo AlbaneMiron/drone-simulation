@@ -46,7 +46,17 @@ def create_tabs_layout():
                               'operational'
                               "performance of Paris'firefighters medical dispatch center.")
                         ),
-                    ],),
+                        # dbc.Card(
+                        #     dbc.Button(" GitHub",
+                        #                id='submit-button', className='fa fa-github',
+                        #                size='lg',
+                        #                href="https://github.com/AlbaneMiron/drone-simulation"),
+                        #     style={"width": "12rem",
+                        #            "margin-left": "auto",
+                        #            "margin-right": "auto"
+                        #            }),
+
+                    ],)
 
                 ),
 
@@ -311,7 +321,20 @@ def create(lang):
     lang.install()
     return dbc.Container(children=[
         dbc.Container(
-            className='title', children=[html.H1(_('Airborne AED simulation'))]),
+            className='title',
+            children=[html.H1(_('Airborne AED simulation')),
+                      dbc.Card(dbc.Button(" GitHub",
+                                          id='submit-button',
+                                          className='fa fa-github',
+                                          size='lg',
+                                          href="https://github.com/AlbaneMiron/drone-simulation"),
+                               style={"width": "12rem"},
+                               color="light", outline=True
+                               )
+                      ],
+            style={"display": "flex", "justify-content": "space-between"}
+        ),
         dbc.Container(
-            id='vp-control-tabs', className='control-tabs', children=[create_tabs_layout()],),
+            id='vp-control-tabs', className='control-tabs', children=[create_tabs_layout()],
+        ),
     ])
