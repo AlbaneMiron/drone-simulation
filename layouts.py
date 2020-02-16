@@ -170,11 +170,11 @@ def create_parameters_layout(name, suffix='', input_drone=_POSITIONS[0], style=N
                 dcc.RadioItems(
                     id=f'day{suffix}',
                     options=[
-                        {'label': _('Yes'), 'value': 'Oui'},
-                        {'label': _('No'), 'value': 'Non'},
+                        {'label': ' ' + _('Yes'), 'value': 'Oui'},
+                        {'label': ' ' + _('No'), 'value': 'Non'},
                     ],
                     value='Non',
-                    labelStyle={'display': 'inline-block'}
+                    labelStyle={'display': 'inline-block', 'margin-right': '1em'},
                 ),
 
                 html.H6(_('Operational parameters')),
