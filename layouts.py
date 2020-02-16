@@ -46,6 +46,11 @@ def create_tabs_layout():
                               'operational'
                               "performance of Paris'firefighters medical dispatch center.")
                         ),
+                        html.Div([
+                            html.Img(
+                                src="https://maps.googleapis.com/maps/api/staticmap?center=Paris,+France&zoom=11&scale=false&size=600x300&maptype=roadmap&key=AIzaSyAMs0JsrC88jq_yxCxfFqZ8dIBt0wEl3CY&format=png&visual_refresh=true",
+                            ),
+                        ], style={'text-align': 'center'}),
                         # dbc.Card(
                         #     dbc.Button(" GitHub",
                         #                id='submit-button', className='fa fa-github',
