@@ -322,16 +322,15 @@ def create(lang):
     return dbc.Container(children=[
         dbc.Container(
             className='title',
-            children=[html.H1(_('Airborne AED simulation')),
-                      dbc.Card(dbc.Button(" GitHub",
-                                          id='submit-button',
-                                          className='fa fa-github',
-                                          size='lg',
-                                          href="https://github.com/AlbaneMiron/drone-simulation"),
-                               style={"width": "12rem"},
-                               color="light", outline=True
-                               )
-                      ],
+            children=[
+                html.H1(_('Airborne AED simulation')),
+                html.A(
+                    _('Fork me on GitHub'),
+                    href='https://github.com/AlbaneMiron/drone-simulation',
+                    className='github-fork-ribbon',
+                    **{'data-ribbon': _('Fork me on GitHub')}
+                ),
+            ],
             style={"display": "flex", "justify-content": "space-between"}
         ),
         dbc.Container(
