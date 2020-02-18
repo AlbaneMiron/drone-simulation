@@ -15,10 +15,10 @@ FROM base AS test
 
 COPY requirements-test.txt .
 RUN pip install -r requirements-test.txt
-COPY *.py .pycodestyle ./
+COPY *.py .pycodestyle .pylintrc ./
 # Lint files.
 RUN pycodestyle --config=.pycodestyle *.py
-RUN pylint *.py --disable=C0111,W0511,C0103,R --additional-builtins=_
+RUN pylint *.py
 
 # Compile translation files.
 COPY locales/fr/LC_MESSAGES/*.po locales/fr/LC_MESSAGES/
