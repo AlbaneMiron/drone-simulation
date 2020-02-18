@@ -422,7 +422,7 @@ def _compute_drone_time(
                 'showticklabels': False,
             },
             'yaxis': {
-                'title': _("Time difference drone - BLS team (in seconds)"),
+                'title': _('Time difference drone - BLS team (in seconds)'),
                 'type': 'linear',
                 'showticklabels': False,
             },
