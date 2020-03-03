@@ -1,6 +1,6 @@
 {
   "name": "sankey",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Simple Sankey arrow diagram for Dash",
   "repository": {
     "type": "git",

@@ -15,14 +15,16 @@ components in an app.
 Those keys have the following types:
   - fill (string; optional)
   - size (number; required)
-  - text (string; optional)"""
+  - text (string; optional)
+- height (optional): Height of the graph. If not set, it depends on the sum of the sizes of the flows.
+- width (optional): Width of the graph. If not set, it depends on the sum of the sizes of the flows."""
     @_explicitize_args
-    def __init__(self, id=Component.UNDEFINED, flows=Component.UNDEFINED, **kwargs):
-        self._prop_names = ['id', 'flows']
+    def __init__(self, id=Component.UNDEFINED, flows=Component.UNDEFINED, height=Component.UNDEFINED, width=Component.UNDEFINED, **kwargs):
+        self._prop_names = ['id', 'flows', 'height', 'width']
         self._type = 'Sankey'
         self._namespace = 'sankey'
         self._valid_wildcard_attributes =            []
-        self.available_properties = ['id', 'flows']
+        self.available_properties = ['id', 'flows', 'height', 'width']
         self.available_wildcard_properties =            []
 
         _explicit_args = kwargs.pop('_explicit_args')

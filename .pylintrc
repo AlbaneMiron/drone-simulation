@@ -1,0 +1,23 @@
+[MASTER]
+load-plugins=pylint_quotes
+
+[REPORTS]
+output=colorized
+disable=I,R,missing-module-docstring,invalid-name,missing-function-docstring
+reports=no
+enable=useless-suppression
+
+[FORMAT]
+# Ignore any lines containing an URL longer than ~60 chars long.
+ignore-long-lines=https?://\S{50}
+
+[VARIABLES]
+dummy-variables-rgx=_?unused_.*
+additional-builtins=_
+
+[DESIGN]
+ignored-argument-names=unused_.*
+
+[MISCELLANEOUS]
+notes=FIXME,XXX
+string-quote=single-avoid-escape

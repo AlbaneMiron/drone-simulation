@@ -35,12 +35,30 @@
         "required": false,
         "description": "A list of flows to display as arrows."
       },
+      "height": {
+        "type": {
+          "name": "union",
+          "computed": true,
+          "value": "PropTypes.string"
+        },
+        "required": false,
+        "description": "Height of the graph. If not set, it depends on the sum of the sizes of the flows."
+      },
       "setProps": {
         "type": {
           "name": "func"
         },
         "required": false,
         "description": "Dash-assigned callback that should be called to report property changes\nto Dash, to make them available for callbacks."
+      },
+      "width": {
+        "type": {
+          "name": "union",
+          "computed": true,
+          "value": "PropTypes.string"
+        },
+        "required": false,
+        "description": "Width of the graph. If not set, it depends on the sum of the sizes of the flows."
       }
     }
   }
