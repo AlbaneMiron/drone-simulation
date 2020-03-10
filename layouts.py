@@ -289,6 +289,8 @@ def create_parameters_layout(name, suffix='', input_drone=_POSITIONS[0], style=N
 def create_graphs_layout(suffix='', style=None):
     return dbc.Container([
         dcc.Loading(children=[
+            html.H6(_('Flight exlcusions')),
+            dbc.Col(children=[dcc.Graph(id=f'indicator-graphic1{suffix}', className='row')]),
             html.H6(_('Intervention distribution')),
             dbc.Container(
                 sankey.Sankey(
@@ -308,6 +310,8 @@ def create_both_graphs(name, suffix='', style=None):
     return dbc.Container([
         html.H3(_('Simulation ') + name),
         dcc.Loading(children=[
+            html.H6(_('Flight exlcusions')),
+            dbc.Col(children=[dcc.Graph(id=f'indicator-graphic1u{suffix}', className='row')]),
             html.H6(_('Intervention distribution')),
             dbc.Container(sankey.Sankey(
                 id=f'flows-graphicu{suffix}',
