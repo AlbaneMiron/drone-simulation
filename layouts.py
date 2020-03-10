@@ -37,13 +37,6 @@ def create_tabs_layout():
                               'The source code is '
                               'available on '),
                             dbc.CardLink('Github',
-# <<<<<<< HEAD
-#                                          href="https://github.com/AlbaneMiron/drone-simulation"),
-#                             _(' to allow for expertise and replication.'),
-#                         ]),
-#                         html.P(
-#                             _("Default parameters correspond to what is assumed to be the "
-# =======
                                          href='https://github.com/AlbaneMiron/drone-simulation'),
                             _(' to allow for expertise and replication.'),
                         ]),
@@ -151,56 +144,44 @@ def create_parameters_layout(name, suffix='', input_drone=_POSITIONS[0], style=N
                 ),
 
                 html.Div([
-                    html.Label(_('Max drone speed (in km/h)'), id="speed_e"),
+                    html.Label(_('Max drone speed (in km/h)'), id='speed_e'),
                     dbc.Tooltip(
                         _('Maximum horizontal speed'),
-                        target="speed_e",
-                        placement="left")]),
+                        target='speed_e',
+                        placement='left')]),
                 dbc.Input(id=f'speed{suffix}', value='80', type='text'),
 
                 html.Div([
-                    html.Label(_("Drone's acceleration time (in sec):"), id="acc_e"),
+                    html.Label(_("Drone's acceleration time (in sec):"), id='acc_e'),
                     dbc.Tooltip(
                         _('Time needed for the drone to reach its maximum horizontal speed.'),
-                        target="acc_e",
-                        placement="left")]),
+                        target='acc_e',
+                        placement='left')]),
                 dbc.Input(id=f'acc{suffix}', value='5', type='text'),
 
                 html.Div([
-                    html.Label(_("Drone's vertical speed (in m/s):"), id="vert-acc_e"),
+                    html.Label(_("Drone's vertical speed (in m/s):"), id='vert-acc_e'),
                     dbc.Tooltip(
                         _('Maximum vertical speed. It is assumed that the time needed for the '
                           'drone to reach this speed is negligible.'),
-                        target="vert-acc_e",
-                        placement="left")]),
+                        target='vert-acc_e',
+                        placement='left')]),
                 dbc.Input(id=f'vert-acc{suffix}', value='9', type='text'),
 
                 html.Div([
-                    html.Label(_("Drone's cruise altitude (in m):"), id="alt_e"),
+                    html.Label(_("Drone's cruise altitude (in m):"), id='alt_e'),
                     dbc.Tooltip(
                         _('Horizontal cruise altitude'),
-                        target="alt_e",
-                        placement="left")]),
+                        target='alt_e',
+                        placement='left')]),
                 dbc.Input(id=f'alt{suffix}', value='100', type='text'),
 
                 html.Div([
-                    html.Label(_('Unavailability of the drone after a run (in h):'), id="unav_e"),
+                    html.Label(_('Unavailability of the drone after a run (in h):'), id='unav_e'),
                     dbc.Tooltip(
                         _('Time needed after a run for the drone to be available again. It '
                           'accounts for the time spent on the OHCA location and the time of '
                           'refurbishment and rehabilitation of equipment.'),
-# <<<<<<< HEAD
-#                         target="unav_e",
-#                         placement="left")]),
-#                 dbc.Input(id=f'unavail_delta{suffix}', value='6', type='text'),
-#
-#                 html.Div([
-#                     html.Label(_('Drone can fly during aeronautical night'), id="day_e"),
-#                     dbc.Tooltip(
-#                         _('Whether the drone can only fly during the aeronautical day or not'),
-#                         target="day_e",
-#                         placement="left")]),
-# =======
                         target='unav_e',
                         placement='left')]),
                 dbc.Input(id=f'unavail_delta{suffix}', value='6', type='text'),
@@ -211,7 +192,6 @@ def create_parameters_layout(name, suffix='', input_drone=_POSITIONS[0], style=N
                         _('Whether the drone can only fly during the aeronautical day or not'),
                         target='day_e',
                         placement='left')]),
-# >>>>>>> a0ca58869bd054cd8bfc2e8dacbce68931501cde
                 dcc.RadioItems(
                     id=f'day{suffix}',
                     options=[
@@ -245,8 +225,8 @@ def create_parameters_layout(name, suffix='', input_drone=_POSITIONS[0], style=N
 
                 html.Div([
                     html.Label(
-                        _("Delay between detection of unconsciousness  and OHCA detection (in s):"),
-                        id="del_e"),
+                        _('Delay between detection of unconsciousness  and OHCA detection (in s):'),
+                        id='del_e'),
                     dbc.Tooltip(
                         _('Mean time spent between unconsciousness and OHCA detection by '
                           'emergency call dispatchers. Unconsciousness detection activates BLS '
@@ -347,16 +327,15 @@ def create(lang):
     return dbc.Container(children=[
         dbc.Container(
             className='title',
-            children=[html.H1(_('Airborne AED simulation')),
-                      dbc.Card(dbc.Button(' GitHub',
-                                          id='submit-button',
-                                          className='fa fa-github',
-                                          size='lg',
-                                          href='https://github.com/AlbaneMiron/drone-simulation'),
-                               style={'width': '12rem'},
-                               color='light', outline=True
-                               )
-                      ],
+            children=[
+                html.H1(_('Airborne AED simulation')),
+                html.A(
+                    _('Fork me on GitHub'),
+                    href='https://github.com/AlbaneMiron/drone-simulation',
+                    className='github-fork-ribbon',
+                    **{'data-ribbon': _('Fork me on GitHub')}
+                ),
+            ],
             style={'display': 'flex', 'justify-content': 'space-between'}
         ),
         dbc.Container(
