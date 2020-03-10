@@ -291,17 +291,20 @@ def _compute_drone_time(
     n_detec_dw = n_detec_wit - n_detec_both
 
     l_pie = np.array([n_drone, n_bls, n_nodrone,
-             n_no_detec, n_no_detec_night - n_no_detec_both, n_no_detec_wit - n_no_detec_both, n_no_detec_both,
+             n_no_detec, n_nodrone - n_no_detec,
+                      n_no_detec_night - n_no_detec_both, n_no_detec_wit - n_no_detec_both, n_no_detec_both,
              n_detec_night - n_detec_both, n_detec_wit - n_detec_both, n_detec_both])
     l_pie = np.around(l_pie * 100 / n_tot, 0).astype('int')
 
     trace1 = go.Sunburst(
         labels=["Drone faster", "BLS team faster", "No drone",
-                "No detection", "At night", "Not enough wit", "At night and ne wit",
-                "Detected but at night", "Detected bu ne wit", "Detected but at night and ne wit"],
+                "No detection", "Detection with exclusion",
+                "ND + N", "ND + NE-W", "ND + N + NE W",
+                "D + N", "D + NE-W", "D + NE-W + N"],
         parents=["", "", "",
-                 "No drone", "No detection", "No detection", "No detection",
-                 "No drone", "No drone", "No drone", "No drone"],
+                 "No drone", "No drone",
+                 "No detection", "No detection", "No detection",
+                "Detection with exclusion", "Detection with exclusion", "Detection with exclusion"],
         values=l_pie,
         branchvalues="total",
     )
@@ -406,7 +409,6 @@ def _compute_drone_time(
     indicator_graphic_1 = {
         'data': [trace1],
         'layout': go.Layout(
-            # margin={'l': 40, 'b': 40, 't': 10, 'r': 0},
             hovermode='closest',
         ),
     }
