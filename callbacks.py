@@ -131,7 +131,7 @@ def select_interv(all_interventions, condition, column, rate):
 
 
 def _compute_drone_time(
-        seq_start,
+        seq_start_,
         drone_input,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
         input_jour_, detec_rate_home, no_witness_rate, detec_rate_vp, unavail_delta, lang):
@@ -175,7 +175,7 @@ def _compute_drone_time(
     # unavail_delta = '6'
     # lang = 'fr'
 
-    print(seq_start)
+    print(seq_start_)
     np.random.seed(123)
 
     if lang:
@@ -262,12 +262,70 @@ def _compute_drone_time(
     n_drone = len(dfi.loc[dfi[res_col_b] < 0])
     n_bls = len(dfi.loc[dfi[res_col_b] > 0]) - n_nodrone
 
-    # per_drone = 100 * n_drone / n_tot
-    #     # per_bls = 100 * n_bls / n_tot
-    #     # per_nodrone = 100 * n_nodrone / n_tot
+    no_drone['detection'] = np.logical_not(no_drone['no detection'])
+    # flight restriction reasons for the sunburst chart
 
+    # number of no detected OHCA
+    n_no_detec = no_drone['no detection'].sum()
+    # number of no detected OHCA which are also at night
+    n_no_detec_night = np.logical_and(no_drone['no detection'],
+                                      no_drone['night']).sum()
+    # number of no detected OHCA which also don't have enough witnesses
+    n_no_detec_wit = np.logical_and(no_drone['no detection'],
+                                    no_drone['not enough witnesses']).sum()
+    # number of no detected OHCA which also don't have enough witnesses and are at night
+    n_no_detec_both = np.logical_and(np.logical_and(no_drone['no detection'],
+                                                    no_drone['night']),
+                                     no_drone['not enough witnesses']).sum()
+    # number of detected OHCA which are at night
+    n_detec_night = np.logical_and(no_drone['detection'],
+                                   no_drone['night']).sum()
+    # number of detected OHCA which don't have enough witnesses
+    n_detec_wit = np.logical_and(no_drone['detection'],
+                                 no_drone['not enough witnesses']).sum()
+    # number of detected OHCA which don't have enough witnesses and are at night
+    n_detec_both = np.logical_and(np.logical_and(no_drone['detection'],
+                                                 no_drone['night']),
+                                  no_drone['not enough witnesses']).sum()
+
+    n_detec_dw = n_detec_wit - n_detec_both
+
+    l_pie = np.array([n_drone, n_bls, n_nodrone,
+             n_no_detec, n_no_detec_night - n_no_detec_both, n_no_detec_wit - n_no_detec_both, n_no_detec_both,
+             n_detec_night - n_detec_both, n_detec_wit - n_detec_both, n_detec_both])
+    l_pie = np.around(l_pie * 100 / n_tot, 0).astype('int')
+
+    trace1 = go.Sunburst(
+        labels=["Drone faster", "BLS team faster", "No drone",
+                "No detection", "At night", "Not enough wit", "At night and ne wit",
+                "Detected but at night", "Detected bu ne wit", "Detected but at night and ne wit"],
+        parents=["", "", "",
+                 "No drone", "No detection", "No detection", "No detection",
+                 "No drone", "No drone", "No drone", "No drone"],
+        values=l_pie,
+        branchvalues="total",
+    )
+    # trace1 = go.Bar(
+    #     x=[0, 1, 2],
+    #     text=['Faster drone', 'BLS team faster', 'No drone sent'],
+    #     y=[per_drone, per_bls, per_nodrone],
+    #     textposition='auto',
+    #     name='Test'
+    # )
+
+    # for the histogram graph
+    df_density = copy.deepcopy(dfi)
+    df_density = df_density.loc[df_density[res_col_a] > 0]
+
+    trace3 = go.Histogram(x=df_density[col_BLS_time],
+                          name=_('BLS team'),
+                          marker_color='#ff5959')
+    trace4 = go.Histogram(x=df_density[res_col_a],
+                          name=_('Drone'),
+                          marker_color='#49beb7')
+
+    # for the butterfly graph
     dfi['res_col_c'] = np.around(np.abs(dfi[res_col_b]), 0)
-
     dfi['wins'] = 'B'  # BLS team faster
     dfi.loc[dfi[res_col_b] < 0, 'wins'] = 'D'  # drone faster
     dfi.loc[dfi[res_col_a] == 0, 'wins'] = 'N'  # no drone
@@ -345,23 +403,13 @@ def _compute_drone_time(
         hovertemplate='%{text} seconds',  # %{y} seconds',
     )
 
-    # indicator_graphic_1 = {
-    #     'data': [trace1],
-    #     'layout': go.Layout(
-    #         xaxis={
-    #             'title': _('Intervention distribution'),
-    #             'type': 'linear',
-    #             'showticklabels': False,
-    #         },
-    #         yaxis={
-    #             'title': _('Percentage of interventions'),
-    #             'type': 'linear',
-    #         },
-    #         # margin={'l': 40, 'b': 40, 't': 10, 'r': 0},
-    #         hovermode='closest',
-    #     ),
-    #
-    # }
+    indicator_graphic_1 = {
+        'data': [trace1],
+        'layout': go.Layout(
+            # margin={'l': 40, 'b': 40, 't': 10, 'r': 0},
+            hovermode='closest',
+        ),
+    }
 
     fsize = 100 / n_tot
     flows = [
@@ -422,7 +470,7 @@ def _compute_drone_time(
                 'showticklabels': False,
             },
             'yaxis': {
-                'title': _("Time difference drone - BLS team (in seconds)"),
+                'title': _('Time difference drone - BLS team (in seconds)'),
                 'type': 'linear',
                 'showticklabels': False,
             },
@@ -435,7 +483,7 @@ def _compute_drone_time(
     }
 
     return flows, indicator_graphic_3, indicator_graphic_4, flows, \
-        indicator_graphic_3, indicator_graphic_4
+        indicator_graphic_3, indicator_graphic_4, indicator_graphic_1, indicator_graphic_1
 
 
 @app.callback(
@@ -444,7 +492,9 @@ def _compute_drone_time(
      Output('indicator-graphic4', 'figure'),
      Output('flows-graphicu', 'flows'),
      Output('indicator-graphic3u', 'figure'),
-     Output('indicator-graphic4u', 'figure')],
+     Output('indicator-graphic4u', 'figure'),
+     Output('indicator-graphic1', 'figure'),
+     Output('indicator-graphic1u', 'figure')],
     [Input('seq_start', 'n_clicks')],
     [State('input_drone', 'value'),
      State('speed', 'value'),
@@ -479,7 +529,9 @@ def drone_time(
      Output('indicator-graphic4_b', 'figure'),
      Output('flows-graphicu_b', 'flows'),
      Output('indicator-graphic3u_b', 'figure'),
-     Output('indicator-graphic4u_b', 'figure')],
+     Output('indicator-graphic4u_b', 'figure'),
+     Output('indicator-graphic1_b', 'figure'),
+     Output('indicator-graphic1u_b', 'figure')],
     [Input('seq_start_b', 'n_clicks')],
     [State('input_drone_b', 'value'),
      State('speed_b', 'value'),
@@ -496,13 +548,13 @@ def drone_time(
      State('unavail_delta_b', 'value'),
      State('lang', 'value')])
 def drone_time_b(
-        seq_start,
+        seq_start_b,
         drone_input,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
         input_jour_, detec_rate_home, no_witness_rate, detec_rate_vp, unavail_delta, lang):
 
     return _compute_drone_time(
-        seq_start,
+        seq_start_b,
         drone_input,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
         input_jour_, detec_rate_home, no_witness_rate, detec_rate_vp, unavail_delta, lang)
