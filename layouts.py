@@ -1,4 +1,5 @@
 import gettext
+import textwrap
 import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 import dash_html_components as html
@@ -112,6 +113,63 @@ def create_tabs_layout():
                             create_both_graphs('B', suffix='_b'),
                         ],
                         style={'display': 'flex'}),
+                ),
+
+                dbc.Tab(
+                    label=_('Custom Datasets'),
+                    tab_id='data',
+                    children=dbc.Container([
+                        html.H3(children=_('Custom Datasets')),
+
+                        html.Div(_('Launch a simulation on your own data:')),
+                        html.H4(children=_('Starting Points'), style={'marginTop': 30}),
+                        html.Div([_(
+                            'Upload a CSV file containing a list of starting points for drones. '
+                            'Each row represents one starting point and should contain an index '
+                            'followed by the latitude and longitude of the point. Example:'
+                        )]),
+                        html.Textarea(
+                            children=textwrap.dedent('''\
+                                COBI,48.8511191742212,2.33150232324835
+                                MALA,48.8615396838525,2.3057037964225398
+                                CHPY,48.8079548017692,2.53121646098508'''),
+                            disabled=True, style={'height': 80, 'width': 400}),
+                        dcc.Upload(
+                            id='upload-starting-points',
+                            children=html.Div([
+                                _('Drag and Drop or '),
+                                html.A(html.Button(_('Select a File'))),
+                            ]),
+                        ),
+                        html.Div(id='output-starting-points-upload'),
+
+                        html.H4(children=_('Incidents'), style={'marginTop': 30}),
+                        html.Div([_(
+                            'Upload a CSV file containing a list of incidents. Each row represents '
+                            'one incident and should contain the following fields:'
+                        )]),
+                        html.Ul([
+                            html.Li(_('time_call: the date and time of the emergency call')),
+                            html.Li(_('latitude: the latitude of the incident, as a float')),
+                            html.Li(_('longitude: the longitude of the incident as a float')),
+                            html.Li(_(
+                                'BLS_time: the time taken by the BLS team to reach the incident, '
+                                'in seconds',
+                            )),
+                            html.Li(_(
+                                'home: a flag indicating whether the incident happened at home (1) '
+                                'or in a street or public place (0)',
+                            )),
+                        ]),
+                        dcc.Upload(
+                            id='upload-incidents',
+                            children=html.Div([
+                                _('Drag and Drop or '),
+                                html.A(html.Button(_('Select a File'))),
+                            ]),
+                        ),
+                        html.Div(id='output-incidents-upload'),
+                    ]),
                 ),
             ]),
         ]),
