@@ -335,10 +335,6 @@ msgstr "Comparaison des temps de présentation pour toutes les interventions"
 msgid "Airborne AED simulation"
 msgstr "Simulation DAE porté par drone"
 
-#: layouts.py:328 layouts.py:331
-msgid "Fork me on GitHub"
-msgstr "Dupliquer sur GitHub"
-
 #~ msgid "BLS team time to arrival vs drone time to arrival"
 #~ msgstr "Temps présentation VSAV vs temps drone"
 
