@@ -46,7 +46,8 @@ df_initial[col_time_em_call] = pd.to_datetime(df_initial[col_time_em_call])
 df_initial = df_initial.loc[df_initial[col_BLS_time] >= 0]
 df_initial = df_initial.loc[df_initial[col_BLS_time] <= 25 * 60]
 
-#  df_initial = df_initial.head(100)
+
+# df_initial = df_initial.head(100)
 
 
 def update_avail(time_dec, avail, unavail):
@@ -135,7 +136,6 @@ def _compute_drone_time(
         drone_input,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
         input_jour_, detec_rate_home, no_witness_rate, detec_rate_vp, unavail_delta, lang):
-
     """
     Computes drone simulated flights.
 
@@ -291,11 +291,67 @@ def _compute_drone_time(
     n_detec_dw = n_detec_wit - n_detec_both
 
     l_pie = np.array([n_drone, n_bls, n_nodrone,
-             n_no_detec, n_nodrone - n_no_detec,
+                      n_no_detec, n_nodrone - n_no_detec,
                       n_no_detec_night - n_no_detec_both, n_no_detec_wit - n_no_detec_both, n_no_detec_both,
-             n_detec_night - n_detec_both, n_detec_wit - n_detec_both, n_detec_both])
+                      n_detec_night - n_detec_both, n_detec_wit - n_detec_both, n_detec_both])
     l_pie = np.around(l_pie * 100 / n_tot, 0).astype('int')
 
+    # Create data-frame used by getSankey function
+    if not input_jour:
+        cols_sankey = ['Intervention', 'Detection', 'Nuit', 'Témoin', 'Drone', 'Total']
+        df_sankey = pd.DataFrame(columns=cols_sankey, index=df_initial.index)
+        index_nuit_cp = copy.deepcopy(index_nuit)
+        rate_nuit = int(np.round(100 * index_nuit_cp.sum() / len(index_nuit_cp), 0))
+        index_nuit_cp = np.where(index_nuit_cp, str(rate_nuit) + '% ' + _('Night'), index_nuit_cp)
+        index_nuit_cp = np.where(index_nuit_cp == 'False', str(100 - rate_nuit) + '% ' + _('Day'), index_nuit_cp)
+        df_sankey['Nuit'] = index_nuit_cp
+
+    else:
+        cols_sankey = ['Intervention', 'Detection', 'Nuit', 'Témoin', 'Drone', 'Total']
+        df_sankey = pd.DataFrame(columns=cols_sankey, index=df_initial.index)
+
+    df_sankey['Intervention'] = _('All interventions')
+    df_sankey['Total'] = 0
+
+    index_detec_cp = copy.deepcopy(np.logical_or(index_detec_rate_vp, index_detec_home))
+    rate_ndetec = int(np.round(100 * index_detec_cp.sum() / len(index_detec_cp), 0))
+    index_detec_cp = np.where(index_detec_cp, str(rate_ndetec) + '% ' + _('OHCA undeteced'), index_detec_cp)
+    index_detec_cp = np.where(index_detec_cp == 'False', str(100 - rate_ndetec) + '% ' + _('OHCA Detected'),
+                              index_detec_cp)
+    df_sankey['Detection'] = index_detec_cp
+
+    index_temoin_cp = copy.deepcopy(index_witness)
+    rate_temoin = int(np.round(100 * index_temoin_cp.sum() / len(index_temoin_cp), 0))
+    index_temoin_cp = np.where(index_temoin_cp, str(rate_temoin) + '% ' + _('Not enough witnesses'), index_temoin_cp)
+    index_temoin_cp = np.where(index_temoin_cp == 'False', str(100 - rate_temoin) + '% ' + _('Enough witnesses'),
+                               index_temoin_cp)
+    df_sankey['Témoin'] = index_temoin_cp
+
+    index_nodrone = dfi[res_col_a] == 0
+    index_bls = (dfi[res_col_b] >= 0) & (dfi[res_col_a] > 0)
+    index_drone = dfi[res_col_b] < 0
+
+    rate_drone = int(np.round(100 * index_drone.sum() / len(index_drone), 0))
+    rate_bls = int(np.round(100 * index_bls.sum() / len(index_bls), 0))
+    index_drone = np.where(index_drone, str(rate_drone) + '% ' + _('Drone faster'), index_drone)
+    index_drone = np.where(index_bls, str(rate_bls) + '% ' + _('BLS team faster'), index_drone)
+    index_drone = np.where(index_nodrone, str(100 - rate_drone - rate_bls) + '% ' + _('No drone'), index_drone)
+    df_sankey['Drone'] = index_drone
+
+    if not input_jour:
+        dftest = df_sankey.groupby(['Intervention', 'Detection', 'Nuit', 'Témoin', 'Drone']).agg({'Total': 'count'})
+        dftest.reset_index(inplace=True)
+        sankey_data = genSankey(dftest,
+                                               cat_cols=['Intervention', 'Detection', 'Nuit', 'Témoin', 'Drone'],
+                                               value_cols='Total')
+    else:
+        dftest = df_sankey.groupby(['Intervention', 'Detection', 'Témoin', 'Drone']).agg({'Total': 'count'})
+        dftest.reset_index(inplace=True)
+        sankey_data = genSankey(dftest, cat_cols=['Intervention', 'Detection', 'Témoin', 'Drone'],
+                                value_cols='Total')
+
+    trace1 = sankey_data
+    '''
     trace1 = go.Sunburst(
         labels=["Drone faster", "BLS team faster", "No drone",
                 "No detection", "Detection with exclusion",
@@ -308,6 +364,8 @@ def _compute_drone_time(
         values=l_pie,
         branchvalues="total",
     )
+    '''
+
     # trace1 = go.Bar(
     #     x=[0, 1, 2],
     #     text=['Faster drone', 'BLS team faster', 'No drone sent'],
@@ -362,9 +420,11 @@ def _compute_drone_time(
 
     indicator_graphic_1 = {
         'data': [trace1],
-        'layout': go.Layout(
-            hovermode='closest',
-        ),
+        'layout': {'width': 500,
+                   'height': 700,
+                   'margin': {'l': 30, 'b': 100, 't': 50, 'r': 30},
+                   'hovermode': 'closest',
+                   'autosize': True}
     }
 
     fsize = 100 / n_tot
@@ -439,7 +499,7 @@ def _compute_drone_time(
     }
 
     return flows, indicator_graphic_3, indicator_graphic_4, flows, \
-        indicator_graphic_3, indicator_graphic_4, indicator_graphic_1, indicator_graphic_1
+           indicator_graphic_3, indicator_graphic_4, indicator_graphic_1, indicator_graphic_1
 
 
 @app.callback(
@@ -471,12 +531,84 @@ def drone_time(
         drone_input,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
         input_jour_, detec_rate_home, no_witness_rate, detec_rate_vp, unavail_delta, lang):
-
     return _compute_drone_time(
         seq_start,
         drone_input,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
         input_jour_, detec_rate_home, no_witness_rate, detec_rate_vp, unavail_delta, lang)
+
+
+def genSankey(df, cat_cols=[], value_cols='', title='Sankey Diagram'):
+
+    # maximum of 6 value cols -> 6 colors
+    colorPalette = ['#4B8BBE', '#306998', '#FFE873', '#FFD43B', '#646464']
+    labelList = []
+    colorNumList = []
+    for catCol in cat_cols:
+        labelListTemp = list(set(df[catCol].values))
+        colorNumList.append(len(labelListTemp))
+        labelList = labelList + labelListTemp
+
+    # remove duplicates from labelList
+    labelList = list(dict.fromkeys(labelList))
+
+    # define colors based on number of levels
+    colorList = []
+    for idx, colorNum in enumerate(colorNumList):
+        colorList = colorList + [colorPalette[idx]] * colorNum
+
+    # transform df into a source-target pair
+    for i in range(len(cat_cols) - 1):
+        if i == 0:
+            sourceTargetDf = df[[cat_cols[i], cat_cols[i + 1], value_cols]]
+            sourceTargetDf.columns = ['source', 'target', 'count']
+        else:
+            tempDf = df[[cat_cols[i], cat_cols[i + 1], value_cols]]
+            tempDf.columns = ['source', 'target', 'count']
+            sourceTargetDf = pd.concat([sourceTargetDf, tempDf])
+        sourceTargetDf = sourceTargetDf.groupby(['source', 'target']).agg({'count': 'sum'}).reset_index()
+
+    # add index for source-target pair
+    sourceTargetDf['sourceID'] = sourceTargetDf['source'].apply(lambda x: labelList.index(x))
+    sourceTargetDf['targetID'] = sourceTargetDf['target'].apply(lambda x: labelList.index(x))
+
+    # add column for source-node-conditional count to retrieve rates
+    sourceTargetDf['cond_count'] = 0
+    for i in sourceTargetDf['sourceID'].unique():
+        s = sourceTargetDf[sourceTargetDf.sourceID == i]['count'].sum()
+        sourceTargetDf.loc[sourceTargetDf['sourceID'] == i, ['cond_count']] = s
+
+    labelsDf = ((100*sourceTargetDf['count']/sourceTargetDf['cond_count']).round(decimals=1)).astype(str) + '%'
+
+    # creating the sankey diagram
+    data = go.Sankey(
+        node=dict(
+            pad=15,
+            thickness=30,
+            line=dict(
+                color='black',
+                width=1
+            ),
+            label=labelList,
+            color=colorList
+        ),
+        orientation='v',
+        link=dict(
+            source=sourceTargetDf['sourceID'],
+            target=sourceTargetDf['targetID'],
+            value=sourceTargetDf['count'],
+            label=labelsDf
+        ),
+    )
+
+    layout = dict(
+        title=title,
+        font=dict(
+            size=10
+        )
+    )
+
+    return data
 
 
 @app.callback(
@@ -508,7 +640,6 @@ def drone_time_b(
         drone_input,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
         input_jour_, detec_rate_home, no_witness_rate, detec_rate_vp, unavail_delta, lang):
-
     return _compute_drone_time(
         seq_start_b,
         drone_input,
