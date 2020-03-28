@@ -3,6 +3,7 @@ import datetime as dt
 import functools
 import gettext
 import io
+import base64
 import math
 
 from dash.dependencies import Input, Output, State
@@ -204,7 +205,12 @@ def _compute_drone_time(
     input_speed = np.float(input_speed)
 
     if drone_input == _CUSTOM_DRONE_INPUT:
-        avail_ini_ = np.genfromtxt(io.BytesIO(custom_drone_input), delimiter=',', dtype=str)
+        content_ = custom_drone_input.split(',')
+        content_string = content_[1]
+        # content_type, content_string = custom_drone_input.split(',')
+        decoded = base64.b64decode(content_string)
+        avail_ini_ = np.genfromtxt(io.StringIO(decoded.decode('utf-8')), delimiter=';', dtype=str)
+        # TODO : put exceptions when the file format is not correct (more than 3 columns, separator)
     else:
         avail_ini_ = drones.STARTING_POINTS[drone_input]
 
@@ -530,8 +536,10 @@ def drone_time_b(
      Output('input_drone', 'options'),
      Output('input_drone_b', 'options')],
     [Input('upload-starting-points', 'contents')],
-    [State('upload-starting-points', 'filename'),
-     State('upload-starting-points', 'last_modified')])
+    [State('upload-starting-points', 'filename')
+     # ,
+     #  State('upload-starting-points', 'last_modified')
+     ])
 def custom_starting_points(contents, filename):
     options = [{'label': i, 'value': i} for i in drones.STARTING_POINTS]
     if contents:
