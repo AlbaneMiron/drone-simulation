@@ -546,3 +546,14 @@ def custom_starting_points(contents, filename):
         options.append({'label': filename, 'value': _CUSTOM_DRONE_INPUT})
         return html.Div(filename), options, options
     return None, options, options
+
+
+@app.callback(
+    [Output('output-incidents-upload', 'children'),
+     Output('unused', 'value')],
+    [Input('upload-incidents', 'contents')],
+    [State('upload-incidents', 'filename')])
+def custom_incidents(contents, filename):
+    if contents:
+        return html.Div(filename), 0
+    return None, 0
