@@ -166,7 +166,10 @@ def create_tabs_layout():
                             children=html.Div([
                                 _('Drag and Drop or '),
                                 html.A(html.Button(_('Select a File'))),
+                                # TODO(pascal): Handle custom incidents.
+                                'Coming soon…'
                             ]),
+                            disabled=True,
                         ),
                         html.Div(id='output-incidents-upload'),
                     ]),
