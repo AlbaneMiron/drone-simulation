@@ -46,10 +46,14 @@ col_drone_delay = 'col_res'
 @functools.lru_cache(3)
 def _load_incidents(contents):
     if contents:
-        incidents_csv = io.StringIO(contents)
+        content_ = contents.split(',')
+        content_string = content_[1]
+        decoded = base64.b64decode(content_string)
+        incidents_csv = io.StringIO(decoded.decode('utf-8'))
     else:
         incidents_csv = 'data/dataACRtime_GPSCSPCpostime_v7.csv'
     incidents = pd.read_csv(incidents_csv, encoding='latin-1', index_col=0)
+    print(incidents)
     incidents[col_time_em_call] = pd.to_datetime(incidents[col_time_em_call])
     incidents = incidents.loc[incidents[col_BLS_time] >= 0]
     incidents = incidents.loc[incidents[col_BLS_time] <= 25 * 60]
