@@ -124,7 +124,8 @@ def create_parameters_layout(name, suffix='', input_drone=_POSITIONS[0], style=N
         dbc.Container([
             html.H3(_('Simulation ') + name),
             html.P(html.Small(html.I(_(
-                'You can get additional info on parameters descriptions by running your mouse over '
+                'You can get additional info on parameters descriptions by hovering '
+                'your mouse over '
                 'each of them.')))),
             dbc.Col([
                 html.H6(_('Drone parameters')),
@@ -290,6 +291,7 @@ def create_graphs_layout(suffix='', style=None):
     return dbc.Container([
         dcc.Loading(children=[
             html.H6(_('Flight exlcusions')),
+            html.P(html.Small(html.I(_('Hover over the graph to get more info')))),
             dbc.Col(children=[dcc.Graph(id=f'indicator-graphic1{suffix}', className='row')]),
             html.H6(_('Intervention distribution')),
             dbc.Container(
