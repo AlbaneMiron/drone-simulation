@@ -334,13 +334,10 @@ msgstr "Comparaison des temps de présentation pour toutes les interventions"
 #: layouts.py:313
 msgid "Airborne AED simulation"
 msgstr "Simulation DAE porté par drone"
-<<<<<<< HEAD
 
 #: layouts.py:328 layouts.py:331
 msgid "Fork me on GitHub"
 msgstr "Dupliquer sur GitHub"
-=======
->>>>>>> 74960f2ea4134ff8533f60f71620452d14eb0629
 
 #~ msgid "BLS team time to arrival vs drone time to arrival"
 #~ msgstr "Temps présentation VSAV vs temps drone"
