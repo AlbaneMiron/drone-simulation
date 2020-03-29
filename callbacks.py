@@ -420,51 +420,6 @@ def _compute_drone_time(
     list_col = list(ynew['col_bar'])
     list_text = list(ynew['text'])
 
-    # trace1 = go.Bar(
-    #     x=[0, 1, 2],
-    #     text=['Faster drone', 'BLS team faster', 'No drone sent'],
-    #     y=[per_drone, per_bls, per_nodrone],
-    #     textposition='auto',
-    #     name='Test'
-    # )
-
-    # flight restriction reasons
-    n_pub_place = in_a_public_place.sum()
-
-    n_no_detec = no_drone['no detection'].sum()
-    # n_no_detec_night = np.logical_and(no_drone['no detection'],
-    # no_drone['night']).sum()
-    # n_no_detec_wit = np.logical_and(no_drone['no detection'],
-    # no_drone['not enough witnesses']).sum()
-    # n_no_detec_both = np.logical_and(np.logical_and(no_drone['no detection'],
-    # no_drone['night']),
-    #                                  no_drone['not enough witnesses']).sum()
-
-    no_drone['detection'] = np.logical_not(no_drone['no detection'])
-    n_detec_night = np.logical_and(no_drone['detection'], no_drone['night']).sum()
-    n_detec_wit = np.logical_and(no_drone['detection'], no_drone['not enough witnesses']).sum()
-    n_detec_both = np.logical_and(np.logical_and(no_drone['detection'], no_drone['night']),
-                                  no_drone['not enough witnesses']).sum()
-    n_detec_dw = n_detec_wit - n_detec_both
-
-    y_waterf = np.array([n_pub_place, (n_tot - n_pub_place), n_tot,
-                         - n_no_detec, - n_detec_wit, -(n_detec_night - n_detec_both),
-                         (n_drone + n_bls), -n_bls, n_drone])
-    text_waterf = np.around(y_waterf * 100 / n_tot, 0).astype('int')
-    text_waterf = np.core.defchararray.add(text_waterf.astype('str'),
-                                           np.array(['%'] * len(text_waterf)))
-
-    # graph: only when a drone is sent: res_col_a > 0
-    df_density = copy.deepcopy(dfi)
-    df_density = df_density.loc[df_density[res_col_a] > 0]
-
-    trace3 = go.Histogram(x=df_density[col_BLS_time],
-                          name=_('BLS team'),
-                          marker_color='#ff5959')
-    trace4 = go.Histogram(x=df_density[res_col_a],
-                          name=_('Drone'),
-                          marker_color='#49beb7')
-
     trace5 = go.Bar(
         x=[i for i in range(0, len(dfi))],
         y=ynew[res_col_b],

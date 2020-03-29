@@ -333,6 +333,7 @@ def create(lang):
     return dbc.Container(children=[
         dbc.Container(
             className='title',
+
             children=[
                 html.H1(_('Airborne AED simulation')),
                 html.A(

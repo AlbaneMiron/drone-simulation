@@ -22,6 +22,7 @@ app = dash.Dash(  # pylint: disable=invalid-name
             'rel': 'stylesheet',
         },
     ])  # ['https://codepen.io/chriddyp/pen/bWLwgP.css'])
+
 app.config.suppress_callback_exceptions = True
 
 app.title = 'Airborne AED Simulation'
