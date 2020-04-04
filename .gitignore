@@ -1,3 +1,12 @@
 /__pycache__/
 /messages.pot
 /locales/*/LC_MESSAGES/messages.mo
+BLS.png
+layout.pdf
+layout.pptx
+.pycodestyle
+.pylintrc
+/fake-input
+/old
+/.idea
+.gitignore
