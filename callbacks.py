@@ -4,7 +4,6 @@ import datetime as dt
 import functools
 import gettext
 import io
-import base64
 import math
 
 from dash.dependencies import Input, Output, State
@@ -327,7 +326,7 @@ def _compute_drone_time(
     # Create data-frame used by getSankey function
     if not input_jour:
         cols_sankey = ['Intervention', 'Detection', 'Nuit', 'Témoin', 'Drone', 'Total']
-        df_sankey = pd.DataFrame(columns=cols_sankey, index=df_initial.index)
+        df_sankey = pd.DataFrame(columns=cols_sankey, index=df_res.index)
         index_nuit_cp = copy.deepcopy(index_nuit)
         rate_nuit = int(np.round(100 * index_nuit_cp.sum() / len(index_nuit_cp), 0))
         index_nuit_cp = np.where(index_nuit_cp, str(rate_nuit) + '% ' + _('Night'), index_nuit_cp)
@@ -337,7 +336,7 @@ def _compute_drone_time(
 
     else:
         cols_sankey = ['Intervention', 'Detection', 'Nuit', 'Témoin', 'Drone', 'Total']
-        df_sankey = pd.DataFrame(columns=cols_sankey, index=df_initial.index)
+        df_sankey = pd.DataFrame(columns=cols_sankey, index=df_res.index)
 
     df_sankey['Intervention'] = _('All interventions')
     df_sankey['Total'] = 0
