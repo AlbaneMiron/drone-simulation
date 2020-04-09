@@ -1,9 +1,13 @@
+import base64
 import copy
 import datetime as dt
+import functools
 import gettext
+import io
 import math
 
 from dash.dependencies import Input, Output, State
+import dash_html_components as html
 import geopy.distance
 import numpy as np
 import pandas as pd
@@ -38,16 +42,25 @@ col_indic_sight = 'visibilite > 200m'
 
 col_drone_delay = 'col_res'
 
-avail_ini_pc = np.genfromtxt('data/coords_pc.csv', delimiter=',', dtype=str)
-avail_ini_cs = np.genfromtxt('data/coords_cs.csv', delimiter=',', dtype=str)
 
-df_initial = pd.read_csv('data/dataACRtime_GPSCSPCpostime_v7.csv', encoding='latin-1', index_col=0)
-df_initial[col_time_em_call] = pd.to_datetime(df_initial[col_time_em_call])
-df_initial = df_initial.loc[df_initial[col_BLS_time] >= 0]
-df_initial = df_initial.loc[df_initial[col_BLS_time] <= 25 * 60]
+@functools.lru_cache(3)
+def _load_incidents(contents):
+    if contents:
+        content_ = contents.split(',')
+        content_string = content_[1]
+        decoded = base64.b64decode(content_string)
+        incidents_csv = io.StringIO(decoded.decode('utf-8'))
+    else:
+        incidents_csv = 'data/dataACRtime_GPSCSPCpostime_v7.csv'
+    incidents = pd.read_csv(incidents_csv, encoding='latin-1', index_col=0)
+    print(incidents)
+    incidents[col_time_em_call] = pd.to_datetime(incidents[col_time_em_call])
+    incidents = incidents.loc[incidents[col_BLS_time] >= 0]
+    incidents = incidents.loc[incidents[col_BLS_time] <= 25 * 60]
+    return incidents
 
 
-# df_initial = df_initial.head(100)
+_CUSTOM_DRONE_INPUT = 'custom'
 
 
 def update_avail(time_dec, avail, unavail):
@@ -131,15 +144,25 @@ def select_interv(all_interventions, condition, column, rate):
     return all_interventions, selected_final
 
 
+def _read_uploaded_data(contents):
+    """Extract the content of a file uploaded with the dcc.Upload component.
+
+    The input format is like "data:text/csv;base64,Q09ACzer324..."
+    """
+    return io.BytesIO(base64.b64decode(contents.split(',')[1]))
+
+
 def _compute_drone_time(
-        seq_start_,
-        drone_input,
+        unused_seq_start,
+        drone_input, custom_drone_input, custom_incidents_dataset,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
         input_jour_, detec_rate_home, no_witness_rate, detec_rate_vp, unavail_delta, lang):
     """
     Computes drone simulated flights.
 
-    :param drone_input: (str) drones initial locations
+    :param custom_incidents_dataset: (str) incidents data as CSV
+    :param drone_input: (str) drones initial locations as index for STARTING_POINTS
+    :param custom_drone_input: (str) drones initial locations as CSV data
     :param input_speed: (str) drone horizontal speed in km/h
     :param input_acc: (str) drone horizontal acceleration in m/s^2
     :param vert_acc: (str) drone vertical speed in m/s
@@ -175,7 +198,6 @@ def _compute_drone_time(
     # unavail_delta = '6'
     # lang = 'fr'
 
-    print(seq_start_)
     np.random.seed(123)
 
     if lang:
@@ -193,11 +215,15 @@ def _compute_drone_time(
     input_jour = input_jour_ == 'Oui' or input_jour_ == 'Yes'
     input_speed = np.float(input_speed)
 
-    avail_ini_ = drones.STARTING_POINTS[drone_input]
+    if drone_input == _CUSTOM_DRONE_INPUT:
+        avail_ini_ = np.genfromtxt(
+            _read_uploaded_data(custom_drone_input), delimiter=',', dtype=str)
+    else:
+        avail_ini_ = drones.STARTING_POINTS[drone_input]
 
     res_col_a = 'col_res'
     res_col_b = 'apport_drone'
-    df_res = copy.deepcopy(df_initial)
+    df_res = copy.deepcopy(_load_incidents(custom_incidents_dataset))
 
     # Apport drone: si négatif, temps gagné grâce au drone. Sinon, temps gagné grâce au VSAV.
 
@@ -300,7 +326,7 @@ def _compute_drone_time(
     # Create data-frame used by getSankey function
     if not input_jour:
         cols_sankey = ['Intervention', 'Detection', 'Nuit', 'Témoin', 'Drone', 'Total']
-        df_sankey = pd.DataFrame(columns=cols_sankey, index=df_initial.index)
+        df_sankey = pd.DataFrame(columns=cols_sankey, index=df_res.index)
         index_nuit_cp = copy.deepcopy(index_nuit)
         rate_nuit = int(np.round(100 * index_nuit_cp.sum() / len(index_nuit_cp), 0))
         index_nuit_cp = np.where(index_nuit_cp, str(rate_nuit) + '% ' + _('Night'), index_nuit_cp)
@@ -310,7 +336,7 @@ def _compute_drone_time(
 
     else:
         cols_sankey = ['Intervention', 'Detection', 'Nuit', 'Témoin', 'Drone', 'Total']
-        df_sankey = pd.DataFrame(columns=cols_sankey, index=df_initial.index)
+        df_sankey = pd.DataFrame(columns=cols_sankey, index=df_res.index)
 
     df_sankey['Intervention'] = _('All interventions')
     df_sankey['Total'] = 0
@@ -524,6 +550,8 @@ def _compute_drone_time(
      Output('indicator-graphic1u', 'figure')],
     [Input('seq_start', 'n_clicks')],
     [State('input_drone', 'value'),
+     State('upload-starting-points', 'contents'),
+     State('upload-incidents', 'contents'),
      State('speed', 'value'),
      State('acc', 'value'),
      State('vert-acc', 'value'),
@@ -539,12 +567,12 @@ def _compute_drone_time(
      State('lang', 'value')])
 def drone_time(
         seq_start,
-        drone_input,
+        drone_input, custom_drone_input, custom_incidents_csv,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
         input_jour_, detec_rate_home, no_witness_rate, detec_rate_vp, unavail_delta, lang):
     return _compute_drone_time(
         seq_start,
-        drone_input,
+        drone_input, custom_drone_input, custom_incidents_csv,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
         input_jour_, detec_rate_home, no_witness_rate, detec_rate_vp, unavail_delta, lang)
 
@@ -635,6 +663,8 @@ def genSankey(df, cat_cols, value_cols=''):
      Output('indicator-graphic1u_b', 'figure')],
     [Input('seq_start_b', 'n_clicks')],
     [State('input_drone_b', 'value'),
+     State('upload-starting-points', 'contents'),
+     State('upload-incidents', 'contents'),
      State('speed_b', 'value'),
      State('acc_b', 'value'),
      State('vert-acc_b', 'value'),
@@ -649,12 +679,37 @@ def genSankey(df, cat_cols, value_cols=''):
      State('unavail_delta_b', 'value'),
      State('lang', 'value')])
 def drone_time_b(
-        seq_start_b,
-        drone_input,
+        seq_start,
+        drone_input, custom_drone_input, custom_incidents_csv,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
         input_jour_, detec_rate_home, no_witness_rate, detec_rate_vp, unavail_delta, lang):
     return _compute_drone_time(
-        seq_start_b,
-        drone_input,
+        seq_start,
+        drone_input, custom_drone_input, custom_incidents_csv,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
         input_jour_, detec_rate_home, no_witness_rate, detec_rate_vp, unavail_delta, lang)
+
+
+@app.callback(
+    [Output('output-starting-points-upload', 'children'),
+     Output('input_drone', 'options'),
+     Output('input_drone_b', 'options')],
+    [Input('upload-starting-points', 'contents')],
+    [State('upload-starting-points', 'filename')])
+def custom_starting_points(contents, filename):
+    options = [{'label': i, 'value': i} for i in drones.STARTING_POINTS]
+    if contents:
+        options.append({'label': filename, 'value': _CUSTOM_DRONE_INPUT})
+        return html.Div(filename), options, options
+    return None, options, options
+
+
+@app.callback(
+    [Output('output-incidents-upload', 'children'),
+     Output('unused', 'value')],
+    [Input('upload-incidents', 'contents')],
+    [State('upload-incidents', 'filename')])
+def custom_incidents(contents, filename):
+    if contents:
+        return html.Div(filename), 0
+    return None, 0
