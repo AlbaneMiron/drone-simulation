@@ -9,7 +9,7 @@ import drones
 _POSITIONS = list(drones.STARTING_POINTS.keys())
 
 
-def create_tabs_layout():
+def create_tabs_layout(simu_desc_file):
     return dbc.Container(
         dbc.Container(id='app-control-tabs', className='control-tabs', children=[
             dbc.Tabs(id='app-tabs', children=[
@@ -72,7 +72,7 @@ def create_tabs_layout():
                     children=dbc.Container(className='control-tab', children=[
                         html.H4(className='datasets',
                                 children=_('Rescue chain: BLS teams vs drones')),
-                        html.Img(src='../../assets/tab-layout2.png', width='1000px'),
+                        html.Img(src=simu_desc_file, width='1000px'),
                     ]),
                 ),
 
@@ -392,6 +392,9 @@ def create_both_graphs(name, suffix='', style=None):
 
 
 def create(lang):
+    desc_file = '../../assets/tab-layout2.png'
+    if lang == 'fr':
+        desc_file = '../../assets/tab-layout2fr.png'
     lang = gettext.translation('messages', localedir='locales', languages=[lang], fallback=True)
     lang.install()
     return dbc.Container(children=[
@@ -410,6 +413,7 @@ def create(lang):
             style={'display': 'flex', 'justify-content': 'space-between'}
         ),
         dbc.Container(
-            id='vp-control-tabs', className='control-tabs', children=[create_tabs_layout()],
+            id='vp-control-tabs', className='control-tabs',
+            children=[create_tabs_layout(desc_file)],
         ),
     ])
