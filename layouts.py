@@ -72,7 +72,7 @@ def create_tabs_layout():
                     children=dbc.Container(className='control-tab', children=[
                         html.H4(className='datasets',
                                 children=_('Rescue chain: BLS teams vs drones')),
-                        html.Img(src='../../assets/tab-layout1.png', width='1000px'),
+                        html.Img(src='../../assets/tab-layout2.png', width='1000px'),
                     ]),
                 ),
 
