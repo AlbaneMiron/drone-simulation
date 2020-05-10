@@ -62,7 +62,8 @@ def create_tabs_layout(simu_desc_file):
                         #            "margin-right": "auto"
                         #            }),
 
-                    ],)
+                    ], style={'margin-top': '10px',
+                              'padding-right': '0', 'padding-left': '0'})
 
                 ),
 
@@ -72,8 +73,10 @@ def create_tabs_layout(simu_desc_file):
                     children=dbc.Container(className='control-tab', children=[
                         html.H4(className='datasets',
                                 children=_('Rescue chain: BLS teams vs drones')),
-                        html.Img(src=simu_desc_file, width='1000px'),
-                    ]),
+                        html.Img(src=simu_desc_file,
+                                 style={'max-width': '100%', 'max-height': '100%'}),
+                    ], style={'margin-top': '10px',
+                              'padding-right': '0', 'padding-left': '0'}),
                 ),
 
                 dbc.Tab(
@@ -83,7 +86,7 @@ def create_tabs_layout(simu_desc_file):
                         create_parameters_layout('A', style={
                             'border-right': 'solid 1px #ddd',
                             'margin-right': '15px',
-                            'padding-right': '15px',
+                            'padding-right': '0',
                         })),
                 ),
                 dbc.Tab(
@@ -94,7 +97,7 @@ def create_tabs_layout(simu_desc_file):
                             'B', suffix='_b', style={
                                 'border-right': 'solid 1px #ddd',
                                 'margin-right': '15px',
-                                'padding-right': '15px',
+                                'padding-right': '0',
                             },
                             input_drone='Centres de secours',
                         )),
@@ -112,7 +115,8 @@ def create_tabs_layout(simu_desc_file):
                             }),
                             create_both_graphs('B', suffix='_b'),
                         ],
-                        style={'display': 'flex'}),
+                        style={'display': 'flex', 'margin-top': '10px',
+                               'padding-right': '0', 'padding-left': '0'}),
                 ),
 
                 dbc.Tab(
@@ -172,11 +176,13 @@ def create_tabs_layout(simu_desc_file):
                             disabled=True,
                         ),
                         html.Div(id='output-incidents-upload'),
-                    ]),
+                    ], style={'margin-top': '10px',
+                              'padding-right': '0', 'padding-left': '0'}),
                 ),
-            ]),
-        ]),
-    )
+            ], style={'margin-top': '10px',
+                      'padding-right': '0', 'padding-left': '0'}),
+        ], style={'margin-top': '15px', 'padding-right': '0', 'padding-left': '0'}),
+        style={'padding-right': '0', 'padding-left': '0'})
 
 
 def create_parameters_layout(name, suffix='', input_drone=_POSITIONS[0], style=None):
@@ -346,12 +352,12 @@ def create_parameters_layout(name, suffix='', input_drone=_POSITIONS[0], style=N
 
         ], style={'flex': 1} if style is None else dict(style, flex=1)),
         dbc.Col(children=create_graphs_layout(
-            suffix=suffix,
-            style={'display': 'flex', 'flex': 'initial'}))
-    ], style={'display': 'flex', 'flex': 'auto'})
+            suffix=suffix))
+    ], style={'display': 'flex', 'flex': 'auto',
+              'margin-top': '20px', 'padding-right': '0', 'padding-left': '0'})
 
 
-def create_graphs_layout(suffix='', style=None):
+def create_graphs_layout(suffix=''):
     return dbc.Container([
         dcc.Loading(children=[
             html.H6(_('Flight exclusions')),
@@ -369,7 +375,8 @@ def create_graphs_layout(suffix='', style=None):
             html.P(html.Small(html.I(_('Hover over the graph to get more info')))),
             dbc.Container(dcc.Graph(id=f'indicator-graphic4{suffix}'), className='row'),
         ]),
-    ], style={'flex': 1} if style is None else dict(style, flex=1))
+    ], style={'display': 'flex', 'flex': 'initial',
+              'margin-top': '20px', 'padding-right': '0', 'padding-left': '0'})
 
 
 def create_both_graphs(name, suffix='', style=None):
@@ -400,7 +407,6 @@ def create(lang):
     return dbc.Container(children=[
         dbc.Container(
             className='title',
-
             children=[
                 html.H1(_('Airborne AED simulation')),
                 html.A(
@@ -410,10 +416,12 @@ def create(lang):
                     **{'data-ribbon': _('Fork me on GitHub')}
                 ),
             ],
-            style={'display': 'flex', 'justify-content': 'space-between'}
+            style={'display': 'flex', 'justify-content': 'space-between',
+                   'padding-right': '0', 'padding-left': '0'}
         ),
         dbc.Container(
             id='vp-control-tabs', className='control-tabs',
             children=[create_tabs_layout(desc_file)],
+            style={'margin-top': '20px', 'padding-right': '0', 'padding-left': '0'}
         ),
-    ])
+    ], style={'margin-top': '20px', 'padding-right': '0', 'padding-left': '0'})
