@@ -21,7 +21,7 @@ def create_tabs_layout():
                         html.P(
                             _('This website simulates drones sent with Automatic External '
                               'Defibrillators '
-                              'to Out-of-Hospital Cardiac Arrest interventions. '
+                              'to Out-of-Hospital Cardiac Arrest incidents. '
                               "Simulation is based on real life data, gathered in 2017 by Paris' "
                               'Firefighters, who intervened on more than 3000 OHCA in Paris and '
                               'Paris suburbs.')
@@ -351,8 +351,7 @@ def create_parameters_layout(name, suffix='', input_drone=_POSITIONS[0], style=N
 def create_graphs_layout(suffix='', style=None):
     return dbc.Container([
         dcc.Loading(children=[
-            html.H6(_('Flight exlcusions')),
-            html.P(html.Small(html.I(_('Hover over the graph to get more info')))),
+            html.H6(_('Flight exclusions')),
             dbc.Col(children=[dcc.Graph(id=f'indicator-graphic1{suffix}', className='row')]),
             html.H6(_('Intervention distribution')),
             dbc.Container(
@@ -363,7 +362,8 @@ def create_graphs_layout(suffix='', style=None):
                 className='row'),
             html.H6(_('Time to arrival histogram when a drone is sent')),
             dbc.Col(children=[dcc.Graph(id=f'indicator-graphic3{suffix}', className='row')]),
-            html.H6(_('Comparison of times to arrival for all interventions')),
+            html.H6(_('Comparison of times to arrival for all incidents')),
+            html.P(html.Small(html.I(_('Hover over the graph to get more info')))),
             dbc.Container(dcc.Graph(id=f'indicator-graphic4{suffix}'), className='row'),
         ]),
     ], style={'flex': 1} if style is None else dict(style, flex=1))
@@ -382,7 +382,7 @@ def create_both_graphs(name, suffix='', style=None):
             ), className='row'),
             html.H6(_('Time to arrival histogram when a drone is sent')),
             dbc.Col(children=[dcc.Graph(id=f'indicator-graphic3u{suffix}', className='row')]),
-            html.H6(_('Comparison of times to arrival for all interventions')),
+            html.H6(_('Comparison of times to arrival for all incidents')),
             dbc.Container(dcc.Graph(id=f'indicator-graphic4u{suffix}'), className='row'),
         ]),
     ], style={'flex': 1} if style is None else dict(style, flex=1))

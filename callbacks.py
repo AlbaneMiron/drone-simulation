@@ -22,13 +22,13 @@ col_time_em_call = 'DT_då_crochå_'
 col_BLS_time = 'DeltaPresentation'
 # in m/s, wind speed in the direction
 col_wind_speed = 'vitesse effective vent_'
-# indicator: 1 if the intervention is during the day, 0 during the night
+# indicator: 1 if the incident is during the day, 0 during the night
 col_indic_day = 'jour_aeronautique'
-# indicator : 1 if the intervention is in the streets, 0 otherwise
+# indicator : 1 if the incident is in the streets, 0 otherwise
 col_indic_streets = 'Voie publique'
-# indicator : 1 if the intervention is in a public place (excluding streets), 0 otherwise
+# indicator : 1 if the incident is in a public place (excluding streets), 0 otherwise
 col_indic_pubplace = 'Lieu public'
-# indicator : 1 if the intervention is at home, 0 otherwise
+# indicator : 1 if the incident is at home, 0 otherwise
 col_indic_home = 'Domicile'
 # Latitude WGS84
 col_lat_inter = 'new_lat'
@@ -67,7 +67,7 @@ def update_avail(time_dec, avail, unavail):
     """
     Update of the available fleet of drones after each launch.
 
-    :param time_dec: (dt.datetime) Datetime when the intervention started.
+    :param time_dec: (dt.datetime) Datetime when the incident started.
     :param avail: (np.array) List of available drones (name, GPS location)
     :param unavail: (np.array) List of unavailable drones (name, GPS location and datetime until
         when they are unavailable)
@@ -86,7 +86,7 @@ def update_avail(time_dec, avail, unavail):
 
 def drone_unavail(df, duree, avail_ini):
     """
-    For all intervention selects the closest available drone to send.
+    For all incident selects the closest available drone to send.
     :param df:
     :param duree:
     :param avail_ini:
@@ -129,19 +129,19 @@ def drone_unavail(df, duree, avail_ini):
     return list_dist
 
 
-def select_interv(all_interventions, condition, column, rate):
-    """Select randomly some interventions.
+def select_interv(all_incidents, condition, column, rate):
+    """Select randomly some incidents.
 
-    :param all_interventions: a DataFrame containing interventions. This will be modified.
+    :param all_incidents: a DataFrame containing incidents. This will be modified.
     :param condition: a boolean array, the same size of df to restrict the rows that can be
         affected: True for those that can be selected, False if not.
     :param column: (str) The name of the column of df to null if not selected.
     :param rate (float) The rate (between 0 and 1) of rows that should be kept.
     """
-    selected = np.random.rand(len(all_interventions)) > rate
+    selected = np.random.rand(len(all_incidents)) > rate
     selected_final = condition & selected
-    all_interventions.loc[selected_final, column] = 0
-    return all_interventions, selected_final
+    all_incidents.loc[selected_final, column] = 0
+    return all_incidents, selected_final
 
 
 def _read_uploaded_data(contents):
@@ -338,7 +338,7 @@ def _compute_drone_time(
         cols_sankey = ['Intervention', 'Detection', 'Nuit', 'Témoin', 'Drone', 'Total']
         df_sankey = pd.DataFrame(columns=cols_sankey, index=df_res.index)
 
-    df_sankey['Intervention'] = _('All interventions')
+    df_sankey['Intervention'] = _('All incidents')
     df_sankey['Total'] = 0
 
     index_detec_cp = copy.deepcopy(np.logical_or(index_detec_rate_vp, index_detec_home))
@@ -501,7 +501,7 @@ def _compute_drone_time(
                 'type': 'linear',
             },
             yaxis={
-                'title': _('Number of interventions'),
+                'title': _('Number of incidents'),
                 'type': 'linear',
                 'showticklabels': False,
             },
