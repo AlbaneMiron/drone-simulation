@@ -307,7 +307,8 @@ def create_parameters_layout(name, suffix='', input_drone=_POSITIONS[0], style=N
                           'sent.'),
                         target='deth_e',
                         placement='left')]),
-                dbc.Input(id=f'detec_rate_home{suffix}', value='0.8', type='text'),
+                dbc.Input(id=f'detec_rate_home{suffix}', value='0.87',
+                          type='number', max=1, min=0, step=0.01),
 
                 html.Div([
                     html.Label(
@@ -319,7 +320,8 @@ def create_parameters_layout(name, suffix='', input_drone=_POSITIONS[0], style=N
                           'sent.'),
                         target='dets_e',
                         placement='left')]),
-                dbc.Input(id=f'detec_rate_vp{suffix}', value='0.12', type='text'),
+                dbc.Input(id=f'detec_rate_vp{suffix}', value='0.71',
+                          type='number', max=1, min=0, step=0.01),
 
                 html.Div([
                     html.Label(
@@ -332,7 +334,8 @@ def create_parameters_layout(name, suffix='', input_drone=_POSITIONS[0], style=N
                           'AED brought by drone.'),
                         target='wit_e',
                         placement='left')]),
-                dbc.Input(id=f'wit_detec{suffix}', value='0.58', type='text'),
+                dbc.Input(id=f'wit_detec{suffix}', value='0.58',
+                          type='number', max=1, min=0, step=0.01),
 
             ], style={'flex': 1}),
 
