@@ -384,20 +384,30 @@ def create_parameters_layout(name, suffix='', input_drone=_POSITIONS[0]):
 
 
 def create_graphs_layout(suffix=''):
-    return dcc.Loading(children=[
-        dbc.Col(children=[html.H6(_('Flight exclusions')),
-                          dcc.Graph(id=f'indicator-graphic1{suffix}', className='row')]),
-        dbc.Col(children=[html.H6(_('Time to arrival histogram when a drone is sent')),
-                          dcc.Graph(id=f'indicator-graphic3{suffix}', className='row')]),
-        dbc.Col(children=[html.H6(_('Comparison of times to arrival for all incidents')),
-                          html.P(html.Small(html.I(_('Hover over the graph to get more info')))),
-                          dcc.Graph(id=f'indicator-graphic4{suffix}', className='row')]),
-        dbc.Col(children=[html.H6(_('Intervention distribution')),
-                          sankey.Sankey(
-                              id=f'flows-graphic{suffix}',
-                              width=500, height=500,)],
-                className='row')
-    ])
+    return dcc.Loading(
+        children=[
+            dbc.Row(children=[dbc.Col(children=[html.H6(_('Flight exclusions')),
+                                                dcc.Graph(id=f'indicator-graphic1{suffix}',
+                                                          className='row')],
+                                      style={'margin-top': '20px', 'flex': 1}),
+                              dbc.Col(children=[html.H6(_('Intervention distribution')),
+                                                sankey.Sankey(
+                                                    id=f'flows-graphic{suffix}',
+                                                    width=500, height=500, ),
+                                                ], style={'margin-top': '20px', 'flex': 1},
+                                      className='row')
+                              ],
+                    style={'margin-top': '20px', 'padding-right': '20px', 'padding-left': '20px'}),
+            dbc.Row(children=[
+                dbc.Col(children=[html.H6(_('Time to arrival histogram when a drone is sent')),
+                                  dcc.Graph(id=f'indicator-graphic3{suffix}', className='row')],
+                        style={'margin-top': '20px', 'flex': 1}),
+                dbc.Col(children=[html.H6(_('Comparison of times to arrival for all incidents')),
+                                  html.Small(html.I(_('Hover over the graph to get more info'))),
+                                  dcc.Graph(id=f'indicator-graphic4{suffix}', className='row')],
+                        style={'margin-top': '20px', 'flex': 1})],
+                    style={'margin-top': '20px', 'padding-right': '20px', 'padding-left': '20px'})],
+        style={'padding-right': '20px', 'padding-left': '20px'})
 
 
 def create_both_graphs(name, suffix='', style=None):
