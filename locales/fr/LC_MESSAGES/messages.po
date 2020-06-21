@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-05-10 14:11+0000\n"
-"PO-Revision-Date: 2020-05-10 16:12+0200\n"
+"POT-Creation-Date: 2020-06-21 19:33+0000\n"
+"PO-Revision-Date: 2020-06-21 21:39+0200\n"
 "Last-Translator: \n"
 "Language: fr\n"
 "Language-Team: fr <LL@li.org>\n"
@@ -107,62 +107,33 @@ msgstr "Nombre d’interventions"
 msgid "Time difference drone - BLS team (in seconds)"
 msgstr "Différence de temps entre le drone et le VSAV"
 
-#: layouts.py:17
+#: layouts.py:16
 msgid "About"
 msgstr "Présentation"
 
-#: layouts.py:20
+#: layouts.py:19
 msgid "App presentation"
 msgstr "Présentation de l’application"
 
-#: layouts.py:22
-msgid ""
-"This website simulates drones sent with Automatic External Defibrillators to "
-"Out-of-Hospital Cardiac Arrest incidents. Simulation is based on real life "
-"data, gathered in 2017 by Paris' Firefighters, who intervened on more than 3000 "
-"OHCA in Paris and Paris suburbs."
-msgstr ""
-"Ce site internet simule l’envoi de drones porteurs de défibrillateurs "
-"automatiques externes pour les patients en Arrêt Cardio-Respiratoire "
-"extrahospitaliers. La simulation est basée sur les données réelles des "
-"interventions effectuées par la Brigade de Sapeurs Pompiers de Paris en 2017, "
-"qui sont intervenus sur plus de 3000 ACR à Paris et dans les départements "
-"limitrophes (Seine Saint Denis, Hauts de Seine et Val de Marne)."
+#: layouts.py:21
+msgid "This website simulates drones sent with Automatic External Defibrillators to Out-of-Hospital Cardiac Arrest incidents. Simulation is based on real life data, gathered in 2017 by Paris' Firefighters, who intervened on more than 3000 OHCA in Paris and Paris suburbs."
+msgstr "Ce site internet simule l’envoi de drones porteurs de défibrillateurs automatiques externes pour les patients en Arrêt Cardio-Respiratoire extrahospitaliers. La simulation est basée sur les données réelles des interventions effectuées par la Brigade de Sapeurs Pompiers de Paris en 2017, qui sont intervenus sur plus de 3000 ACR à Paris et dans les départements limitrophes (Seine Saint Denis, Hauts de Seine et Val de Marne)."
 
-#: layouts.py:30
-msgid ""
-"The aim is to compare the hypothetical time to arrival of drones to the actual "
-"time to arrival of BLS teams, and to estimate to what extent drones could "
-"improve the chain of survival."
-msgstr ""
-"La simulation permet de comparer le temps de présentation hypothétique mis par "
-"un drone avec le temps réel de présentation du Véhicule de Secours et "
-"d’Assistance aux Victimes. Cela permet d’estimer quel pourrait être l’impact "
-"des drones sur l’amélioration de la chaîne de survie."
+#: layouts.py:29
+msgid "The aim is to compare the hypothetical time to arrival of drones to the actual time to arrival of BLS teams, and to estimate to what extent drones could improve the chain of survival."
+msgstr "La simulation permet de comparer le temps de présentation hypothétique mis par un drone avec le temps réel de présentation du Véhicule de Secours et d’Assistance aux Victimes. Cela permet d’estimer quel pourrait être l’impact des drones sur l’amélioration de la chaîne de survie."
 
-#: layouts.py:35
-msgid ""
-"This app allows the user to compute their own simulation, by changing both "
-"dispatch center and drone flight parameters. The source code is available on "
-msgstr ""
-"Ce site permet à l’utilisateur de faire tourner sa propre simulation en "
-"choisissant les paramètres relatifs aux caractéristiques de la régulation de "
-"l’appel aux secours et aux caractéristiques du drone. Le code source est "
-"disponible sur "
+#: layouts.py:34
+msgid "This app allows the user to compute their own simulation, by changing both dispatch center and drone flight parameters. The source code is available on "
+msgstr "Ce site permet à l’utilisateur de faire tourner sa propre simulation en choisissant les paramètres relatifs aux caractéristiques de la régulation de l’appel aux secours et aux caractéristiques du drone. Le code source est disponible sur "
 
-#: layouts.py:42
+#: layouts.py:41
 msgid " to allow for expertise and replication."
 msgstr " pour pouvoir être expertisé et répliqué."
 
-#: layouts.py:45
-msgid ""
-"Default parameters correspond to what is assumed to be the most likely set of "
-"drone characteristics and to the actual operationalperformance of "
-"Paris'firefighters medical dispatch center."
-msgstr ""
-"Par défaut les paramètres des simulations sont ceux qui nous paraissent les "
-"plus probables (pour les caractéristiques des drones) ou ceux des performances "
-"actuelles de la régulation médicales des sapeurs-pompiers de Paris."
+#: layouts.py:44
+msgid "Default parameters correspond to what is assumed to be the most likely set of drone characteristics and to the actual operationalperformance of Paris'firefighters medical dispatch center."
+msgstr "Par défaut les paramètres des simulations sont ceux qui nous paraissent les plus probables (pour les caractéristiques des drones) ou ceux des performances actuelles de la régulation médicales des sapeurs-pompiers de Paris."
 
 #: layouts.py:70
 msgid "Simulation description"
@@ -172,288 +143,231 @@ msgstr "Description de la simulation"
 msgid "Rescue chain: BLS teams vs drones"
 msgstr "Chaine de secours : VSAV versus drone"
 
-#: layouts.py:80
+#: layouts.py:82
 msgid "Parameters simulation A"
 msgstr "Paramètres simulation A"
 
-#: layouts.py:90
+#: layouts.py:88
 msgid "Parameters simulation B"
 msgstr "Paramètres simulation B"
 
-#: layouts.py:104
+#: layouts.py:98
 msgid "Comparison of both simulations"
 msgstr "Comparaison des simulations"
 
-#: layouts.py:119 layouts.py:122
+#: layouts.py:114 layouts.py:117
 msgid "Custom Datasets"
 msgstr "Données personnalisées"
 
-#: layouts.py:124
+#: layouts.py:119
 msgid "Launch a simulation on your own data:"
-msgstr "Lancez une simulation avec vos propres données : "
+msgstr "Lancez une simulation avec vos propres données :"
 
-#: layouts.py:125
+#: layouts.py:120
 msgid "Starting Points"
 msgstr "Positions de départ"
 
-#: layouts.py:126
-msgid ""
-"Upload a CSV file containing a list of starting points for drones. Each row "
-"represents one starting point and should contain an index followed by the "
-"latitude and longitude of the point. Example:"
-msgstr ""
-"Déposez un fichier CSV contenant la liste des positions de départ des drones. "
-"Chaque ligne doit représenter une position de départ et contenir un index suivi "
-"de la latitude et longitude de la position. Exemple : "
+#: layouts.py:121
+msgid "Upload a CSV file containing a list of starting points for drones. Each row represents one starting point and should contain an index followed by the latitude and longitude of the point. Example:"
+msgstr "Déposez un fichier CSV contenant la liste des positions de départ des drones. Chaque ligne doit représenter une position de départ et contenir un index suivi de la latitude et longitude de la position. Exemple :"
 
-#: layouts.py:140 layouts.py:167
+#: layouts.py:135 layouts.py:162
 msgid "Drag and Drop or "
 msgstr "Faites glisser et déposez ou "
 
-#: layouts.py:141 layouts.py:168
+#: layouts.py:136 layouts.py:163
 msgid "Select a File"
 msgstr "Choisir un Fichier"
 
-#: layouts.py:146
+#: layouts.py:141
 msgid "Incidents"
 msgstr "Interventions"
 
+#: layouts.py:142
+msgid "Upload a CSV file containing a list of incidents. Each row represents one incident and should contain the following fields:"
+msgstr "Déposez un fichier contenant la liste des interventions. Chaque ligne doit représenter une intervention et contenir les colonnes suivantes :"
+
 #: layouts.py:147
-msgid ""
-"Upload a CSV file containing a list of incidents. Each row represents one "
-"incident and should contain the following fields:"
-msgstr ""
-"Déposez un fichier contenant la liste des interventions. Chaque ligne doit "
-"représenter une intervention et contenir les colonnes suivantes : "
-
-#: layouts.py:152
 msgid "time_call: the date and time of the emergency call"
-msgstr "time_call : la date et l’heure de l’appel des secours "
+msgstr "time_call : la date et l’heure de l’appel des secours"
 
-#: layouts.py:153
+#: layouts.py:148
 msgid "latitude: the latitude of the incident, as a float"
 msgstr "latitude : la latitude de l’intervention (type : float)"
 
-#: layouts.py:154
+#: layouts.py:149
 msgid "longitude: the longitude of the incident as a float"
 msgstr "longitude : la longitude de l’intervention (type : float)"
 
-#: layouts.py:155
+#: layouts.py:150
 msgid "BLS_time: the time taken by the BLS team to reach the incident, in seconds"
-msgstr ""
-"BLS_time : durée mise par le VSAV pour se présenter sur les lieux de "
-"l’intervention, en secondes (type : float)"
+msgstr "BLS_time : durée mise par le VSAV pour se présenter sur les lieux de l’intervention, en secondes (type : float)"
 
-#: layouts.py:159
-msgid ""
-"home: a flag indicating whether the incident happened at home (1) or in a "
-"street or public place (0)"
-msgstr ""
-"home : une indicatrice égale à 1 si l’intervention est à domicile, 0 si elle "
-"est dans un lieu ou une voix publique"
+#: layouts.py:154
+msgid "home: a flag indicating whether the incident happened at home (1) or in a street or public place (0)"
+msgstr "home : une indicatrice égale à 1 si l’intervention est à domicile, 0 si elle est dans un lieu ou une voix publique"
 
-#: layouts.py:186 layouts.py:374
+#: layouts.py:182 layouts.py:430
 msgid "Simulation "
 msgstr "Simulation "
 
-#: layouts.py:187
-msgid ""
-"You can get additional info on parameters descriptions by hovering your mouse "
-"over each of them."
-msgstr ""
-"Des informations supplémentaires sur les paramètres s’affichent en passant "
-"votre curseur dessus."
+#: layouts.py:183
+msgid "You can get additional info on parameters descriptions by hovering your mouse over each of them."
+msgstr "Des informations supplémentaires sur les paramètres s’affichent en passant votre curseur dessus."
 
-#: layouts.py:192
+#: layouts.py:194
 msgid "Drone parameters"
 msgstr "Paramètres du drone"
 
-#: layouts.py:195
+#: layouts.py:196
 msgid "Initial drone location"
 msgstr "Position initiale du drone"
 
-#: layouts.py:197
-msgid ""
-"Where drones are stationed. The simulator selects the closest available drone "
-"(as the crow flies)"
+#: layouts.py:198
+msgid "Where drones are stationed. The simulator selects the closest available drone (as the crow flies)"
+msgstr "Position des drones avant envoi. Le simulateur sélectionne le drone disponible le plus proche à vol d’oiseau"
+
+#: layouts.py:213
+msgid "Max drone speed (in km/h):"
 msgstr ""
-"Position des drones avant envoi. Le simulateur sélectionne le drone disponible "
-"le plus proche à vol d’oiseau"
 
-#: layouts.py:209
-msgid "Max drone speed (in km/h)"
-msgstr "Vitesse max du drone (en km/h)"
-
-#: layouts.py:211
+#: layouts.py:215
 msgid "Maximum horizontal speed"
 msgstr "Vitesse horizontale maximale"
 
-#: layouts.py:217
+#: layouts.py:226
 msgid "Drone's acceleration time (in sec):"
 msgstr "Durée d'accélération du drone (en s) :"
 
-#: layouts.py:219
+#: layouts.py:228
 msgid "Time needed for the drone to reach its maximum horizontal speed."
 msgstr "Temps nécessaire au drone pour atteindre sa vitesse horizontale maximale."
 
-#: layouts.py:225
+#: layouts.py:238
 msgid "Drone's vertical speed (in m/s):"
 msgstr "Vitesse verticale du drone (en m/s) :"
 
-#: layouts.py:227
-msgid ""
-"Maximum vertical speed. It is assumed that the time needed for the drone to "
-"reach this speed is negligible."
-msgstr ""
-"Vitesse verticale maximale. On considère que le temps mis par le drone pour "
-"atteindre cette vitesse est négligeable."
+#: layouts.py:240
+msgid "Maximum vertical speed. It is assumed that the time needed for the drone to reach this speed is negligible."
+msgstr "Vitesse verticale maximale. On considère que le temps mis par le drone pour atteindre cette vitesse est négligeable."
 
-#: layouts.py:234
+#: layouts.py:251
 msgid "Drone's cruise altitude (in m):"
 msgstr "Altitude de croisière du drone (en m) :"
 
-#: layouts.py:236
+#: layouts.py:253
 msgid "Horizontal cruise altitude"
 msgstr "Altitude de croisière"
 
-#: layouts.py:242
+#: layouts.py:263
 msgid "Unavailability of the drone after a run (in h):"
 msgstr "Indisponibilité du drone après un lancer (en h) :"
 
-#: layouts.py:244
-msgid ""
-"Time needed after a run for the drone to be available again. It accounts for "
-"the time spent on the OHCA location and the time of refurbishment and "
-"rehabilitation of equipment."
-msgstr ""
-"Délai nécessaire après l’envoi du drone avant qu’il ne redevienne disponible. "
-"Cela comprend le temps passé sur les lieux de l’intervention."
+#: layouts.py:266
+msgid "Time needed after a run for the drone to be available again. It accounts for the time spent on the OHCA location and the time of refurbishment and rehabilitation of equipment."
+msgstr "Délai nécessaire après l’envoi du drone avant qu’il ne redevienne disponible. Cela comprend le temps passé sur les lieux de l’intervention."
 
-#: layouts.py:252
+#: layouts.py:277
 msgid "Drone can fly during aeronautical night"
 msgstr "Les drones peuvent voler durant la nuit aéronautique"
 
-#: layouts.py:254
+#: layouts.py:279
 msgid "Whether the drone can only fly during the aeronautical day or not"
 msgstr "Le drone a t’il l’autorisation de voler durant la nuit aéronautique ?"
 
-#: layouts.py:260
+#: layouts.py:284
 msgid "Yes"
 msgstr "Oui"
 
-#: layouts.py:261
+#: layouts.py:285
 msgid "No"
 msgstr "Non"
 
-#: layouts.py:267
+#: layouts.py:292
 msgid "Operational parameters"
 msgstr "Paramètres opérationnels"
 
-#: layouts.py:270
+#: layouts.py:295
 msgid "Delay at departure (in s):"
 msgstr "Retard au départ (en s) :"
 
-#: layouts.py:272
-msgid ""
-"Delay at departure needed for the operator to set up flight information for the "
-"drone then for the fire station where the drone is stationed to launch it."
-msgstr ""
-"Durée nécessaire à l'opérateur pour entrer les informations de vol pour le "
-"drone et à la caserne du drone sélectionné de le faire décoller."
+#: layouts.py:297
+msgid "Delay at departure needed for the operator to set up flight information for the drone then for the fire station where the drone is stationed to launch it."
+msgstr "Durée nécessaire à l'opérateur pour entrer les informations de vol pour le drone et à la caserne du drone sélectionné de le faire décoller."
 
-#: layouts.py:280
+#: layouts.py:310
 msgid "Delay on arrival (in s):"
 msgstr "Retard à l'arrivée (en s) :"
 
-#: layouts.py:282
-msgid ""
-"Delay on arrival needed for the drone to narrow its landing and for the "
-"bystander to catch the AED."
-msgstr ""
-"Durée à l'arrivée durant laquelle le drone précise sa position d'arrivée et le "
-"témoin récupère le DSA."
+#: layouts.py:312
+msgid "Delay on arrival needed for the drone to narrow its landing and for the bystander to catch the AED."
+msgstr "Durée à l'arrivée durant laquelle le drone précise sa position d'arrivée et le témoin récupère le DSA."
 
-#: layouts.py:290
-msgid "Delay between detection of unconsciousness  and OHCA detection (in s):"
+#: layouts.py:323
+msgid "Delay between detection of unconsciousness and OHCA detection (in s):"
 msgstr "Décalage de détection inconscience/ACR (en s) :"
 
-#: layouts.py:293
-msgid ""
-"Mean time spent between unconsciousness and OHCA detection by emergency call "
-"dispatchers. Unconsciousness detection activates BLS teams whereas drones are "
-"activated only at OHCA detection."
-msgstr ""
-"Durée moyenne entre la détection d'inconscience et la détection d'un ACR par "
-"l'opérateur 18/112. Les VSAV sont déclenchés au diagnostic d'inconscience, les "
-"drones sont activés quand l'ACR est détecté."
+#: layouts.py:327
+msgid "Mean time spent between unconsciousness and OHCA detection by emergency call dispatchers. Unconsciousness detection activates BLS teams whereas drones are activated only at OHCA detection."
+msgstr "Durée moyenne entre la détection d'inconscience et la détection d'un ACR par l'opérateur 18/112. Les VSAV sont déclenchés au diagnostic d'inconscience, les drones sont activés quand l'ACR est détecté."
 
-#: layouts.py:302
-msgid ""
-"Rate of OHCA at home, which are detected by call center operators (between 0 "
-"and 1):"
-msgstr "Taux d'ACR à domicile détectés par l'opérateur (entre 0 et 1) :"
+#: layouts.py:339
+msgid "Rate of OHCA at home, which are detected by call center operators:"
+msgstr "Taux d’ACR à domicile détectés par l’opérateur :"
 
-#: layouts.py:306 layouts.py:318
-msgid ""
-"When the OHCA is not detected by the emergency dispatchers no drone is sent."
-msgstr ""
-"Taux d'ACR en lieu public détectés par l'opérateur : les drones ne sont pas "
-"activés si l'ACR n'est pas détecté au téléphone."
+#: layouts.py:343 layouts.py:359
+msgid "When the OHCA is not detected by the emergency dispatchers no drone is sent. (Value between 0 and 1)"
+msgstr "Taux d’ACR en lieu public détectés par l’opérateur : les drones ne sont pas activés si l’ACR n’est pas détecté au téléphone. (Valeur entre 0 et 1)."
 
-#: layouts.py:314
-msgid ""
-"Rate of OHCA in the streets, which are detected by call center operators "
-"(between 0 and 1):"
-msgstr "Taux d'ACR en lieu public détectés par l'opérateur (entre 0 et 1) :"
+#: layouts.py:355
+msgid "Rate of OHCA in the streets, which are detected by call center operators:"
+msgstr "Taux d’ACR en lieu public détectés par l’opérateur :"
 
-#: layouts.py:326
-msgid "Rate of OHCA at home, which only have one witness alone (between 0 and 1):"
-msgstr "Taux de témoins seuls ACR lieu privé (entre 0 et 1) :"
+#: layouts.py:371
+msgid "Rate of OHCA at home, which only have one witness alone:"
+msgstr "Taux de témoins seuls ACR lieu privé :"
 
-#: layouts.py:330
-msgid ""
-"The simulation requires at least two witnesses for OHCA at home : one to stay "
-"near the victim, the other to go out in the street to get the AED brought by "
-"drone."
-msgstr ""
-"La simulation demande au moins\n"
-"deux témoins pour les ACR à domicile : le premier pour rester auprès de la "
-"victime, \n"
-"et le second pour descendre dans la rue chercher le DSA apporté par drone."
+#: layouts.py:375
+msgid "The simulation requires at least two witnesses for OHCA at home : one to stay near the victim, the other to go out in the street to get the AED brought by drone. (Value between 0 and 1)"
+msgstr "La simulation demande au moins deux témoins pour les ACR à domicile : le premier pour rester auprès de la victime, et le second pour descendre dans la rue chercher le DSA apporté par drone. (Valeur entre 0 et 1)."
 
-#: layouts.py:341
+#: layouts.py:394
 msgid "Update simulation"
 msgstr "Lancer la simulation"
 
-#: layouts.py:354
+#: layouts.py:397
+msgid "Results"
+msgstr "Résultats"
+
+#: layouts.py:404
 msgid "Flight exclusions"
 msgstr "Restrictions de vol"
 
-#: layouts.py:355
-msgid "Hover over the graph to get more info"
-msgstr "Parcourez le graphe pour avoir plus d’informations."
-
-#: layouts.py:357 layouts.py:378
+#: layouts.py:408 layouts.py:434
 msgid "Intervention distribution"
 msgstr "Distribution des interventions"
 
-#: layouts.py:364 layouts.py:383
+#: layouts.py:417 layouts.py:438
 msgid "Time to arrival histogram when a drone is sent"
 msgstr "Histogramme des temps de présentation quand un drone est envoyé"
 
-#: layouts.py:366 layouts.py:385
+#: layouts.py:420 layouts.py:440
 msgid "Comparison of times to arrival for all incidents"
 msgstr "Comparaison des temps de présentation pour toutes les interventions"
 
-#: layouts.py:376
+#: layouts.py:421
+msgid "Hover over the graph to get more info"
+msgstr "Parcourez le graphe pour avoir plus d’informations."
+
+#: layouts.py:432
 msgid "Flight exlcusions"
 msgstr "Restrictions de vol"
 
-#: layouts.py:399
+#: layouts.py:457
 msgid "Airborne AED simulation"
 msgstr "Simulation DAE porté par drone"
 
-#: layouts.py:401 layouts.py:404
+#: layouts.py:459 layouts.py:462
 msgid "Fork me on GitHub"
 msgstr "Dupliquer sur GitHub"
 
@@ -481,216 +395,110 @@ msgstr "Dupliquer sur GitHub"
 #~ msgid "Rate of OHCA detection by call center operators (between 0 and 1):"
 #~ msgstr "Taux de détection des ACR à la prise d'appel (entre 0 et 1) :"
 
-#~ msgid ""
-#~ "Odd ratio of OHCA in the streets vs OHCA at home or in a public place "
-#~ "detection by call center operators (between 0 and 1):"
-#~ msgstr ""
-#~ "Odd ratio de la détection ACR voie publique à la prise d'appel (entre 0 et "
-#~ "1) :"
+#~ msgid "Odd ratio of OHCA in the streets vs OHCA at home or in a public place detection by call center operators (between 0 and 1):"
+#~ msgstr "Odd ratio de la détection ACR voie publique à la prise d'appel (entre 0 et 1) :"
 
 #~ msgid "Time saved with a drone"
 #~ msgstr "Temps gagné avec le drone"
 
-#~ msgid ""
-#~ "This app allows the user to compute their own simulation, by changing both "
-#~ "operational and drone flight parameters."
-#~ msgstr ""
-#~ "L’application permet de faire varier différents paramètres: relatifs aux "
-#~ "caractéristiques du drone, relatif aux caractéristiques du patient, relatif "
-#~ "au caractéristiques de la régulation de l’appel aux secours. Par défaut, les "
-#~ "paramètres des simulations A ou B sont celles qui nous paraissent les plus "
-#~ "probables (caractéristiques des drone) ou ceux des performances actuelles de "
-#~ "la régulation médicales des sapeurs-pompiers de Paris."
+#~ msgid "This app allows the user to compute their own simulation, by changing both operational and drone flight parameters."
+#~ msgstr "L’application permet de faire varier différents paramètres: relatifs aux caractéristiques du drone, relatif aux caractéristiques du patient, relatif au caractéristiques de la régulation de l’appel aux secours. Par défaut, les paramètres des simulations A ou B sont celles qui nous paraissent les plus probables (caractéristiques des drone) ou ceux des performances actuelles de la régulation médicales des sapeurs-pompiers de Paris."
 
 #~ msgid "Parameters description"
 #~ msgstr "Description des paramètres"
 
 #~ msgid ""
 #~ "\n"
-#~ "                            - Delay at departure: delay at departure needed "
-#~ "for the operator to set up\n"
-#~ "                            flight information for the drone then for the "
-#~ "fire station where the drone is stationed\n"
+#~ "                            - Delay at departure: delay at departure needed for the operator to set up\n"
+#~ "                            flight information for the drone then for the fire station where the drone is stationed\n"
 #~ "                            to launch it.\n"
-#~ "                            - Delay on arrival: delay on arrival needed for "
-#~ "the drone to narrow its landing and for\n"
+#~ "                            - Delay on arrival: delay on arrival needed for the drone to narrow its landing and for\n"
 #~ "                            the bystander to catch the AED.\n"
-#~ "                            - Delay between detection of unconsciousness and "
-#~ "OHCA detection:  mean time spent between\n"
-#~ "                            unconsciousness and OHCA detection by emergency "
-#~ "call dispatchers. Unconsciousness detection\n"
-#~ "                            activates BLS teams whereas drones are activated "
-#~ "only at OHCA detection.\n"
-#~ "                            - Rate of OHCA at home, which are detected by "
-#~ "call center operators: when the OHCA is not\n"
-#~ "                            detected by the emergency dispatchers no drone "
-#~ "is sent.\n"
-#~ "                            - Rate of OHCA in the streets, which are "
-#~ "detected by call center operators: when the OHCA is\n"
-#~ "                            not detected by the emergency dispatchers no "
-#~ "drone is sent.\n"
-#~ "                            - Rate of OHCA at home, which only have one "
-#~ "witness alone: The simulation requires at least\n"
-#~ "                            two witnesses for OHCA at home : one to stay "
-#~ "near the victim, the other to go out in the\n"
+#~ "                            - Delay between detection of unconsciousness and OHCA detection:  mean time spent between\n"
+#~ "                            unconsciousness and OHCA detection by emergency call dispatchers. Unconsciousness detection\n"
+#~ "                            activates BLS teams whereas drones are activated only at OHCA detection.\n"
+#~ "                            - Rate of OHCA at home, which are detected by call center operators: when the OHCA is not\n"
+#~ "                            detected by the emergency dispatchers no drone is sent.\n"
+#~ "                            - Rate of OHCA in the streets, which are detected by call center operators: when the OHCA is\n"
+#~ "                            not detected by the emergency dispatchers no drone is sent.\n"
+#~ "                            - Rate of OHCA at home, which only have one witness alone: The simulation requires at least\n"
+#~ "                            two witnesses for OHCA at home : one to stay near the victim, the other to go out in the\n"
 #~ "                            street to get the AED brought by drone.\n"
 #~ "                            "
 #~ msgstr ""
 #~ "\n"
-#~ "                            - Retard au départ : durée nécessaire à "
-#~ "l'opérateur pour entrer les informations de vol\n"
-#~ "                            pour le drone et à la caserne du drone "
-#~ "sélectionné de le faire décoller.\n"
-#~ "                            - Retard à l'arrivée : durée à l'arrivée durant "
-#~ "laquelle le drone précise sa position \n"
+#~ "                            - Retard au départ : durée nécessaire à l'opérateur pour entrer les informations de vol\n"
+#~ "                            pour le drone et à la caserne du drone sélectionné de le faire décoller.\n"
+#~ "                            - Retard à l'arrivée : durée à l'arrivée durant laquelle le drone précise sa position \n"
 #~ "                            d'arrivée et le témoin récupère le DSA.\n"
-#~ "                            - Décalage de détection inconscience/ACR : durée "
-#~ "moyenne entre \n"
-#~ "                            la détection d'inconscience et la détection d'un "
-#~ "ACR par l'opérateur 18/112. Les VSAV sont déclenchés au diagnostic\n"
-#~ "                            d'inconscience, les drones sont activés quand "
-#~ "l'ACR est détecté.\n"
-#~ "                            - Taux d'ACR à domicile détectés par "
-#~ "l'opérateur :les drones ne sont pas activés\n"
+#~ "                            - Décalage de détection inconscience/ACR : durée moyenne entre \n"
+#~ "                            la détection d'inconscience et la détection d'un ACR par l'opérateur 18/112. Les VSAV sont déclenchés au diagnostic\n"
+#~ "                            d'inconscience, les drones sont activés quand l'ACR est détecté.\n"
+#~ "                            - Taux d'ACR à domicile détectés par l'opérateur :les drones ne sont pas activés\n"
 #~ "                            si l'ACR n'est pas détecté au téléphone.\n"
-#~ "                            - Taux d'ACR en lieu public détectés par "
-#~ "l'opérateur :  les drones ne sont \n"
-#~ "                            pas activés si l'ACR n'est pas détecté au "
-#~ "téléphone.\n"
-#~ "                            - Taux de témoins seuls ACR lieu privé  la "
-#~ "simulation demande au moins \n"
-#~ "                            deux témoins pour les ACR à domicile : le "
-#~ "premier pour rester auprès de la victime, \n"
-#~ "                            et le second pour descendre dans la rue chercher "
-#~ "le DSA apporté par drone.\n"
+#~ "                            - Taux d'ACR en lieu public détectés par l'opérateur :  les drones ne sont \n"
+#~ "                            pas activés si l'ACR n'est pas détecté au téléphone.\n"
+#~ "                            - Taux de témoins seuls ACR lieu privé  la simulation demande au moins \n"
+#~ "                            deux témoins pour les ACR à domicile : le premier pour rester auprès de la victime, \n"
+#~ "                            et le second pour descendre dans la rue chercher le DSA apporté par drone.\n"
 #~ "                            "
 
 #~ msgid ""
 #~ "\n"
-#~ "                            - Initial drone location : where drones are "
-#~ "stationed. The simulator selects\n"
-#~ "                             the closest available drone (as the crow "
-#~ "flies).\n"
+#~ "                            - Initial drone location : where drones are stationed. The simulator selects\n"
+#~ "                             the closest available drone (as the crow flies).\n"
 #~ "                             - Max drone speed: maximum horizontal speed.\n"
-#~ "                             - Drone's acceleration time: time needed for "
-#~ "the drone to reach its\n"
+#~ "                             - Drone's acceleration time: time needed for the drone to reach its\n"
 #~ "                                  maximum horizontal speed.\n"
-#~ "                             - Drone's vertical speed: maximum vertical "
-#~ "speed. It is assumed that the time\n"
-#~ "                                   needed for the drone to reach this speed "
-#~ "is negligible.\n"
-#~ "                            - Drone's cruise altitude: horizontal cruise "
-#~ "altitude.\n"
-#~ "                            - Unavailability of the drone after a run: time "
-#~ "needed after a run for the\n"
-#~ "                                  drone to be available again. It accounts "
-#~ "for the time spent on the OHCA\n"
-#~ "                                  location and the time of refurbishment and "
-#~ "rehabilitation of equipment.\n"
-#~ "                            - Flying restricted to aeronautical day: whether "
-#~ "the drone can only fly\n"
+#~ "                             - Drone's vertical speed: maximum vertical speed. It is assumed that the time\n"
+#~ "                                   needed for the drone to reach this speed is negligible.\n"
+#~ "                            - Drone's cruise altitude: horizontal cruise altitude.\n"
+#~ "                            - Unavailability of the drone after a run: time needed after a run for the\n"
+#~ "                                  drone to be available again. It accounts for the time spent on the OHCA\n"
+#~ "                                  location and the time of refurbishment and rehabilitation of equipment.\n"
+#~ "                            - Flying restricted to aeronautical day: whether the drone can only fly\n"
 #~ "                                  during the aeronautical day or not.\n"
 #~ "                             "
 #~ msgstr ""
 #~ "\n"
-#~ "                            - Position initiale du drone : position des "
-#~ "drones avant envoi. Le simulateur sélectionne\n"
-#~ "                             le drone disponible le plus proche à vol "
-#~ "d'oiseau.\n"
-#~ "                             - Vitesse max du drone : vitesse maximale "
-#~ "horizontale.\n"
-#~ "                             - Durée d'accélération du drone :  temps mis "
-#~ "par le drone pour atteindre\n"
+#~ "                            - Position initiale du drone : position des drones avant envoi. Le simulateur sélectionne\n"
+#~ "                             le drone disponible le plus proche à vol d'oiseau.\n"
+#~ "                             - Vitesse max du drone : vitesse maximale horizontale.\n"
+#~ "                             - Durée d'accélération du drone :  temps mis par le drone pour atteindre\n"
 #~ "                                  sa vitesse horizontale maximale.\n"
-#~ "                             - Vitesse verticale du drone : vitesse "
-#~ "verticale maximale.  On considère que le temps\n"
-#~ "                                  mis par le drone pour atteindre cette  "
-#~ "vitesse est négligeable.\n"
-#~ "                            - Altitude de croisière du drone : altitude de "
-#~ "croisière.\n"
-#~ "                            - Indisponibilité du drone après un lancer : "
-#~ "durée nécessaire après l'envoi \n"
-#~ "                                  du drone avant qu'il redevienne "
-#~ "disponible. Cela comprend le temps passé sur les lieux de l'intervention\n"
-#~ "                                  et la durée nécessaire à la remise en "
-#~ "condition du matériel.\n"
-#~ "                            - Vol uniquement pendant le jour aéronautique : "
-#~ "détermine si le drone peut voler uniquement \n"
+#~ "                             - Vitesse verticale du drone : vitesse verticale maximale.  On considère que le temps\n"
+#~ "                                  mis par le drone pour atteindre cette  vitesse est négligeable.\n"
+#~ "                            - Altitude de croisière du drone : altitude de croisière.\n"
+#~ "                            - Indisponibilité du drone après un lancer : durée nécessaire après l'envoi \n"
+#~ "                                  du drone avant qu'il redevienne disponible. Cela comprend le temps passé sur les lieux de l'intervention\n"
+#~ "                                  et la durée nécessaire à la remise en condition du matériel.\n"
+#~ "                            - Vol uniquement pendant le jour aéronautique : détermine si le drone peut voler uniquement \n"
 #~ "                                  durant le jour aéronautique ou pas.\n"
 #~ "                             "
 
 #~ msgid "Flying restricted to aeronautical day"
 #~ msgstr "Vol uniquement pendant le jour aéronautique"
 
-#~ msgid "Results"
-#~ msgstr "Résultats"
+#~ msgid "This graph shows the time difference between the simulated time to arrival of a drone and the actual time of arrival of the BLS team sent for every intervention. On the right hand side (positive values) a drone would have been faster by the number of seconds shown by the vertical bar. On the left hand side (negative values) the BLS team would have been faster again by the number of seconds shown by the vertical bar. Grey bars correspond to interventions for which a drone would not be sent, vertical values are the actual BLS team time to arrival."
+#~ msgstr "Ce graphique montre la différence entre le temps de présentation simulé du drone  et le temps de présentation réél du VSAV qui avait été envoyé sur l'intervention.  Du côté droit (valeurs positives), le drone aurait été plus rapide que le drone du nombre de secondes indiqué sur la barre verticale. Du côté gauche (valeurs négatives) le VSAV aurait été plus rapide que le drone du nombre de secondes indiqué par la barre verticale. Les barres grises représentent des interventions pour lesquelles un drone n'aurait pas été envoyé, et les barres indiquent le temps de présentation du VSAV."
 
-#~ msgid ""
-#~ "This graph shows the time difference between the simulated time to arrival "
-#~ "of a drone and the actual time of arrival of the BLS team sent for every "
-#~ "intervention. On the right hand side (positive values) a drone would have "
-#~ "been faster by the number of seconds shown by the vertical bar. On the left "
-#~ "hand side (negative values) the BLS team would have been faster again by the "
-#~ "number of seconds shown by the vertical bar. Grey bars correspond to "
-#~ "interventions for which a drone would not be sent, vertical values are the "
-#~ "actual BLS team time to arrival."
-#~ msgstr ""
-#~ "Ce graphique montre la différence entre le temps de présentation simulé du "
-#~ "drone  et le temps de présentation réél du VSAV qui avait été envoyé sur "
-#~ "l'intervention.  Du côté droit (valeurs positives), le drone aurait été plus "
-#~ "rapide que le drone du nombre de secondes indiqué sur la barre verticale. Du "
-#~ "côté gauche (valeurs négatives) le VSAV aurait été plus rapide que le drone "
-#~ "du nombre de secondes indiqué par la barre verticale. Les barres grises "
-#~ "représentent des interventions pour lesquelles un drone n'aurait pas été "
-#~ "envoyé, et les barres indiquent le temps de présentation du VSAV."
+#~ msgid "This app simulates drones sent with Automatic External Defibrillators (AEDs) to Out-of-Hospital Cardiac Arrest (OHCA) interventions. Simulation is based on real life data, gathered in 2017 by Paris' Firefighters, who intervened on more than 3000 OHCA in Paris and Paris suburbs."
+#~ msgstr "Ce site internet simule l’envoi de drones porteurs de défibrillateurs automatiques externes (DAE) pour les patients en Arrêt Cardio-Respiratoire extrahospitaliers. La simulation est basée sur les données réelles des interventions effectuées par la Brigade de Sapeurs Pompiers de Paris en 2017, qui sont intervenus sur plus de 3000 ACR à Paris et dans les départements limitrophes (Seine Saint Denis, Haut de Seine et Val de Marne)."
 
-#~ msgid ""
-#~ "This app simulates drones sent with Automatic External Defibrillators (AEDs) "
-#~ "to Out-of-Hospital Cardiac Arrest (OHCA) interventions. Simulation is based "
-#~ "on real life data, gathered in 2017 by Paris' Firefighters, who intervened "
-#~ "on more than 3000 OHCA in Paris and Paris suburbs."
-#~ msgstr ""
-#~ "Ce site internet simule l’envoi de drones porteurs de défibrillateurs "
-#~ "automatiques externes (DAE) pour les patients en Arrêt Cardio-Respiratoire "
-#~ "extrahospitaliers. La simulation est basée sur les données réelles des "
-#~ "interventions effectuées par la Brigade de Sapeurs Pompiers de Paris en "
-#~ "2017, qui sont intervenus sur plus de 3000 ACR à Paris et dans les "
-#~ "départements limitrophes (Seine Saint Denis, Haut de Seine et Val de Marne)."
+#~ msgid "This app allows the user to compute their own simulation, by changing both operational and drone flight parameters. The source code is available on "
+#~ msgstr "Ce site permet à l’utilisateur de faire tourner sa propre simulation en choisissant les paramètres opérationnels et relatifs au drone. Le code source est disponible sur "
 
-#~ msgid ""
-#~ "This app allows the user to compute their own simulation, by changing both "
-#~ "operational and drone flight parameters. The source code is available on "
-#~ msgstr ""
-#~ "Ce site permet à l’utilisateur de faire tourner sa propre simulation en "
-#~ "choisissant les paramètres opérationnels et relatifs au drone. Le code "
-#~ "source est disponible sur "
+#~ msgid "Maximum vertical speed. It is assumed that the time needed for the drone to reach this speed is negligible"
+#~ msgstr "Vitesse verticale maximale. On considère que le temps mis par le drone pour atteindre cette vitesse est négligeable. "
 
-#~ msgid "Delay between detection of unconsciousness and OHCA detection (in s):"
-#~ msgstr "Décalage de détection inconscience/ACR (en s) :"
-
-#~ msgid ""
-#~ "Maximum vertical speed. It is assumed that the time needed for the drone to "
-#~ "reach this speed is negligible"
-#~ msgstr ""
-#~ "Vitesse verticale maximale. On considère que le temps mis par le drone pour "
-#~ "atteindre cette vitesse est négligeable. "
-
-#~ msgid ""
-#~ "time needed after a run for the drone to be available again. It accounts for "
-#~ "the time spent on the OHCA location and the time of refurbishment and "
-#~ "rehabilitation of equipment."
-#~ msgstr ""
-#~ "Délai nécessaire après l’envoi du drone avant qu’il ne redevienne "
-#~ "disponible. Cela comprend le temps passé sur les lieux de l’intervention."
+#~ msgid "time needed after a run for the drone to be available again. It accounts for the time spent on the OHCA location and the time of refurbishment and rehabilitation of equipment."
+#~ msgstr "Délai nécessaire après l’envoi du drone avant qu’il ne redevienne disponible. Cela comprend le temps passé sur les lieux de l’intervention."
 
 #~ msgid ", to allow for expertise and replication."
 #~ msgstr ", pour pouvoir être expertisé et répliqué."
 
-#~ msgid ""
-#~ "You can get additional info on parameters descriptions by running your mouse "
-#~ "over each of them."
-#~ msgstr ""
-#~ "Les précisions sur les paramètres s’affichent en passant la souris dessus."
+#~ msgid "You can get additional info on parameters descriptions by running your mouse over each of them."
+#~ msgstr "Les précisions sur les paramètres s’affichent en passant la souris dessus."
 
 #~ msgid "All interventions"
 #~ msgstr "Toutes les interventions"
@@ -698,18 +506,32 @@ msgstr "Dupliquer sur GitHub"
 #~ msgid "Number of interventions"
 #~ msgstr "Nombre d'interventions"
 
-#~ msgid ""
-#~ "This website simulates drones sent with Automatic External Defibrillators to "
-#~ "Out-of-Hospital Cardiac Arrest interventions. Simulation is based on real "
-#~ "life data, gathered in 2017 by Paris' Firefighters, who intervened on more "
-#~ "than 3000 OHCA in Paris and Paris suburbs."
-#~ msgstr ""
-#~ "Ce site internet simule l’envoi de drones porteurs de défibrillateurs "
-#~ "automatiques externes pour les patients en Arrêt Cardio-Respiratoire "
-#~ "extrahospitaliers. La simulation est basée sur les données réelles des "
-#~ "interventions effectuées par la Brigade de Sapeurs Pompiers de Paris en "
-#~ "2017, qui sont intervenus sur plus de 3000 ACR à Paris et dans les "
-#~ "départements limitrophes (Seine Saint Denis, Hauts de Seine et Val de Marne)."
+#~ msgid "This website simulates drones sent with Automatic External Defibrillators to Out-of-Hospital Cardiac Arrest interventions. Simulation is based on real life data, gathered in 2017 by Paris' Firefighters, who intervened on more than 3000 OHCA in Paris and Paris suburbs."
+#~ msgstr "Ce site internet simule l’envoi de drones porteurs de défibrillateurs automatiques externes pour les patients en Arrêt Cardio-Respiratoire extrahospitaliers. La simulation est basée sur les données réelles des interventions effectuées par la Brigade de Sapeurs Pompiers de Paris en 2017, qui sont intervenus sur plus de 3000 ACR à Paris et dans les départements limitrophes (Seine Saint Denis, Hauts de Seine et Val de Marne)."
 
 #~ msgid "Comparison of times to arrival for all interventions"
 #~ msgstr "Comparaison des temps de présentation pour toutes les interventions"
+
+#~ msgid "Max drone speed (in km/h)"
+#~ msgstr "Vitesse max du drone (en km/h)"
+
+#~ msgid "Delay between detection of unconsciousness  and OHCA detection (in s):"
+#~ msgstr "Décalage de détection inconscience/ACR (en s) :"
+
+#~ msgid "Rate of OHCA at home, which are detected by call center operators (between 0 and 1):"
+#~ msgstr "Taux d'ACR à domicile détectés par l'opérateur (entre 0 et 1) :"
+
+#~ msgid "When the OHCA is not detected by the emergency dispatchers no drone is sent."
+#~ msgstr "Taux d'ACR en lieu public détectés par l'opérateur : les drones ne sont pas activés si l'ACR n'est pas détecté au téléphone."
+
+#~ msgid "Rate of OHCA in the streets, which are detected by call center operators (between 0 and 1):"
+#~ msgstr "Taux d'ACR en lieu public détectés par l'opérateur (entre 0 et 1) :"
+
+#~ msgid "Rate of OHCA at home, which only have one witness alone (between 0 and 1):"
+#~ msgstr "Taux de témoins seuls ACR lieu privé (entre 0 et 1) :"
+
+#~ msgid "The simulation requires at least two witnesses for OHCA at home : one to stay near the victim, the other to go out in the street to get the AED brought by drone."
+#~ msgstr ""
+#~ "La simulation demande au moins\n"
+#~ "deux témoins pour les ACR à domicile : le premier pour rester auprès de la victime, \n"
+#~ "et le second pour descendre dans la rue chercher le DSA apporté par drone."
