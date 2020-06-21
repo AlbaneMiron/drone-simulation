@@ -184,7 +184,11 @@ def create_parameters_layout(name, suffix='', input_drone=_POSITIONS[0]):
                                   'You can get additional info '
                                   'on parameters descriptions by hovering '
                                   'your mouse over '
-                                  'each of them.'))))]),
+                                  'each of them.'))))],
+                    style={
+                        'margin-right': '15px',
+                        'padding-right': '0',
+                        'padding-left': '0'}),
             dbc.Row([
                 dbc.Col([
                     html.H6(_('Drone parameters')),
@@ -373,7 +377,7 @@ def create_parameters_layout(name, suffix='', input_drone=_POSITIONS[0]):
             dbc.Button(
                 id=f'seq_start{suffix}', n_clicks=0,
                 children=_('Update simulation'), block='center',
-                style={'width': '200px'}
+                style={'flex': 1, 'margin-top': '20px', 'margin-bottom': '20px'}
             ), ]),
         dbc.Row(children=create_graphs_layout(
             suffix=suffix
@@ -383,9 +387,7 @@ def create_parameters_layout(name, suffix='', input_drone=_POSITIONS[0]):
         'margin-top': '20px', 'padding-right': '0', 'padding-left': '0'})
 
 
-def create_graphs_layout(suffix=''
-                         # , style=None
-                         ):
+def create_graphs_layout(suffix=''):
     return dcc.Loading(children=[
         dbc.Col(children=[html.H6(_('Flight exclusions')),
                           dcc.Graph(id=f'indicator-graphic1{suffix}', className='row')]),
@@ -400,28 +402,22 @@ def create_graphs_layout(suffix=''
                               width=500, height=500,)],
                 className='row')
     ])
-    #      ,
-    # ], style={'display': 'flex', 'flex': 'initial',
-    #           'margin-top': '20px', 'padding-right': '0', 'padding-left': '0', 'flex-grow': '2'})
-    # if style is None
-    #     else {'margin-top': '20px', 'padding-right': '0', 'padding-left': '0', 'flex-grow': 2}
 
 
 def create_both_graphs(name, suffix='', style=None):
     return dbc.Container([
         html.H3(_('Simulation ') + name),
         dcc.Loading(children=[
-            html.H6(_('Flight exlcusions')),
-            dbc.Col(children=[dcc.Graph(id=f'indicator-graphic1u{suffix}', className='row')]),
-            html.H6(_('Intervention distribution')),
-            dbc.Container(sankey.Sankey(
-                id=f'flows-graphicu{suffix}',
-                width=500, height=500,
-            ), className='row'),
-            html.H6(_('Time to arrival histogram when a drone is sent')),
-            dbc.Col(children=[dcc.Graph(id=f'indicator-graphic3u{suffix}', className='row')]),
-            html.H6(_('Comparison of times to arrival for all incidents')),
-            dbc.Container(dcc.Graph(id=f'indicator-graphic4u{suffix}'), className='row'),
+            dbc.Col(children=[html.H6(_('Flight exlcusions')),
+                              dcc.Graph(id=f'indicator-graphic1u{suffix}', className='row')]),
+            dbc.Col(children=[html.H6(_('Intervention distribution')),
+                              sankey.Sankey(
+                                  id=f'flows-graphicu{suffix}',
+                                  width=500, height=500)]),
+            dbc.Col(children=[html.H6(_('Time to arrival histogram when a drone is sent')),
+                              dcc.Graph(id=f'indicator-graphic3u{suffix}', className='row')]),
+            dbc.Col(children=[html.H6(_('Comparison of times to arrival for all incidents')),
+                              dcc.Graph(id=f'indicator-graphic4u{suffix}')]),
         ]),
     ], style={'flex': 1} if style is None else dict(style, flex=1))
 
@@ -432,24 +428,24 @@ def create(lang):
         desc_file = '../../assets/tab-layout2fr.png'
     lang = gettext.translation('messages', localedir='locales', languages=[lang], fallback=True)
     lang.install()
-    return dbc.Container(children=[
-        dbc.Container(
-            className='title',
-            children=[
-                html.H1(_('Airborne AED simulation')),
-                html.A(
-                    _('Fork me on GitHub'),
-                    href='https://github.com/AlbaneMiron/drone-simulation',
-                    className='github-fork-ribbon',
-                    **{'data-ribbon': _('Fork me on GitHub')}
-                ),
-            ],
-            style={'display': 'flex', 'justify-content': 'space-between',
-                   'padding-right': '0', 'padding-left': '0'}
-        ),
-        dbc.Container(
-            id='vp-control-tabs', className='control-tabs',
-            children=[create_tabs_layout(desc_file)],
-            style={'margin-top': '20px', 'padding-right': '0', 'padding-left': '0'}
-        ),
-    ], style={'margin-top': '20px', 'padding-right': '0', 'padding-left': '0'})
+    return dbc.Col(
+        children=[
+            dbc.Col(
+                className='title',
+                children=[
+                    html.H1(_('Airborne AED simulation')),
+                    html.A(
+                        _('Fork me on GitHub'),
+                        href='https://github.com/AlbaneMiron/drone-simulation',
+                        className='github-fork-ribbon',
+                        **{'data-ribbon': _('Fork me on GitHub')}
+                    ),
+                ],
+                style={'display': 'flex', 'justify-content': 'space-between',
+                       'padding-right': '0', 'padding-left': '0'}
+            ),
+            dbc.Col(
+                id='vp-control-tabs', className='control-tabs',
+                children=[create_tabs_layout(desc_file)],
+                style={'margin-top': '20px', 'padding-right': '0', 'padding-left': '0'})],
+        style={'padding-top': '20px', 'padding-left': '20px'})
