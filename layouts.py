@@ -385,7 +385,7 @@ def create_parameters_layout(name, suffix='', input_drone=_POSITIONS[0]):
 
 
 def create_graphs_layout(suffix=''):
-    return dcc.Loading(
+    return dbc.Col([dcc.Loading(
         children=[
             dbc.Row(children=[dbc.Col(children=[html.H6(_('Flight exclusions')),
                                                 dcc.Graph(id=f'indicator-graphic1{suffix}',
@@ -408,7 +408,7 @@ def create_graphs_layout(suffix=''):
                                   dcc.Graph(id=f'indicator-graphic4{suffix}', className='row')],
                         style={'margin-top': '20px', 'flex': 1})],
                     style={'margin-top': '20px', 'padding-right': '20px', 'padding-left': '20px'})],
-        style={'padding-right': '20px', 'padding-left': '20px'})
+        style={'padding-right': '20px', 'padding-left': '20px'})])
 
 
 def create_both_graphs(name, suffix='', style=None):
