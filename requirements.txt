@@ -1,9 +1,8 @@
-dash
-dash-bootstrap-components
+dash==1.4
+dash-bootstrap-components==0.7.2
 geopy
 pandas
 sankey
 scikit-learn
 numpy
 plotly
-dash_bootstrap_components
