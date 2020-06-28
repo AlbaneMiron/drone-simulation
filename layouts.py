@@ -50,19 +50,19 @@ def create_tabs_layout(simu_desc_file):
                     html.Img(
                         src='https://maps.googleapis.com/maps/api/staticmap?center=Paris,+France&zoom=11&scale=false&size=600x300&maptype=roadmap&key=AIzaSyAMs0JsrC88jq_yxCxfFqZ8dIBt0wEl3CY&format=png&visual_refresh=true',
                     ),
-                ], style={'text-align': 'center'}),
+                ], style={'textAlign': 'center'}),
                 # dbc.Card(
                 #     dbc.Button(" GitHub",
                 #                id='submit-button', className='fa fa-github',
                 #                size='lg',
                 #                href="https://github.com/AlbaneMiron/drone-simulation"),
                 #     style={"width": "12rem",
-                #            "margin-left": "auto",
-                #            "margin-right": "auto"
+                #            "marginLeft": "auto",
+                #            "marginRight": "auto"
                 #            }),
 
-            ], style={'margin-top': '10px',
-                      'padding-right': '0', 'padding-left': '0'})
+            ], style={'marginTop': '10px',
+                      'paddingRight': '0', 'paddingLeft': '0'})
 
         ),
 
@@ -73,9 +73,9 @@ def create_tabs_layout(simu_desc_file):
                 html.H4(className='datasets',
                         children=_('Rescue chain: BLS teams vs drones')),
                 html.Img(src=simu_desc_file,
-                         style={'max-width': '100%', 'max-height': '100%'}),
-            ], style={'margin-top': '10px',
-                      'padding-right': '0', 'padding-left': '0'}),
+                         style={'maxWidth': '100%', 'maxHeight': '100%'}),
+            ], style={'marginTop': '10px',
+                      'paddingRight': '0', 'paddingLeft': '0'}),
         ),
 
         dbc.Tab(
@@ -100,14 +100,14 @@ def create_tabs_layout(simu_desc_file):
             children=dbc.Col(
                 [
                     create_both_graphs('A', style={
-                        'border-right': 'solid 1px #ddd',
-                        'margin-right': '15px',
-                        'padding-right': '15px',
+                        'borderRight': 'solid 1px #ddd',
+                        'marginRight': '15px',
+                        'paddingRight': '15px',
                     }),
                     create_both_graphs('B', suffix='_b'),
                 ],
-                style={'display': 'flex', 'margin-top': '10px',
-                       'padding-right': '0', 'padding-left': '0'}),
+                style={'display': 'flex', 'marginTop': '10px',
+                       'paddingRight': '0', 'paddingLeft': '0'}),
         ),
 
         dbc.Tab(
@@ -187,13 +187,13 @@ def create_tabs_layout(simu_desc_file):
                     ]),
                 ),
                 html.Div(id='output-incidents-upload'),
-            ], style={'margin-top': '10px',
-                      'padding-right': '0', 'padding-left': '0'}),
+            ], style={'marginTop': '10px',
+                      'paddingRight': '0', 'paddingLeft': '0'}),
         ),
-    ], style={'margin-top': '10px',
-              'padding-right': '0', 'padding-left': '0'})
+    ], style={'marginTop': '10px',
+              'paddingRight': '0', 'paddingLeft': '0'})
     #   ,
-    # ], style={'margin-top': '15px', 'padding-right': '0', 'padding-left': '0'})
+    # ], style={'marginTop': '15px', 'paddingRight': '0', 'paddingLeft': '0'})
 
 
 def create_parameters_layout(name, suffix='', input_drone=_POSITIONS[0]):
@@ -206,9 +206,9 @@ def create_parameters_layout(name, suffix='', input_drone=_POSITIONS[0]):
                               'your mouse over '
                               'each of them.'))))],
                 style={
-                    'margin-right': '15px',
-                    'padding-right': '0',
-                    'padding-left': '0'}),
+                    'marginRight': '15px',
+                    'paddingRight': '0',
+                    'paddingLeft': '0'}),
         dbc.Row([
             dbc.Col([
                 html.H6(_('Drone parameters')),
@@ -295,7 +295,7 @@ def create_parameters_layout(name, suffix='', input_drone=_POSITIONS[0]):
                         options=[{'label': ' ' + _('Yes'), 'value': 'Oui'},
                                  {'label': ' ' + _('No'), 'value': 'Non'}],
                         value='Non',
-                        labelStyle={'display': 'inline-block', 'margin-right': '1em'})
+                        labelStyle={'display': 'inline-block', 'marginRight': '1em'})
                 ], row=True)
             ]),
 
@@ -392,16 +392,16 @@ def create_parameters_layout(name, suffix='', input_drone=_POSITIONS[0]):
 
             ], style={'flex': 1}),
         ], style={
-            'margin-right': '15px',
-            'padding-right': '0',
+            'marginRight': '15px',
+            'paddingRight': '0',
         }),
         dbc.Button(
             id=f'seq_start{suffix}', n_clicks=0,
             children=_('Update simulation'), block='center',
-            style={'flex': 1, 'margin-top': '20px', 'margin-bottom': '20px'}
-        )], style={'margin-top': '20px', 'padding-right': '0', 'padding-left': '0'}), \
+            style={'flex': 1, 'marginTop': '20px', 'marginBottom': '20px'}
+        )], style={'marginTop': '20px', 'paddingRight': '0', 'paddingLeft': '0'}), \
         dbc.Row(children=[html.H3(_('Results')), create_graphs_layout(suffix=suffix)])
-    # ], style={'margin-top': '20px', 'padding-right': '0', 'padding-left': '0'})
+    # ], style={'marginTop': '20px', 'paddingRight': '0', 'paddingLeft': '0'})
 
 
 def create_graphs_layout(suffix=''):
@@ -410,25 +410,25 @@ def create_graphs_layout(suffix=''):
             dbc.Row(children=[dbc.Col(children=[html.H6(_('Flight exclusions')),
                                                 dcc.Graph(id=f'indicator-graphic1{suffix}',
                                                           className='row')],
-                                      style={'margin-top': '20px', 'flex': 1}),
+                                      style={'marginTop': '20px', 'flex': 1}),
                               dbc.Col(children=[html.H6(_('Intervention distribution')),
                                                 sankey.Sankey(
                                                     id=f'flows-graphic{suffix}',
                                                     width=500, height=500, ),
-                                                ], style={'margin-top': '20px', 'flex': 1},
+                                                ], style={'marginTop': '20px', 'flex': 1},
                                       className='row')
                               ],
-                    style={'margin-top': '20px', 'padding-right': '20px', 'padding-left': '20px'}),
+                    style={'marginTop': '20px', 'paddingRight': '20px', 'paddingLeft': '20px'}),
             dbc.Row(children=[
                 dbc.Col(children=[html.H6(_('Time to arrival histogram when a drone is sent')),
                                   dcc.Graph(id=f'indicator-graphic3{suffix}', className='row')],
-                        style={'margin-top': '20px', 'flex': 1}),
+                        style={'marginTop': '20px', 'flex': 1}),
                 dbc.Col(children=[html.H6(_('Comparison of times to arrival for all incidents')),
                                   html.Small(html.I(_('Hover over the graph to get more info'))),
                                   dcc.Graph(id=f'indicator-graphic4{suffix}', className='row')],
-                        style={'margin-top': '20px', 'flex': 1})],
-                    style={'margin-top': '20px', 'padding-right': '20px', 'padding-left': '20px'})],
-        style={'padding-right': '20px', 'padding-left': '20px'})])
+                        style={'marginTop': '20px', 'flex': 1})],
+                    style={'marginTop': '20px', 'paddingRight': '20px', 'paddingLeft': '20px'})],
+        style={'paddingRight': '20px', 'paddingLeft': '20px'})])
 
 
 def create_both_graphs(name, suffix='', style=None):
@@ -465,14 +465,15 @@ def create(lang):
                         _('Fork me on GitHub'),
                         href='https://github.com/AlbaneMiron/drone-simulation',
                         className='github-fork-ribbon',
+                        style={'position': 'fixed'},
                         **{'data-ribbon': _('Fork me on GitHub')}
                     ),
                 ],
-                style={'display': 'flex', 'justify-content': 'space-between',
-                       'padding-right': '0', 'padding-left': '0'}
+                style={'display': 'flex', 'justifyContent': 'spaceBetween',
+                       'paddingRight': '0', 'paddingLeft': '0'}
             ),
             dbc.Col(
                 id='vp-control-tabs', className='control-tabs',
                 children=[create_tabs_layout(desc_file)],
-                style={'margin-top': '20px', 'padding-right': '0', 'padding-left': '0'})],
-        style={'padding-top': '20px', 'padding-left': '20px'})
+                style={'marginTop': '20px', 'paddingRight': '0', 'paddingLeft': '0'})],
+        style={'paddingTop': '20px', 'paddingLeft': '20px'})
