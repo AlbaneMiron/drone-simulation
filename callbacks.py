@@ -17,28 +17,22 @@ from app import app
 import drones
 
 # datetime of the beginning of the emergency call
-col_time_em_call = 'DT_då_crochå_'
+col_time_em_call = 'time_call'
 # in seconds, BLS team delay
-col_BLS_time = 'DeltaPresentation'
-# in m/s, wind speed in the direction
-col_wind_speed = 'vitesse effective vent_'
+col_BLS_time = 'BLS_time'
 # indicator: 1 if the incident is during the day, 0 during the night
-col_indic_day = 'jour_aeronautique'
-# indicator : 1 if the incident is in the streets, 0 otherwise
-col_indic_streets = 'Voie publique'
-# indicator : 1 if the incident is in a public place (excluding streets), 0 otherwise
-col_indic_pubplace = 'Lieu public'
+col_indic_day = 'day'
 # indicator : 1 if the incident is at home, 0 otherwise
-col_indic_home = 'Domicile'
+col_indic_home = 'home'
 # Latitude WGS84
-col_lat_inter = 'new_lat'
+col_lat_inter = 'latitude'
 # Longitude WGS84
-col_lon_inter = 'new_lon'
+col_lon_inter = 'longitude'
 
 # indicator: 1 if wind is low enough to fly (less than 50 km/h)
-col_indic_wind = 'rafales < 50 km/h'
+col_indic_wind = 'low_wind'
 # indicator: 1 if sight is clear enough to fly
-col_indic_sight = 'visibilite > 200m'
+col_indic_sight = 'clear_sight'
 
 col_drone_delay = 'col_res'
 

@@ -140,8 +140,9 @@ def create_tabs_layout(simu_desc_file):
 
                 html.H4(children=_('Incidents'), style={'marginTop': 30}),
                 html.Div([_(
-                    'Upload a CSV file containing a list of incidents. Each row represents '
-                    'one incident and should contain the following fields:'
+                    'Upload a CSV file containing a list of incidents. Each row (except the first '
+                    'one used for fields headers) represents one incident and should contain the '
+                    'following fields:'
                 )]),
                 html.Ul([
                     html.Li(_('time_call: the date and time of the emergency call')),
@@ -155,16 +156,35 @@ def create_tabs_layout(simu_desc_file):
                         'home: a flag indicating whether the incident happened at home (1) '
                         'or in a street or public place (0)',
                     )),
+                    html.Li(_(
+                        'day: a flag indicating whether the incident happened during the '
+                        'aeronautical day (1) or night (0)',
+                    )),
+                    html.Li(_(
+                        'low_wind: a flag indicating whether the wind during incident was low '
+                        'enough to fly (1) or faster than 50 km/h (0)',
+                    )),
+                    html.Li(_(
+                        'clear_sight: a flag indicating whether the sight during incident was '
+                        'clear enough to fly (1) or below 200m (0)',
+                    )),
                 ]),
+                html.Textarea(
+                    children=textwrap.dedent('''\
+                        ,time_call,BLS_time,day,low_wind,clear_sight,home,latitude,longitude
+                        0,01/01/17 00:13,214.0,0,1,1,1,48.8240664,2.3680644
+                        1,01/01/17 03:49,1062.0,0,1,1,1,48.785867700000004,2.4296106
+                        2,01/01/17 06:03,442.0,0,1,1,1,48.8405163,2.2878906000000003
+                        3,01/01/17 06:15,486.0,0,1,1,1,48.8759425,2.1920694
+                        4,01/01/17 08:56,366.0,1,1,1,1,48.7890453,2.4475238999999998
+                        5,01/01/17 12:14,630.0,1,1,1,1,48.873926899999994,2.1894501'''),
+                    disabled=True, style={'height': 150, 'width': '100%'}),
                 dcc.Upload(
                     id='upload-incidents',
                     children=html.Div([
                         _('Drag and Drop or '),
                         html.A(html.Button(_('Select a File'))),
-                        # TODO(pascal): Handle custom incidents.
-                        'Coming soon…'
                     ]),
-                    disabled=True,
                 ),
                 html.Div(id='output-incidents-upload'),
             ], style={'margin-top': '10px',

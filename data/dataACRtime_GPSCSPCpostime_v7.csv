@@ -1,4 +1,4 @@
-,DT_då_crochå_,DeltaPresentation,jour_aeronautique,rafales < 50 km/h,visibilite > 200m,vent moyen,direction vent,Distance_CSPP,Distance_PCPP,Domicile,Lieu public,Voie publique,new_lat,new_lon
+,time_call,BLS_time,day,low_wind,clear_sight,vent moyen,direction vent,Distance_CSPP,Distance_PCPP,home,Lieu public,Voie publique,latitude,longitude
 0,01/01/17 00:13,214.0,0,1,1,6.48,210.0,0.4996332512687932,0.4996332512687932,1,0,0,48.8240664,2.3680644
 1,01/01/17 03:49,1062.0,0,1,1,6.84,220.0,1.5983284261678317,2.0998017862859912,1,0,0,48.785867700000004,2.4296106
 2,01/01/17 06:03,442.0,0,1,1,7.2,220.0,0.4379542964120819,0.4379542964120819,1,0,0,48.8405163,2.2878906000000003
