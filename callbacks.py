@@ -3,9 +3,11 @@ import copy
 import datetime as dt
 import functools
 import gettext
+import hashlib
 import io
 import math
 
+from dash import exceptions
 from dash.dependencies import Input, Output, State
 import dash_html_components as html
 import geopy.distance
@@ -147,7 +149,6 @@ def _read_uploaded_data(contents):
 
 
 def _compute_drone_time(
-        unused_seq_start,
         drone_input, custom_drone_input, custom_incidents_dataset,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
         input_jour_, detec_rate_home, no_witness_rate, detec_rate_vp, unavail_delta, lang):
@@ -534,6 +535,85 @@ def _compute_drone_time(
 
 
 @app.callback(
+    Output('hash', 'value'),
+    [Input('seq_start', 'n_clicks'), Input('app-tabs', 'active_tab')],
+    [State('input_drone', 'value'),
+     State('upload-starting-points', 'contents'),
+     State('upload-incidents', 'contents'),
+     State('speed', 'value'),
+     State('acc', 'value'),
+     State('vert-acc', 'value'),
+     State('alt', 'value'),
+     State('dep_delay', 'value'),
+     State('arr_delay', 'value'),
+     State('detec_delay', 'value'),
+     State('day', 'value'),
+     State('detec_rate_home', 'value'),
+     State('wit_detec', 'value'),
+     State('detec_rate_vp', 'value'),
+     State('unavail_delta', 'value'),
+     State('lang', 'value'),
+     State('hash', 'value')])
+def params_hash(unused_seq_start, unused_active_tab, *args):
+    return _compute_params_hash(*args)
+
+
+@app.callback(
+    Output('hash_b', 'value'),
+    [Input('seq_start_b', 'n_clicks'), Input('app-tabs', 'active_tab')],
+    [State('input_drone_b', 'value'),
+     State('upload-starting-points', 'contents'),
+     State('upload-incidents', 'contents'),
+     State('speed_b', 'value'),
+     State('acc_b', 'value'),
+     State('vert-acc_b', 'value'),
+     State('alt_b', 'value'),
+     State('dep_delay_b', 'value'),
+     State('arr_delay_b', 'value'),
+     State('detec_delay_b', 'value'),
+     State('day_b', 'value'),
+     State('detec_rate_home_b', 'value'),
+     State('wit_detec_b', 'value'),
+     State('detec_rate_vp_b', 'value'),
+     State('unavail_delta_b', 'value'),
+     State('lang', 'value'),
+     State('hash_b', 'value')])
+def params_hash_b(unused_seq_start, unused_active_tab, *args):
+    return _compute_params_hash(*args)
+
+
+def _compute_params_hash(
+        drone_input, custom_drone_input, custom_incidents_csv,
+        input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
+        input_jour, detec_rate_home, no_witness_rate, detec_rate_vp, unavail_delta, lang,
+        previous_hash):
+    combined = hashlib.sha1()
+    combined.update(drone_input.encode('utf-8'))
+    if custom_drone_input:
+        combined.update(custom_drone_input.encode('utf-8'))
+    if custom_incidents_csv:
+        combined.update(custom_incidents_csv.encode('utf-8'))
+    combined.update(input_speed.encode('utf-8'))
+    combined.update(input_acc.encode('utf-8'))
+    combined.update(vert_acc.encode('utf-8'))
+    combined.update(alt.encode('utf-8'))
+    combined.update(dep_delay.encode('utf-8'))
+    combined.update(arr_delay.encode('utf-8'))
+    combined.update(detec_delay.encode('utf-8'))
+    combined.update(input_jour.encode('utf-8'))
+    combined.update(detec_rate_home.encode('utf-8'))
+    combined.update(no_witness_rate.encode('utf-8'))
+    combined.update(detec_rate_vp.encode('utf-8'))
+    combined.update(unavail_delta.encode('utf-8'))
+    if lang:
+        combined.update(lang.encode('utf-8'))
+    new_hash = combined.hexdigest()
+    if new_hash == previous_hash:
+        raise exceptions.PreventUpdate()
+    return new_hash
+
+
+@app.callback(
     [Output('flows-graphic', 'flows'),
      Output('indicator-graphic3', 'figure'),
      Output('indicator-graphic4', 'figure'),
@@ -542,7 +622,7 @@ def _compute_drone_time(
      Output('indicator-graphic4u', 'figure'),
      Output('indicator-graphic1', 'figure'),
      Output('indicator-graphic1u', 'figure')],
-    [Input('seq_start', 'n_clicks')],
+    [Input('hash', 'value')],
     [State('input_drone', 'value'),
      State('upload-starting-points', 'contents'),
      State('upload-incidents', 'contents'),
@@ -560,12 +640,11 @@ def _compute_drone_time(
      State('unavail_delta', 'value'),
      State('lang', 'value')])
 def drone_time(
-        seq_start,
+        unused_hash_value,
         drone_input, custom_drone_input, custom_incidents_csv,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
         input_jour_, detec_rate_home, no_witness_rate, detec_rate_vp, unavail_delta, lang):
     return _compute_drone_time(
-        seq_start,
         drone_input, custom_drone_input, custom_incidents_csv,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
         input_jour_, detec_rate_home, no_witness_rate, detec_rate_vp, unavail_delta, lang)
@@ -655,7 +734,7 @@ def genSankey(df, cat_cols, value_cols=''):
      Output('indicator-graphic4u_b', 'figure'),
      Output('indicator-graphic1_b', 'figure'),
      Output('indicator-graphic1u_b', 'figure')],
-    [Input('seq_start_b', 'n_clicks')],
+    [Input('hash_b', 'value')],
     [State('input_drone_b', 'value'),
      State('upload-starting-points', 'contents'),
      State('upload-incidents', 'contents'),
@@ -673,12 +752,11 @@ def genSankey(df, cat_cols, value_cols=''):
      State('unavail_delta_b', 'value'),
      State('lang', 'value')])
 def drone_time_b(
-        seq_start,
+        unused_seq_start,
         drone_input, custom_drone_input, custom_incidents_csv,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
         input_jour_, detec_rate_home, no_witness_rate, detec_rate_vp, unavail_delta, lang):
     return _compute_drone_time(
-        seq_start,
         drone_input, custom_drone_input, custom_incidents_csv,
         input_speed, input_acc, vert_acc, alt, dep_delay, arr_delay, detec_delay,
         input_jour_, detec_rate_home, no_witness_rate, detec_rate_vp, unavail_delta, lang)

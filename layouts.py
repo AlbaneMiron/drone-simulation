@@ -199,6 +199,7 @@ def create_tabs_layout(simu_desc_file):
 def create_parameters_layout(name, suffix='', input_drone=_POSITIONS[0]):
     # return dbc.Col([
     return dbc.Col([
+        dbc.Input(id=f'hash{suffix}', value='', type='text', style={'display': 'none'}),
         dbc.Col(children=[html.H3(_('Simulation ') + name),
                           html.P(html.Small(html.I(_(
                               'You can get additional info '
