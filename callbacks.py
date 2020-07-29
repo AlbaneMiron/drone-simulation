@@ -199,8 +199,8 @@ def _compute_drone_time(
         t11n = gettext.translation('messages', localedir='locales', languages=[lang], fallback=True)
         t11n.install()
 
-    dep_delay = np.float(dep_delay) + np.float(detec_delay) + (np.float(alt) / np.float(vert_acc))
-    arr_delay = np.float(arr_delay) + (np.float(alt) / np.float(vert_acc))
+    full_dep_delay = np.float(dep_delay) + np.float(detec_delay) + (np.float(alt) / np.float(vert_acc))
+    full_arr_delay = np.float(arr_delay) + (np.float(alt) / np.float(vert_acc))
     input_acc = np.float(input_acc)
     detec_rate_home = np.float(detec_rate_home)
     no_witness_rate = np.float(no_witness_rate)
@@ -265,9 +265,9 @@ def _compute_drone_time(
         lin_dist = dist - acc_dist
         if lin_dist >= 0:
             lin_time = (dist / eff_speed) * 3600
-            res_time = lin_time + dep_delay + arr_delay + 2 * input_acc
+            res_time = lin_time + full_dep_delay + full_arr_delay + 2 * input_acc
         else:
-            res_time = dep_delay + arr_delay + 2 * math.sqrt(dist / acc)
+            res_time = full_dep_delay + full_arr_delay + 2 * math.sqrt(dist / acc)
 
         df_res.loc[i, col_drone_delay] = np.round(res_time)
 
@@ -529,6 +529,28 @@ def _compute_drone_time(
             'autosize': True
         }
     }
+
+    writer = pd.ExcelWriter("simulations.xlsx", engine='xlsxwriter')
+    df_ic.to_excel(writer, sheet_name='Sheet1')
+    worksheet = writer.sheets['Sheet1']
+    worksheet.write(0, 0, "Drone input : " + drone_input)
+    worksheet.write(1, 0, "Speed : " + str(input_speed))
+    worksheet.write(2, 0, "Acc : " + str(input_acc))
+    worksheet.write(3, 0, "Vertical acc : " + str(vert_acc))
+    worksheet.write(4, 0, "Altitude : " + str(alt))
+    worksheet.write(5, 0, "Dep delay : " + str(dep_delay))
+    worksheet.write(6, 0, "Arr delay : " + str(arr_delay))
+    worksheet.write(7, 0, "Detec delay : " + str(detec_delay))
+    worksheet.write(8, 0, "Peut voler le jour : " + str(input_jour_))
+    worksheet.write(9, 0, "Detection home : " + str(detec_rate_home))
+    worksheet.write(10, 0, "Detection VP : " + str(detec_rate_vp))
+    worksheet.write(11, 0, "Pas assez témoins : " + str(no_witness_rate))
+    worksheet.write(12, 0, "Indispo : " + str(unavail_delta))
+    writer.save()
+
+    print("Dep and arr delay")
+    print(dep_delay)
+    print(arr_delay)
 
     return flows, indicator_graphic_3, indicator_graphic_4, flows, \
         indicator_graphic_3, indicator_graphic_4, indicator_graphic_1, indicator_graphic_1
