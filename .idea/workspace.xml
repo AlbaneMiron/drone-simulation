@@ -2,7 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8a5d5635-a35f-4d28-81c8-dea19f3377c9" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/callbacks.py" beforeDir="false" afterPath="$PROJECT_DIR$/callbacks.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/donnees article/simulation PC.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/donnees article/simulation detection 0.94 home and 0.87 in streets.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/donnees article/simulation normale.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/donnees article/simulation peut voler jour.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pandas_simple.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.csv" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />

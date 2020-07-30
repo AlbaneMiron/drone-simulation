@@ -531,7 +531,7 @@ def _compute_drone_time(
     }
 
     writer = pd.ExcelWriter("simulations.xlsx", engine='xlsxwriter')
-    df_ic.to_excel(writer, sheet_name='Sheet1')
+    dfi.to_excel(writer, sheet_name='Sheet1')
     worksheet = writer.sheets['Sheet1']
     worksheet.write(0, 0, "Drone input : " + drone_input)
     worksheet.write(1, 0, "Speed : " + str(input_speed))
