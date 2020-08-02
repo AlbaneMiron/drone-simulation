@@ -367,14 +367,14 @@ def _compute_drone_time(
     df_sankey['Drone'] = index_drone
 
     if not input_jour:
-        dftest = df_sankey.groupby(['Intervention', 'Detection', 'Nuit', 'Témoin', 'Drone'])\
+        dftest = df_sankey.groupby(['Intervention', 'Detection', 'Nuit', 'Témoin', 'Drone']) \
             .agg({'Total': 'count'})
         dftest.reset_index(inplace=True)
         sankey_data = genSankey(dftest,
                                 cat_cols=['Intervention', 'Detection', 'Nuit', 'Témoin', 'Drone'],
                                 value_cols='Total')
     else:
-        dftest = df_sankey.groupby(['Intervention', 'Detection', 'Témoin', 'Drone'])\
+        dftest = df_sankey.groupby(['Intervention', 'Detection', 'Témoin', 'Drone']) \
             .agg({'Total': 'count'})
         dftest.reset_index(inplace=True)
         sankey_data = genSankey(dftest,
@@ -498,13 +498,18 @@ def _compute_drone_time(
             yaxis={
                 'title': _('Number of incidents'),
                 'type': 'linear',
-                'showticklabels': False,
+                'showticklabels': True,
             },
             width=500,
             height=400,
-            margin={'l': 30, 'b': 100, 't': 50, 'r': 30},
+            # margin={'l': 30, 'b': 100, 't': 50, 'r': 30},
             hovermode='closest',
             autosize=True,
+            legend={'yanchor': 'top',
+                    'y': 0.99,
+                    'xanchor': 'right',
+                    'x': 0.98
+                    }
         ),
     }
 
@@ -512,19 +517,20 @@ def _compute_drone_time(
         'data': [trace5],
         'layout': {
             'xaxis': {
-                'title': {'text': u'Interventions', 'standoff': 100},
+                'title': {'text': u'Interventions'},
                 'type': 'linear',
                 'showgrid': False,
-                'showticklabels': False,
+                'showticklabels': True,
             },
             'yaxis': {
                 'title': _('Time difference drone - BLS team (in seconds)'),
                 'type': 'linear',
-                'showticklabels': False,
+                'showticklabels': True,
+                'dtick': 180,
             },
             'width': 500,
             'height': 400,
-            'margin': {'l': 30, 'b': 100, 't': 50, 'r': 30},
+            # 'margin': {'l': 30, 'b': 100, 't': 50, 'r': 30, 'pad': 20},
             'hovermode': 'closest',
             'autosize': True
         }
@@ -678,7 +684,7 @@ def genSankey(df, cat_cols, value_cols=''):
             tempDf = df[[cat_cols[i], cat_cols[i + 1], value_cols]]
             tempDf.columns = ['source', 'target', 'count']
             sourceTargetDf = pd.concat([sourceTargetDf, tempDf])
-        sourceTargetDf = sourceTargetDf.groupby(['source', 'target'])\
+        sourceTargetDf = sourceTargetDf.groupby(['source', 'target']) \
             .agg({'count': 'sum'}).reset_index()
 
     # add index for source-target pair
