@@ -536,8 +536,8 @@ def _compute_drone_time(
         }
     }
 
-    return flows, indicator_graphic_3, indicator_graphic_4, flows, \
-        indicator_graphic_3, indicator_graphic_4, indicator_graphic_1, indicator_graphic_1
+    return indicator_graphic_3, indicator_graphic_4, \
+           indicator_graphic_3, indicator_graphic_4, indicator_graphic_1, indicator_graphic_1
 
 
 @app.callback(
@@ -620,10 +620,10 @@ def _compute_params_hash(
 
 
 @app.callback(
-    [Output('flows-graphic', 'flows'),
+    [ # Output('flows-graphic', 'flows'),
      Output('indicator-graphic3', 'figure'),
      Output('indicator-graphic4', 'figure'),
-     Output('flows-graphicu', 'flows'),
+     # Output('flows-graphicu', 'flows'),
      Output('indicator-graphic3u', 'figure'),
      Output('indicator-graphic4u', 'figure'),
      Output('indicator-graphic1', 'figure'),
@@ -732,10 +732,10 @@ def genSankey(df, cat_cols, value_cols=''):
 
 
 @app.callback(
-    [Output('flows-graphic_b', 'flows'),
+    [ # Output('flows-graphic_b', 'flows'),
      Output('indicator-graphic3_b', 'figure'),
      Output('indicator-graphic4_b', 'figure'),
-     Output('flows-graphicu_b', 'flows'),
+     # Output('flows-graphicu_b', 'flows'),
      Output('indicator-graphic3u_b', 'figure'),
      Output('indicator-graphic4u_b', 'figure'),
      Output('indicator-graphic1_b', 'figure'),
