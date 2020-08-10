@@ -384,7 +384,9 @@ def _compute_drone_time(
     trace1 = sankey_data
 
     trace2 = go.Pie(labels=[_('Drone is faster'), _('BLS team is faster'), _('Drone cannot fly')],
-                    values=[rate_drone, rate_bls, (100-rate_drone-rate_bls)])
+                    values=[rate_drone, rate_bls, (100-rate_drone-rate_bls)],
+                    pull=[0.2, 0, 0],
+                    marker_colors=['rgba(0,128,0,0.8)', 'rgba(222,45,38,0.8)', 'rgba(186,190,222,1)'])
 
     # trace1 = go.Bar(
     #     x=[0, 1, 2],

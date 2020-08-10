@@ -401,21 +401,22 @@ def create_parameters_layout(name, suffix='', input_drone=_POSITIONS[0]):
             children=_('Update simulation'), block='center',
             style={'flex': 1, 'marginTop': '20px', 'marginBottom': '20px'}
         )], style={'marginTop': '20px', 'paddingRight': '0', 'paddingLeft': '0'}), \
-        dbc.Row(children=[html.H3(_('Results')), create_graphs_layout(suffix=suffix)])
+           dbc.Row(children=[html.H3(_('Results')), create_graphs_layout(suffix=suffix)])
     # ], style={'marginTop': '20px', 'paddingRight': '0', 'paddingLeft': '0'})
 
 
 def create_graphs_layout(suffix=''):
     return dbc.Col([dcc.Loading(
         children=[
-            dbc.Row(children=[dbc.Col(children=[html.H6(_('Flight exclusions')),
+            dbc.Row(children=[dbc.Col(children=[html.H6(_('Intervention distribution')),
+                                                dcc.Graph(id=f'indicator-graphic2{suffix}',
+                                                          className='row')],
+                                      style={'marginTop': '20px', 'flex': 1}),
+                              dbc.Col(children=[html.H6(_('Flight exclusions')),
                                                 dcc.Graph(id=f'indicator-graphic1{suffix}',
                                                           className='row')],
                                       style={'marginTop': '20px', 'flex': 1}),
-                              dbc.Col(children=[html.H6(_('Intervention distribution')),
-                                                dcc.Graph(id=f'indicator-graphic2{suffix}',
-                                                          className='row')],
-                                      style={'marginTop': '20px', 'flex': 1})
+
                               # dbc.Col(children=[html.H6(_('Intervention distribution')),
                               #                   sankey.Sankey(
                               #                       id=f'flows-graphic{suffix}',
@@ -432,7 +433,7 @@ def create_graphs_layout(suffix=''):
                                   html.Small(html.I(_('Hover over the graph to get more info'))),
                                   dcc.Graph(id=f'indicator-graphic4{suffix}', className='row')],
                         style={'marginTop': '20px', 'flex': 1})],
-                    style={'marginTop': '20px', 'paddingRight': '20px', 'paddingLeft': '20px'})],
+                style={'marginTop': '20px', 'paddingRight': '20px', 'paddingLeft': '20px'})],
         style={'paddingRight': '20px', 'paddingLeft': '20px'})])
 
 
@@ -440,10 +441,10 @@ def create_both_graphs(name, suffix='', style=None):
     return dbc.Container([
         html.H3(_('Simulation ') + name),
         dcc.Loading(children=[
-            dbc.Col(children=[html.H6(_('Flight exlcusions')),
-                              dcc.Graph(id=f'indicator-graphic1u{suffix}', className='row')]),
             dbc.Col(children=[html.H6(_('Intervention distribution')),
                               dcc.Graph(id=f'indicator-graphic2u{suffix}', className='row')]),
+            dbc.Col(children=[html.H6(_('Flight exlcusions')),
+                              dcc.Graph(id=f'indicator-graphic1u{suffix}', className='row')]),
             # dbc.Col(children=[html.H6(_('Intervention distribution')),
             #                   sankey.Sankey(
             #                       id=f'flows-graphicu{suffix}',
