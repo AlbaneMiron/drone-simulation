@@ -412,6 +412,10 @@ def create_graphs_layout(suffix=''):
                                                 dcc.Graph(id=f'indicator-graphic1{suffix}',
                                                           className='row')],
                                       style={'marginTop': '20px', 'flex': 1}),
+                              dbc.Col(children=[html.H6(_('Intervention distribution')),
+                                                dcc.Graph(id=f'indicator-graphic2{suffix}',
+                                                          className='row')],
+                                      style={'marginTop': '20px', 'flex': 1})
                               # dbc.Col(children=[html.H6(_('Intervention distribution')),
                               #                   sankey.Sankey(
                               #                       id=f'flows-graphic{suffix}',
@@ -438,6 +442,8 @@ def create_both_graphs(name, suffix='', style=None):
         dcc.Loading(children=[
             dbc.Col(children=[html.H6(_('Flight exlcusions')),
                               dcc.Graph(id=f'indicator-graphic1u{suffix}', className='row')]),
+            dbc.Col(children=[html.H6(_('Intervention distribution')),
+                              dcc.Graph(id=f'indicator-graphic2u{suffix}', className='row')]),
             # dbc.Col(children=[html.H6(_('Intervention distribution')),
             #                   sankey.Sankey(
             #                       id=f'flows-graphicu{suffix}',
