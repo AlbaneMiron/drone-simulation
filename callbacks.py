@@ -278,16 +278,16 @@ def _compute_drone_time(
     dfi = df_res.dropna(axis=0, how='all', thresh=None, subset=[res_col_b], inplace=False)
 
     # simple metrics
-    n_tot = len(dfi)
-    n_nodrone = len(dfi.loc[dfi[res_col_a] == 0])
-    n_drone = len(dfi.loc[dfi[res_col_b] < 0])
-    n_bls = len(dfi.loc[dfi[res_col_b] > 0]) - n_nodrone
+    # n_nodrone = len(dfi.loc[dfi[res_col_a] == 0])
+    # n_tot = len(dfi)
+    # n_drone = len(dfi.loc[dfi[res_col_b] < 0])
+    # n_bls = len(dfi.loc[dfi[res_col_b] > 0]) - n_nodrone
 
     no_drone['detection'] = np.logical_not(no_drone['no detection'])
     # flight restriction reasons for the sunburst chart
 
-    # number of no detected OHCA
-    n_no_detec = no_drone['no detection'].sum()
+    # # number of no detected OHCA
+    # n_no_detec = no_drone['no detection'].sum()
     # # number of no detected OHCA which are also at night
     # n_no_detec_night = np.logical_and(no_drone['no detection'],
     #                                   no_drone['night']).sum()
@@ -299,24 +299,17 @@ def _compute_drone_time(
     #                                                 no_drone['night']),
     #                                  no_drone['not enough witnesses']).sum()
     # number of detected OHCA which are at night
-    n_detec_night = np.logical_and(no_drone['detection'],
-                                   no_drone['night']).sum()
-    # number of detected OHCA which don't have enough witnesses
-    n_detec_wit = np.logical_and(no_drone['detection'],
-                                 no_drone['not enough witnesses']).sum()
-    # number of detected OHCA which don't have enough witnesses and are at night
-    n_detec_both = np.logical_and(np.logical_and(no_drone['detection'],
-                                                 no_drone['night']),
-                                  no_drone['not enough witnesses']).sum()
-
-    n_detec_dw = n_detec_wit - n_detec_both
-
-    # l_pie = np.array([n_drone, n_bls, n_nodrone,
-    #                   n_no_detec, n_nodrone - n_no_detec,
-    #                   n_no_detec_night - n_no_detec_both, n_no_detec_wit - n_no_detec_both,
-    #                   n_no_detec_both,
-    #                   n_detec_night - n_detec_both, n_detec_wit - n_detec_both, n_detec_both])
-    # l_pie = np.around(l_pie * 100 / n_tot, 0).astype('int')
+    # n_detec_night = np.logical_and(no_drone['detection'],
+    #                                no_drone['night']).sum()
+    # # number of detected OHCA which don't have enough witnesses
+    # n_detec_wit = np.logical_and(no_drone['detection'],
+    #                              no_drone['not enough witnesses']).sum()
+    # # number of detected OHCA which don't have enough witnesses and are at night
+    # n_detec_both = np.logical_and(np.logical_and(no_drone['detection'],
+    #                                              no_drone['night']),
+    #                               no_drone['not enough witnesses']).sum()
+    #
+    # n_detec_dw = n_detec_wit - n_detec_both
 
     # Create data-frame used by getSankey function
     if not input_jour:
@@ -383,19 +376,13 @@ def _compute_drone_time(
 
     trace1 = sankey_data
 
-    # trace1 = go.Sunburst(
-    #     labels=["Drone faster", "BLS team faster", "No drone",
-    #             "No detection", "Detection with exclusion",
-    #             "ND + N", "ND + NE-W", "ND + N + NE W",
-    #             "D + N", "D + NE-W", "D + NE-W + N"],
-    #     parents=["", "", "",
-    #              "No drone", "No drone",
-    #              "No detection", "No detection", "No detection",
-    #             "Detection with exclusion", "Detection with exclusion",
-    #             "Detection with exclusion"],
-    #     values=l_pie,
-    #     branchvalues="total",
-    # )
+    trace2 = \
+        go.Pie(labels=[_('Drone is faster'),
+                       _('BLS team is faster'),
+                       _('Drone cannot fly')],
+               values=[rate_drone, rate_bls, (100 - rate_drone - rate_bls)],
+               pull=[0.2, 0, 0],
+               marker_colors=['rgba(0,128,0,0.8)', 'rgba(222,45,38,0.8)', 'rgba(186,190,222,1)'])
 
     # trace1 = go.Bar(
     #     x=[0, 1, 2],
@@ -459,34 +446,14 @@ def _compute_drone_time(
                    'autosize': True}
     }
 
-    fsize = 100 / n_tot
-    flows = [
-        dict(
-            fill='#e7eaf6',
-            size=fsize * n_no_detec,
-            text=_('Not detected') + f' {int(np.floor(fsize * n_no_detec))}%',
-        ),
-        dict(
-            fill='#a2a8d3',
-            size=fsize * n_detec_night,
-            text=_('Detected but by night') + f' {int(np.floor(fsize * n_detec_night))}%',
-        ),
-        dict(
-            fill='#38598b',
-            size=fsize * n_detec_wit,
-            text=_('Detected but not enough witnesses') + f' {int(np.floor(fsize * n_detec_dw))}%',
-        ),
-        dict(
-            fill='#ee4540',
-            size=fsize * n_bls,
-            text=_('BLS team faster than drone') + f' {int(np.floor(fsize * n_bls))}%',
-        ),
-        dict(
-            fill='#58b368',
-            size=fsize * n_drone,
-            text=_('Drone faster') + f' {int(np.floor(fsize * n_drone))}%',
-        ),
-    ]
+    indicator_graphic_2 = {
+        'data': [trace2],
+        'layout': {'width': 500,
+                   'height': 700,
+                   'margin': {'l': 30, 'b': 100, 't': 50, 'r': 30},
+                   'hovermode': 'closest',
+                   'autosize': True}
+    }
 
     indicator_graphic_3 = {
         'data': [trace3, trace4],
@@ -536,8 +503,10 @@ def _compute_drone_time(
         }
     }
 
-    return flows, indicator_graphic_3, indicator_graphic_4, flows, \
-        indicator_graphic_3, indicator_graphic_4, indicator_graphic_1, indicator_graphic_1
+    return indicator_graphic_3, indicator_graphic_4, \
+        indicator_graphic_3, indicator_graphic_4, \
+        indicator_graphic_1, indicator_graphic_1, indicator_graphic_2, \
+        indicator_graphic_2
 
 
 @app.callback(
@@ -620,14 +589,14 @@ def _compute_params_hash(
 
 
 @app.callback(
-    [Output('flows-graphic', 'flows'),
-     Output('indicator-graphic3', 'figure'),
+    [Output('indicator-graphic3', 'figure'),
      Output('indicator-graphic4', 'figure'),
-     Output('flows-graphicu', 'flows'),
      Output('indicator-graphic3u', 'figure'),
      Output('indicator-graphic4u', 'figure'),
      Output('indicator-graphic1', 'figure'),
-     Output('indicator-graphic1u', 'figure')],
+     Output('indicator-graphic1u', 'figure'),
+     Output('indicator-graphic2', 'figure'),
+     Output('indicator-graphic2u', 'figure')],
     [Input('hash', 'value')],
     [State('input_drone', 'value'),
      State('upload-starting-points', 'contents'),
@@ -732,14 +701,14 @@ def genSankey(df, cat_cols, value_cols=''):
 
 
 @app.callback(
-    [Output('flows-graphic_b', 'flows'),
-     Output('indicator-graphic3_b', 'figure'),
+    [Output('indicator-graphic3_b', 'figure'),
      Output('indicator-graphic4_b', 'figure'),
-     Output('flows-graphicu_b', 'flows'),
      Output('indicator-graphic3u_b', 'figure'),
      Output('indicator-graphic4u_b', 'figure'),
      Output('indicator-graphic1_b', 'figure'),
-     Output('indicator-graphic1u_b', 'figure')],
+     Output('indicator-graphic1u_b', 'figure'),
+     Output('indicator-graphic2_b', 'figure'),
+     Output('indicator-graphic2u_b', 'figure')],
     [Input('hash_b', 'value')],
     [State('input_drone_b', 'value'),
      State('upload-starting-points', 'contents'),

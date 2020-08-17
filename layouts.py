@@ -3,7 +3,7 @@ import textwrap
 import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 import dash_html_components as html
-import sankey
+# import sankey
 import drones
 
 _POSITIONS = list(drones.STARTING_POINTS.keys())
@@ -408,16 +408,21 @@ def create_parameters_layout(name, suffix='', input_drone=_POSITIONS[0]):
 def create_graphs_layout(suffix=''):
     return dbc.Col([dcc.Loading(
         children=[
-            dbc.Row(children=[dbc.Col(children=[html.H6(_('Flight exclusions')),
+            dbc.Row(children=[dbc.Col(children=[html.H6(_('Intervention distribution')),
+                                                dcc.Graph(id=f'indicator-graphic2{suffix}',
+                                                          className='row')],
+                                      style={'marginTop': '20px', 'flex': 1}),
+                              dbc.Col(children=[html.H6(_('Flight exclusions')),
                                                 dcc.Graph(id=f'indicator-graphic1{suffix}',
                                                           className='row')],
                                       style={'marginTop': '20px', 'flex': 1}),
-                              dbc.Col(children=[html.H6(_('Intervention distribution')),
-                                                sankey.Sankey(
-                                                    id=f'flows-graphic{suffix}',
-                                                    width=500, height=500, ),
-                                                ], style={'marginTop': '20px', 'flex': 1},
-                                      className='row')
+
+                              # dbc.Col(children=[html.H6(_('Intervention distribution')),
+                              #                   sankey.Sankey(
+                              #                       id=f'flows-graphic{suffix}',
+                              #                       width=500, height=500, ),
+                              #                   ], style={'marginTop': '20px', 'flex': 1},
+                              #         className='row')
                               ],
                     style={'marginTop': '20px', 'paddingRight': '20px', 'paddingLeft': '20px'}),
             dbc.Row(children=[
@@ -436,12 +441,14 @@ def create_both_graphs(name, suffix='', style=None):
     return dbc.Container([
         html.H3(_('Simulation ') + name),
         dcc.Loading(children=[
+            dbc.Col(children=[html.H6(_('Intervention distribution')),
+                              dcc.Graph(id=f'indicator-graphic2u{suffix}', className='row')]),
             dbc.Col(children=[html.H6(_('Flight exlcusions')),
                               dcc.Graph(id=f'indicator-graphic1u{suffix}', className='row')]),
-            dbc.Col(children=[html.H6(_('Intervention distribution')),
-                              sankey.Sankey(
-                                  id=f'flows-graphicu{suffix}',
-                                  width=500, height=500)]),
+            # dbc.Col(children=[html.H6(_('Intervention distribution')),
+            #                   sankey.Sankey(
+            #                       id=f'flows-graphicu{suffix}',
+            #                       width=500, height=500)]),
             dbc.Col(children=[html.H6(_('Time to arrival histogram when a drone is sent')),
                               dcc.Graph(id=f'indicator-graphic3u{suffix}', className='row')]),
             dbc.Col(children=[html.H6(_('Comparison of times to arrival for all incidents')),
