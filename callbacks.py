@@ -278,16 +278,16 @@ def _compute_drone_time(
     dfi = df_res.dropna(axis=0, how='all', thresh=None, subset=[res_col_b], inplace=False)
 
     # simple metrics
-    n_tot = len(dfi)
-    n_nodrone = len(dfi.loc[dfi[res_col_a] == 0])
-    n_drone = len(dfi.loc[dfi[res_col_b] < 0])
-    n_bls = len(dfi.loc[dfi[res_col_b] > 0]) - n_nodrone
+    # n_nodrone = len(dfi.loc[dfi[res_col_a] == 0])
+    # n_tot = len(dfi)
+    # n_drone = len(dfi.loc[dfi[res_col_b] < 0])
+    # n_bls = len(dfi.loc[dfi[res_col_b] > 0]) - n_nodrone
 
     no_drone['detection'] = np.logical_not(no_drone['no detection'])
     # flight restriction reasons for the sunburst chart
 
-    # number of no detected OHCA
-    n_no_detec = no_drone['no detection'].sum()
+    # # number of no detected OHCA
+    # n_no_detec = no_drone['no detection'].sum()
     # # number of no detected OHCA which are also at night
     # n_no_detec_night = np.logical_and(no_drone['no detection'],
     #                                   no_drone['night']).sum()
@@ -299,24 +299,17 @@ def _compute_drone_time(
     #                                                 no_drone['night']),
     #                                  no_drone['not enough witnesses']).sum()
     # number of detected OHCA which are at night
-    n_detec_night = np.logical_and(no_drone['detection'],
-                                   no_drone['night']).sum()
-    # number of detected OHCA which don't have enough witnesses
-    n_detec_wit = np.logical_and(no_drone['detection'],
-                                 no_drone['not enough witnesses']).sum()
-    # number of detected OHCA which don't have enough witnesses and are at night
-    n_detec_both = np.logical_and(np.logical_and(no_drone['detection'],
-                                                 no_drone['night']),
-                                  no_drone['not enough witnesses']).sum()
-
-    n_detec_dw = n_detec_wit - n_detec_both
-
-    # l_pie = np.array([n_drone, n_bls, n_nodrone,
-    #                   n_no_detec, n_nodrone - n_no_detec,
-    #                   n_no_detec_night - n_no_detec_both, n_no_detec_wit - n_no_detec_both,
-    #                   n_no_detec_both,
-    #                   n_detec_night - n_detec_both, n_detec_wit - n_detec_both, n_detec_both])
-    # l_pie = np.around(l_pie * 100 / n_tot, 0).astype('int')
+    # n_detec_night = np.logical_and(no_drone['detection'],
+    #                                no_drone['night']).sum()
+    # # number of detected OHCA which don't have enough witnesses
+    # n_detec_wit = np.logical_and(no_drone['detection'],
+    #                              no_drone['not enough witnesses']).sum()
+    # # number of detected OHCA which don't have enough witnesses and are at night
+    # n_detec_both = np.logical_and(np.logical_and(no_drone['detection'],
+    #                                              no_drone['night']),
+    #                               no_drone['not enough witnesses']).sum()
+    #
+    # n_detec_dw = n_detec_wit - n_detec_both
 
     # Create data-frame used by getSankey function
     if not input_jour:
@@ -383,10 +376,13 @@ def _compute_drone_time(
 
     trace1 = sankey_data
 
-    trace2 = go.Pie(labels=[_('Drone is faster'), _('BLS team is faster'), _('Drone cannot fly')],
-                    values=[rate_drone, rate_bls, (100-rate_drone-rate_bls)],
-                    pull=[0.2, 0, 0],
-                    marker_colors=['rgba(0,128,0,0.8)', 'rgba(222,45,38,0.8)', 'rgba(186,190,222,1)'])
+    trace2 = \
+        go.Pie(labels=[_('Drone is faster'),
+                       _('BLS team is faster'),
+                       _('Drone cannot fly')],
+               values=[rate_drone, rate_bls, (100 - rate_drone - rate_bls)],
+               pull=[0.2, 0, 0],
+               marker_colors=['rgba(0,128,0,0.8)', 'rgba(222,45,38,0.8)', 'rgba(186,190,222,1)'])
 
     # trace1 = go.Bar(
     #     x=[0, 1, 2],
@@ -508,8 +504,9 @@ def _compute_drone_time(
     }
 
     return indicator_graphic_3, indicator_graphic_4, \
-           indicator_graphic_3, indicator_graphic_4, indicator_graphic_1, indicator_graphic_1, indicator_graphic_2, \
-           indicator_graphic_2
+        indicator_graphic_3, indicator_graphic_4, \
+        indicator_graphic_1, indicator_graphic_1, indicator_graphic_2, \
+        indicator_graphic_2
 
 
 @app.callback(

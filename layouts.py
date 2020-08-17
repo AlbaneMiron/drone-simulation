@@ -3,7 +3,7 @@ import textwrap
 import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 import dash_html_components as html
-import sankey
+# import sankey
 import drones
 
 _POSITIONS = list(drones.STARTING_POINTS.keys())
@@ -401,7 +401,7 @@ def create_parameters_layout(name, suffix='', input_drone=_POSITIONS[0]):
             children=_('Update simulation'), block='center',
             style={'flex': 1, 'marginTop': '20px', 'marginBottom': '20px'}
         )], style={'marginTop': '20px', 'paddingRight': '0', 'paddingLeft': '0'}), \
-           dbc.Row(children=[html.H3(_('Results')), create_graphs_layout(suffix=suffix)])
+        dbc.Row(children=[html.H3(_('Results')), create_graphs_layout(suffix=suffix)])
     # ], style={'marginTop': '20px', 'paddingRight': '0', 'paddingLeft': '0'})
 
 
@@ -433,7 +433,7 @@ def create_graphs_layout(suffix=''):
                                   html.Small(html.I(_('Hover over the graph to get more info'))),
                                   dcc.Graph(id=f'indicator-graphic4{suffix}', className='row')],
                         style={'marginTop': '20px', 'flex': 1})],
-                style={'marginTop': '20px', 'paddingRight': '20px', 'paddingLeft': '20px'})],
+                    style={'marginTop': '20px', 'paddingRight': '20px', 'paddingLeft': '20px'})],
         style={'paddingRight': '20px', 'paddingLeft': '20px'})])
 
 
