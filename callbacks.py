@@ -317,9 +317,9 @@ def _compute_drone_time(
         df_sankey = pd.DataFrame(columns=cols_sankey, index=df_res.index)
         index_nuit_cp = copy.deepcopy(index_nuit)
         rate_nuit = int(np.round(100 * index_nuit_cp.sum() / len(index_nuit_cp), 0))
-        index_nuit_cp = np.where(index_nuit_cp, str(rate_nuit) + '% ' + _('Night'), index_nuit_cp)
+        index_nuit_cp = np.where(index_nuit_cp, _('Night: ') + str(rate_nuit) + '% ', index_nuit_cp)
         index_nuit_cp = np.where(index_nuit_cp == 'False',
-                                 str(100 - rate_nuit) + '% ' + _('Day'), index_nuit_cp)
+                                 _('Day: ') + str(100 - rate_nuit) + '% ', index_nuit_cp)
         df_sankey['Nuit'] = index_nuit_cp
 
     else:
@@ -332,18 +332,19 @@ def _compute_drone_time(
     index_detec_cp = copy.deepcopy(np.logical_or(index_detec_rate_vp, index_detec_home))
     rate_ndetec = int(np.round(100 * index_detec_cp.sum() / len(index_detec_cp), 0))
     index_detec_cp = np.where(index_detec_cp,
-                              str(rate_ndetec) + '% ' + _('OHCA undeteced'), index_detec_cp)
+                              _('OHCA undeteced: ') + str(rate_ndetec) + '% ', index_detec_cp)
     index_detec_cp = np.where(index_detec_cp == 'False',
-                              str(100 - rate_ndetec) + '% ' + _('OHCA Detected'),
+                              _('OHCA Detected: ') + str(100 - rate_ndetec) + '% ',
                               index_detec_cp)
     df_sankey['Detection'] = index_detec_cp
 
     index_temoin_cp = copy.deepcopy(index_witness)
+    index_temoin_cp = np.logical_not(index_temoin_cp)
     rate_temoin = int(np.round(100 * index_temoin_cp.sum() / len(index_temoin_cp), 0))
     index_temoin_cp = np.where(index_temoin_cp,
-                               str(rate_temoin) + '% ' + _('Not enough witnesses'), index_temoin_cp)
+                                _('Enough witnesses:') + str(rate_temoin) + '% ', index_temoin_cp)
     index_temoin_cp = np.where(index_temoin_cp == 'False',
-                               str(100 - rate_temoin) + '% ' + _('Enough witnesses'),
+                               _('Not enough witnesses: ') + str(100 - rate_temoin) + '% ',
                                index_temoin_cp)
     df_sankey['Témoin'] = index_temoin_cp
 
@@ -353,10 +354,10 @@ def _compute_drone_time(
 
     rate_drone = int(np.round(100 * index_drone.sum() / len(index_drone), 0))
     rate_bls = int(np.round(100 * index_bls.sum() / len(index_bls), 0))
-    index_drone = np.where(index_drone, str(rate_drone) + '% ' + _('Drone faster'), index_drone)
-    index_drone = np.where(index_bls, str(rate_bls) + '% ' + _('BLS team faster'), index_drone)
+    index_drone = np.where(index_drone, _('Drone faster: ') + str(rate_drone) + '% ', index_drone)
+    index_drone = np.where(index_bls, _('BLS team faster: ') + str(rate_bls) + '% ', index_drone)
     index_drone = np.where(index_nodrone,
-                           str(100 - rate_drone - rate_bls) + '% ' + _('No drone'), index_drone)
+                           _('No drone: ') + str(100 - rate_drone - rate_bls) + '% ', index_drone)
     df_sankey['Drone'] = index_drone
 
     if not input_jour:
@@ -377,9 +378,11 @@ def _compute_drone_time(
     trace1 = sankey_data
 
     trace2 = \
-        go.Pie(labels=[_('Drone is faster'),
+        go.Pie(labels=[
+                       _('Drone is faster'),
                        _('BLS team is faster'),
-                       _('Drone cannot fly')],
+                       _('Drone cannot fly')
+                       ],
                values=[rate_drone, rate_bls, (100 - rate_drone - rate_bls)],
                pull=[0.2, 0, 0],
                marker_colors=['rgba(0,128,0,0.8)', 'rgba(222,45,38,0.8)', 'rgba(186,190,222,1)'])
