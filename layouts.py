@@ -457,6 +457,46 @@ def create_both_graphs(name, suffix='', style=None):
     ], style={'flex': 1} if style is None else dict(style, flex=1))
 
 
+def create_title():
+    return dbc.Col(
+        children=[
+            dbc.Row(
+                children=[
+                    dbc.Col(
+                        html.A(html.Img(src='../assets/logo-bspp.png', width='70%'),
+                               href='https://www.pompiersparis.fr/fr/'),
+                        width=2,
+                        style={'justifyContent': 'spaceBetween',
+                               'margin-right': '20', 'paddingLeft': '0'}),
+                    dbc.Col(html.H1(_('Airborne AED simulation')), width=8),
+                    dbc.Col(
+                        html.A(
+                            html.Img(src='../assets/logo_bayes_impact.png', width='70%'),
+                            href='https://www.bayesimpact.org/'),
+                        width=2,
+                        style={'justifyContent': 'spaceBetween',
+                               'margin-right': '20', 'paddingLeft': '0'})],
+                align='center',
+                style={'display': 'flex', 'text-align': 'center'}),
+            html.Div(children=[html.A(html.Img(src='../assets/fr.gif', alt='fr'),
+                                      href='https://airborne-aed.org/fr/',
+                                      style={'margin-right': '10px'}
+                                      ),
+                               html.A(html.Img(src='../assets/en.gif', alt='en'),
+                                      href='https://airborne-aed.org/en/'
+                                      )]),
+            html.A(
+                _('Fork me on GitHub'),
+                href='https://github.com/AlbaneMiron/drone-simulation',
+                className='github-fork-ribbon',
+                style={'position': 'fixed'},
+                **{'data-ribbon': _('Fork me on GitHub')}),
+        ],
+        style={'display': 'flex', 'justifyContent': 'spaceBetween',
+               'paddingRight': '0', 'paddingLeft': '0'},
+        className='title')
+
+
 def create(lang):
     desc_file = '../../assets/tab-layout2.png'
     if lang == 'fr':
@@ -465,23 +505,10 @@ def create(lang):
     lang.install()
     return dbc.Col(
         children=[
-            dbc.Col(
-                className='title',
-                children=[
-                    html.H1(_('Airborne AED simulation')),
-                    html.A(
-                        _('Fork me on GitHub'),
-                        href='https://github.com/AlbaneMiron/drone-simulation',
-                        className='github-fork-ribbon',
-                        style={'position': 'fixed'},
-                        **{'data-ribbon': _('Fork me on GitHub')}
-                    ),
-                ],
-                style={'display': 'flex', 'justifyContent': 'spaceBetween',
-                       'paddingRight': '0', 'paddingLeft': '0'}
-            ),
+            create_title(),
             dbc.Col(
                 id='vp-control-tabs', className='control-tabs',
                 children=[create_tabs_layout(desc_file)],
-                style={'marginTop': '20px', 'paddingRight': '0', 'paddingLeft': '0'})],
+                style={'marginTop': '20px', 'paddingRight': '0', 'paddingLeft': '0'})
+        ],
         style={'paddingTop': '20px', 'paddingLeft': '20px'})
