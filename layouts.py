@@ -401,7 +401,7 @@ def create_parameters_layout(name, suffix='', input_drone=_POSITIONS[0]):
             children=_('Update simulation'), block='center',
             style={'flex': 1, 'marginTop': '20px', 'marginBottom': '20px'}
         )], style={'marginTop': '20px', 'paddingRight': '0', 'paddingLeft': '0'}), \
-           dbc.Row(children=[html.H3(_('Results')), create_graphs_layout(suffix=suffix)])
+        dbc.Row(children=[html.H3(_('Results')), create_graphs_layout(suffix=suffix)])
     # ], style={'marginTop': '20px', 'paddingRight': '0', 'paddingLeft': '0'})
 
 
@@ -433,7 +433,7 @@ def create_graphs_layout(suffix=''):
                                   html.Small(html.I(_('Hover over the graph to get more info'))),
                                   dcc.Graph(id=f'indicator-graphic4{suffix}', className='row')],
                         style={'marginTop': '20px', 'flex': 1})],
-                style={'marginTop': '20px', 'paddingRight': '20px', 'paddingLeft': '20px'})],
+                    style={'marginTop': '20px', 'paddingRight': '20px', 'paddingLeft': '20px'})],
         style={'paddingRight': '20px', 'paddingLeft': '20px'})])
 
 
@@ -457,6 +457,46 @@ def create_both_graphs(name, suffix='', style=None):
     ], style={'flex': 1} if style is None else dict(style, flex=1))
 
 
+def create_title():
+    return dbc.Col(
+        children=[
+            dbc.Row(
+                children=[
+                    dbc.Col(
+                        html.A(html.Img(src='../assets/logo-bspp.png', width='70%'),
+                               href='https://www.pompiersparis.fr/fr/'),
+                        width=2,
+                        style={'justifyContent': 'spaceBetween',
+                               'margin-right': '20', 'paddingLeft': '0'}),
+                    dbc.Col(html.H1(_('Airborne AED simulation')), width=8),
+                    dbc.Col(
+                        html.A(
+                            html.Img(src='../assets/logo_bayes_impact.png', width='70%'),
+                            href='https://www.bayesimpact.org/'),
+                        width=2,
+                        style={'justifyContent': 'spaceBetween',
+                               'margin-right': '20', 'paddingLeft': '0'})],
+                align='center',
+                style={'display': 'flex', 'text-align': 'center'}),
+            html.Div(children=[html.A(html.Img(src='../assets/fr.gif', alt='fr'),
+                                      href='https://airborne-aed.org/fr/',
+                                      style={'margin-right': '10px'}
+                                      ),
+                               html.A(html.Img(src='../assets/en.gif', alt='en'),
+                                      href='https://airborne-aed.org/en/'
+                                      )]),
+            html.A(
+                _('Fork me on GitHub'),
+                href='https://github.com/AlbaneMiron/drone-simulation',
+                className='github-fork-ribbon',
+                style={'position': 'fixed'},
+                **{'data-ribbon': _('Fork me on GitHub')}),
+        ],
+        style={'display': 'flex', 'justifyContent': 'spaceBetween',
+               'paddingRight': '0', 'paddingLeft': '0'},
+        className='title')
+
+
 def create(lang):
     desc_file = '../../assets/tab-layout2.png'
     if lang == 'fr':
@@ -465,46 +505,10 @@ def create(lang):
     lang.install()
     return dbc.Col(
         children=[
-            dbc.Col(
-                className='title',
-                children=[
-                    dbc.Row(children=[
-                        dbc.Col(children=[html.A(html.Img(src='../assets/logo-bspp.png', width='70%'
-                                                          # , style={'marginRight': '30px'}
-                                                          ),
-                                                 href='https://www.pompiersparis.fr/fr/')],
-                                width=2,
-                                style={'justifyContent': 'spaceBetween',
-                                       'margin-right': '20', 'paddingLeft': '0'}),
-                        dbc.Col(html.H1(_('Airborne AED simulation')), width=8),
-                        dbc.Col(children=[html.A(html.Img(src='../assets/logo_bayes_impact.png', width='70%'),
-                                                 href='https://www.bayesimpact.org/')
-                                          ],
-                                width=2,
-                                style={'justifyContent': 'spaceBetween',
-                                       'margin-right': '20', 'paddingLeft': '0'}),
-                    ],
-                        align='center',
-                        style={'display': 'flex', 'text-align': 'center'}),
-                    html.Div(children=[html.A(html.Img(src="../assets/fr.gif", alt='fr'),
-                                              href='https://airborne-aed.org/fr/', style={'margin-right': '10px'}
-                                              ),
-                                       html.A(html.Img(src="../assets/en.gif", alt='en'),
-                                              href='https://airborne-aed.org/en/'
-                                              )]),
-                    html.A(
-                        _('Fork me on GitHub'),
-                        href='https://github.com/AlbaneMiron/drone-simulation',
-                        className='github-fork-ribbon',
-                        style={'position': 'fixed'},
-                        **{'data-ribbon': _('Fork me on GitHub')}
-                    ),
-                ],
-                style={'display': 'flex', 'justifyContent': 'spaceBetween',
-                       'paddingRight': '0', 'paddingLeft': '0'}
-            ),
+            create_title(),
             dbc.Col(
                 id='vp-control-tabs', className='control-tabs',
                 children=[create_tabs_layout(desc_file)],
-                style={'marginTop': '20px', 'paddingRight': '0', 'paddingLeft': '0'})],
+                style={'marginTop': '20px', 'paddingRight': '0', 'paddingLeft': '0'})
+        ],
         style={'paddingTop': '20px', 'paddingLeft': '20px'})
