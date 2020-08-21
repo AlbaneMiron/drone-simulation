@@ -342,7 +342,7 @@ def _compute_drone_time(
     index_temoin_cp = np.logical_not(index_temoin_cp)
     rate_temoin = int(np.round(100 * index_temoin_cp.sum() / len(index_temoin_cp), 0))
     index_temoin_cp = np.where(index_temoin_cp,
-                                _('Enough witnesses:') + str(rate_temoin) + '% ', index_temoin_cp)
+                                _('Enough witnesses: ') + str(rate_temoin) + '% ', index_temoin_cp)
     index_temoin_cp = np.where(index_temoin_cp == 'False',
                                _('Not enough witnesses: ') + str(100 - rate_temoin) + '% ',
                                index_temoin_cp)
@@ -635,13 +635,18 @@ def genSankey(df, cat_cols, value_cols=''):
     labelList = []
     colorNumList = []
     for catCol in cat_cols:
-        labelListTemp = list(set(df[catCol].values))
+        print(df[catCol].unique())
+        labelListTemp = df[catCol].unique()
+        print(labelListTemp)
+        labelListTemp = np.sort(labelListTemp)
         colorNumList.append(len(labelListTemp))
-        labelList = labelList + labelListTemp
+        labelList = np.append(labelList, labelListTemp)
+        print(labelList)
 
     # remove duplicates from labelList
     labelList = list(dict.fromkeys(labelList))
-
+    # labelList0 = list(dict.fromkeys(labelList))
+    # print(labelList0)
     # define colors based on number of levels
     colorList = []
     for idx, colorNum in enumerate(colorNumList):
@@ -659,9 +664,11 @@ def genSankey(df, cat_cols, value_cols=''):
         sourceTargetDf = sourceTargetDf.groupby(['source', 'target']) \
             .agg({'count': 'sum'}).reset_index()
 
+
     # add index for source-target pair
     sourceTargetDf['sourceID'] = sourceTargetDf['source'].apply(labelList.index)
     sourceTargetDf['targetID'] = sourceTargetDf['target'].apply(labelList.index)
+    print(sourceTargetDf['sourceID'])
 
     # add column for source-node-conditional count to retrieve rates
     sourceTargetDf['cond_count'] = 0
