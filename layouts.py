@@ -470,8 +470,8 @@ def create(lang):
                 children=[
                     dbc.Row(children=[
                         dbc.Col(children=[html.A(html.Img(src='../assets/logo-bspp.png', width='70%'
-                                                   # , style={'marginRight': '30px'}
-                                                   ),
+                                                          # , style={'marginRight': '30px'}
+                                                          ),
                                                  href='https://www.pompiersparis.fr/fr/')],
                                 width=2,
                                 style={'justifyContent': 'spaceBetween',
@@ -486,6 +486,12 @@ def create(lang):
                     ],
                         align='center',
                         style={'display': 'flex', 'text-align': 'center'}),
+                    html.Div(children=[html.A(html.Img(src="../assets/fr.gif", alt='fr'),
+                                              href='https://airborne-aed.org/fr/', style={'margin-right': '10px'}
+                                              ),
+                                       html.A(html.Img(src="../assets/en.gif", alt='en'),
+                                              href='https://airborne-aed.org/en/'
+                                              )]),
                     html.A(
                         _('Fork me on GitHub'),
                         href='https://github.com/AlbaneMiron/drone-simulation',
