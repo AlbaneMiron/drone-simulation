@@ -458,43 +458,50 @@ def create_both_graphs(name, suffix='', style=None):
 
 
 def create_title():
-    return dbc.Col(
+    return html.Div(
         children=[
             dbc.Row(
+                dbc.Col(children=[html.A(html.Img(src='../assets/fr.gif', alt='fr'),
+                                         href='https://airborne-aed.org/fr/',
+                                         style={'margin-right': '10px'}
+                                         ),
+                                  html.A(html.Img(src='../assets/en.gif', alt='en'),
+                                         href='https://airborne-aed.org/en/'
+                                         )], align='end')),
+            dbc.Row(
                 children=[
-                    dbc.Col(
-                        html.A(html.Img(src='../assets/logo-bspp.png', width='70%'),
-                               href='https://www.pompiersparis.fr/fr/'),
-                        width=2,
-                        style={'justifyContent': 'spaceBetween',
-                               'margin-right': '20', 'paddingLeft': '0'}),
-                    dbc.Col(html.H1(_('Airborne AED simulation')), width=8),
-                    dbc.Col(
-                        html.A(
-                            html.Img(src='../assets/logo_bayes_impact.png', width='70%'),
-                            href='https://www.bayesimpact.org/'),
-                        width=2,
-                        style={'justifyContent': 'spaceBetween',
-                               'margin-right': '20', 'paddingLeft': '0'})],
-                align='center',
-                style={'display': 'flex', 'text-align': 'center'}),
-            html.Div(children=[html.A(html.Img(src='../assets/fr.gif', alt='fr'),
-                                      href='https://airborne-aed.org/fr/',
-                                      style={'margin-right': '10px'}
-                                      ),
-                               html.A(html.Img(src='../assets/en.gif', alt='en'),
-                                      href='https://airborne-aed.org/en/'
-                                      )]),
-            html.A(
-                _('Fork me on GitHub'),
-                href='https://github.com/AlbaneMiron/drone-simulation',
-                className='github-fork-ribbon',
-                style={'position': 'fixed'},
-                **{'data-ribbon': _('Fork me on GitHub')}),
-        ],
-        style={'display': 'flex', 'justifyContent': 'spaceBetween',
-               'paddingRight': '0', 'paddingLeft': '0'},
-        className='title')
+                    dbc.Row(
+                        children=[
+                            dbc.Col(
+                                html.A(html.Img(src='../assets/logo-bspp.png', width='70%'),
+                                       href='https://www.pompiersparis.fr/fr/'),
+                                width=2,
+                                style={'justifyContent': 'spaceBetween',
+                                       'margin-right': '20', 'paddingLeft': '0'}),
+                            dbc.Col(html.H1(_('Airborne AED simulation')), width=8),
+                            dbc.Col(children=[
+                                html.A(
+                                    html.Img(src='../assets/logo_bayes_impact.png', width='70%'),
+                                    href='https://www.bayesimpact.org/')
+                            ],
+                                width=2,
+                                style={'justifyContent': 'spaceBetween',
+                                       'margin-right': '20', 'paddingLeft': '0'})],
+                        align='center',
+                        style={'display': 'flex', 'text-align': 'center'}),
+                    html.A(
+                        _('Fork me on GitHub'),
+                        href='https://github.com/AlbaneMiron/drone-simulation',
+                        className='github-fork-ribbon',
+                        style={'position': 'fixed'},
+                        **{'data-ribbon': _('Fork me on GitHub')})
+                ],
+                style={'display': 'flex', 'justifyContent': 'spaceBetween',
+                       'paddingRight': '0', 'paddingLeft': '0', 'md': '11'},
+                className='title'
+            ),
+        ]
+    )
 
 
 def create(lang):
