@@ -475,18 +475,14 @@ def create_title():
                             dbc.Col(
                                 html.A(html.Img(src='../assets/logo-bspp.png', width='70%'),
                                        href='https://www.pompiersparis.fr/fr/'),
-                                width=2,
-                                style={'justifyContent': 'spaceBetween',
-                                       'margin-right': '20', 'paddingLeft': '0'}),
+                                width=2),
                             dbc.Col(html.H1(_('Airborne AED simulation')), width=8),
                             dbc.Col(children=[
                                 html.A(
-                                    html.Img(src='../assets/logo_bayes_impact.png', width='70%'),
+                                    html.Img(src='../assets/logo_bayes_impact.png', width='85%'),
                                     href='https://www.bayesimpact.org/')
                             ],
-                                width=2,
-                                style={'justifyContent': 'spaceBetween',
-                                       'margin-right': '20', 'paddingLeft': '0'})],
+                                width=2)],
                         align='center',
                         style={'display': 'flex', 'text-align': 'center'}),
                     html.A(
@@ -496,8 +492,7 @@ def create_title():
                         style={'position': 'fixed'},
                         **{'data-ribbon': _('Fork me on GitHub')})
                 ],
-                style={'display': 'flex', 'justifyContent': 'spaceBetween',
-                       'paddingRight': '0', 'paddingLeft': '0', 'md': '11'},
+                style={'display': 'flex'},
                 className='title'
             ),
         ]
