@@ -500,9 +500,9 @@ def create_title():
 
 
 def create(lang):
-    desc_file = '../../assets/tab-layout2.png'
+    desc_file = '../../assets/tab-layout3en.png'
     if lang == 'fr':
-        desc_file = '../../assets/tab-layout2fr.png'
+        desc_file = '../../assets/tab-layout3fr.png'
     lang = gettext.translation('messages', localedir='locales', languages=[lang], fallback=True)
     lang.install()
     return dbc.Col(
