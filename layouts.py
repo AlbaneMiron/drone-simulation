@@ -462,11 +462,11 @@ def create_title():
         children=[
             dbc.Row(
                 dbc.Col(children=[html.A(html.Img(src='../assets/fr.gif', alt='fr'),
-                                         href='https://airborne-aed.org/fr/',
+                                         href='/fr/',
                                          style={'margin-right': '10px'}
                                          ),
                                   html.A(html.Img(src='../assets/en.gif', alt='en'),
-                                         href='https://airborne-aed.org/en/'
+                                         href='/'
                                          )], align='end')),
             dbc.Row(
                 children=[

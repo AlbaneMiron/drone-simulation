@@ -22,9 +22,7 @@ app.layout = html.Div([
 def pick_lang(pathname):
     if pathname == '/fr/':
         return 'fr'
-    if pathname == '/en/':
-        return 'en'
-    return None
+    return 'en'
 
 
 @app.callback(
